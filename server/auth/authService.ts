@@ -20,7 +20,8 @@ function resolveSecret(): string {
   if (process.env.NODE_ENV === 'production') {
     throw new Error(
       '[FATAL] APP_SECRET tidak diset (atau kurang dari 32 karakter). ' +
-      'Set di environment variable sebelum menjalankan production.'
+      'Set di environment variable sebelum menjalankan production. Buat dengan: ' +
+      `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
     );
   }
   console.warn('[Auth] APP_SECRET belum diset — memakai secret sementara khusus development.');

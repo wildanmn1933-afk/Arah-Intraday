@@ -1,9 +1,10 @@
+// Harus jadi import pertama: esbuild/Node mengeksekusi modul sesuai urutan import,
+// dan beberapa modul (mis. authService) membaca process.env saat dimuat. Memanggil
+// dotenv.config() di badan berkas akan berjalan setelah modul-modul itu dieksekusi.
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 import { seedDatabase } from './server/db/seed.js';
 import { db } from './server/db/database.js';

@@ -76,7 +76,14 @@ userRouter.get('/preferences', requireAuth, (req: AuthenticatedRequest, res: Res
 });
 
 // POST update user subscription plan
+// Endpoint bantu untuk pengujian lokal saja. Di production, perubahan paket hanya
+// boleh lewat webhook pembayaran yang tervalidasi; tanpa guard ini siapa pun bisa
+// menaikkan paketnya sendiri ke INSTITUTIONAL.
 userRouter.post('/subscription', requireAuth, (req: AuthenticatedRequest, res: Response) => {
+  if (process.env.NODE_ENV === 'production') {
+    res.status(404).json({ error: 'Endpoint tidak tersedia.' });
+    return;
+  }
   const userId = req.user!.id;
   const { plan } = req.body;
   if (!['FREE', 'PRO', 'INSTITUTIONAL'].includes(plan)) {
