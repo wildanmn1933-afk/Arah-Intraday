@@ -172,7 +172,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             .join(' ');
 
           const formattedTime = item.last_updated
-            ? new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            ? new Date(item.last_updated).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' })
             : 'LANGSUNG';
 
           return (

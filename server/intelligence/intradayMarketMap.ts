@@ -65,11 +65,46 @@ export class IntradayMarketMapEngine {
       tvUrl: a.tvUrl,
     }));
 
-    // Identify today's high-impact releases
-    const highImpactToday = macroEvents.filter(e => e.impact === 'CRITICAL' || e.impact === 'HIGH');
-    const usKeyRelease = highImpactToday.find(e => e.currency === 'USD') || macroEvents.find(e => e.currency === 'USD');
-    const euKeyRelease = highImpactToday.find(e => e.currency === 'EUR');
-    const ukKeyRelease = highImpactToday.find(e => e.currency === 'GBP');
+    // Identify today's high-impact releases.
+    // The calendar feed also contains future sessions, so a date filter is required —
+    // without it a "today's catalyst" label silently points at an event days ahead.
+    const todayUtc = new Date().toISOString().slice(0, 10);
+    const isToday = (e: any) => typeof e?.date_time_utc === 'string' && e.date_time_utc.slice(0, 10) === todayUtc;
+    const upcomingImpact = macroEvents
+      .filter(e => (e.impact === 'CRITICAL' || e.impact === 'HIGH') && (isToday(e) || new Date(e.date_time_utc).getTime() >= now.getTime()))
+      .sort((a, b) => new Date(a.date_time_utc).getTime() - new Date(b.date_time_utc).getTime());
+
+    const pickRelease = (currency: string) => {
+      const todayRelease = upcomingImpact.find(e => e.currency === currency && isToday(e));
+      if (todayRelease) return { event: todayRelease, upcoming: false };
+      const nextRelease = upcomingImpact.find(e => e.currency === currency);
+      return nextRelease ? { event: nextRelease, upcoming: true } : { event: undefined, upcoming: false };
+    };
+
+    const usPick = pickRelease('USD');
+    const euPick = pickRelease('EUR');
+    const ukPick = pickRelease('GBP');
+
+    // Only a same-day event gets the bare name; a future one is explicitly dated so the
+    // UI never presents a later release as if it were today's driver. Times are rendered
+    // in WIB (UTC+7), the market clock this audience reads.
+    const formatRelease = (pick: { event: any; upcoming: boolean }) => {
+      if (!pick.event) return '';
+      const stamp = pick.event.date_time_utc
+        ? new Date(pick.event.date_time_utc).toLocaleString('id-ID', {
+            hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta',
+          })
+        : '';
+      if (!pick.upcoming) return `${pick.event.event_name} (${stamp} WIB)`;
+      const date = new Date(pick.event.date_time_utc).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'short', timeZone: 'Asia/Jakarta',
+      });
+      return `${pick.event.event_name} — rilis berikutnya ${date} ${stamp} WIB`;
+    };
+
+    const usKeyReleaseText = formatRelease(usPick);
+    const euKeyReleaseText = formatRelease(euPick);
+    const ukKeyReleaseText = formatRelease(ukPick);
 
     return targetSymbols.map(target => {
       const priceObj = priceMap.get(target.symbol);
@@ -100,15 +135,15 @@ export class IntradayMarketMapEngine {
           topDrivers = [
             `Ekspektasi pelonggaran suku bunga riil menahan harga spot kokoh di atas $${(Math.floor(currentPrice / 50) * 50).toLocaleString()}/oz.`,
             `Diversifikasi cadangan bank sentral global berlanjut pada laju struktural yang stabil.`,
-            `Premi lindung nilai geopolitik dan arus safe-haven menopang kedalaman permintaan saat pullback intraday.`,
+            `Premi lindung nilai geopolitik dan arus aset aman menopang kedalaman permintaan saat pelemahan intraday.`,
             `Posisi relatif Indeks Dolar AS (${usdStrength.toFixed(1)}/10) memberikan tailwind mata uang yang menguntungkan.`,
           ];
           conflictingFactors = [
             `Yield benchmark Treasury 10 tahun AS yang bertahan di atas 4,05% membatasi momentum spekulatif yang melonjak cepat.`,
             `Kondisi teknis overbought jangka pendek pada RSI 4 jam di sekitar batas atas Bollinger.`,
           ];
-          todayCatalyst = usKeyRelease
-            ? `${usKeyRelease.event_name} (${usKeyRelease.date_time_utc ? new Date(usKeyRelease.date_time_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Hari Ini'}) — Fokus pada transmisi yield riil.`
+          todayCatalyst = usKeyReleaseText
+            ? `${usKeyReleaseText}. Fokus pada transmisi yield riil.`
             : `Pasokan lelang Treasury AS & panduan pembicara FOMC tentang ekspektasi suku bunga terminal.`;
           marketReaction = change24h >= 0
             ? `Diperdagangkan naik +${change24h.toFixed(2)}% hari ini di $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; penyerapan beli saat dip tercatat kuat pada pembukaan sesi aktif.`
@@ -129,7 +164,7 @@ export class IntradayMarketMapEngine {
           ];
           conflictingFactors = [
             `Pengawasan regulasi berkala dan gamma pin opsi aset digital menjelang kedaluwarsa di sekitar klaster strike utama.`,
-            `Korelasi dengan sentimen ekuitas teknologi high-beta membuat pergerakan intraday rentan terhadap pulsa risk-off.`,
+            `Korelasi dengan sentimen ekuitas teknologi berbeta tinggi membuat pergerakan intraday rentan terhadap pulsa penghindaran risiko.`,
           ];
           todayCatalyst = `Trajektori indeks likuiditas global + laporan arus masuk bersih ETF kripto AS saat penutupan sesi.`;
           marketReaction = change24h >= 0
@@ -173,9 +208,9 @@ export class IntradayMarketMapEngine {
             `Rasio harga terhadap laba pada desil tertinggi valuasi historis membatasi ekspansi kelipatan secara cepat.`,
             `Risiko energi geopolitik dapat memicu lonjakan biaya lokal.`,
           ];
-          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name} release` : `Prospek kebijakan FOMC & pembaruan laba korporasi S&P.`;
+          todayCatalyst = usKeyReleaseText || `Prospek kebijakan FOMC & pembaruan laba korporasi S&P.`;
           marketReaction = `Diperdagangkan di ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); dukungan permintaan sistematis mempertahankan moving average 20 hari.`;
-          conditionsToChange = `Penutupan di bawah point of control volume profile kunci dengan VIX melonjak di atas 20 akan memicu bias pengurangan risiko secara langsung.`;
+          conditionsToChange = `Penutupan di bawah titik kendali volume profile kunci dengan VIX melonjak di atas 20 akan memicu bias pengurangan risiko secara langsung.`;
           confidence = 93;
           break;
         }
@@ -190,7 +225,7 @@ export class IntradayMarketMapEngine {
             `Neraca kuat dengan utang bersih negatif melindungi teknologi mega-cap dari kondisi kredit ketat.`,
           ];
           conflictingFactors = [
-            `Konsentrasi pasar ekstrem pada 7 konstituen teratas menciptakan kerentanan headline idiosinkratik.`,
+            `Konsentrasi pasar ekstrem pada 7 konstituen teratas menciptakan kerentanan berita idiosinkratik.`,
             `Headline regulasi ekspor semikonduktor menciptakan friksi rantai pasok episodik.`,
           ];
           todayCatalyst = `Komentar laba semikonduktor & respons yield Treasury 10 tahun AS terhadap rilis ekonomi.`;
@@ -214,7 +249,7 @@ export class IntradayMarketMapEngine {
             `Lelang surat utang Treasury AS dengan bid-to-cover rendah berpotensi memicu lonjakan yield sementara.`,
             `Ketahanan data inflasi inti atau ketenagakerjaan AS dapat menunda ekspektasi pemotongan suku bunga Fed yang agresif.`,
           ];
-          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name}` : `Lelang US Treasury, pidato FOMC, & rilis data inflasi AS`;
+          todayCatalyst = usKeyReleaseText || `Lelang US Treasury, pidato FOMC, & rilis data inflasi AS`;
           marketReaction = `Yield diperdagangkan di level ${currentPrice.toFixed(3)}% (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); dinamika transmisi suku bunga mendikte arah Nasdaq dan DXY.`;
           conditionsToChange = `Lonjakan yield di atas 4.25% akan memicu tekanan jual langsung pada ekuitas pertumbuhan, sedangkan penurunan di bawah 3.95% akan mempercepat reli risk-on.`;
           confidence = 91;
@@ -235,7 +270,7 @@ export class IntradayMarketMapEngine {
             `Trajektori pelonggaran suku bunga Fed secara alami memampatkan diferensial suku bunga nominal ujung pendek seiring waktu.`,
             `Bank sentral asing (mis. BoJ) yang menaikkan suku bunga menciptakan tekanan naik penyeimbang pada pair non-dolar.`,
           ];
-          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name}` : `Komunikasi kebijakan Ketua Fed Powell dan pergerakan yield Treasury.`;
+          todayCatalyst = usKeyReleaseText || `Komunikasi kebijakan Ketua Fed Powell dan pergerakan yield Treasury.`;
           marketReaction = `DXY bertahan di ${currentPrice.toFixed(2)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); osilasi terbatas dalam kanal makro sempit 100,80 - 101,80.`;
           conditionsToChange = `Kejutan kenaikan inflasi inti yang kuat akan memicu short-covering USD tajam; inflasi di bawah ekspektasi akan mempercepat aksi jual dolar.`;
           confidence = 92;
@@ -255,7 +290,7 @@ export class IntradayMarketMapEngine {
             `PMI manufaktur Jerman di wilayah kontraksi berkepanjangan menekan belanja modal.`,
             `Disinflasi CPI headline Eropa (2,2%) menjaga pemotongan suku bunga ECB tambahan tetap terbuka.`,
           ];
-          todayCatalyst = euKeyRelease ? `${euKeyRelease.event_name}` : `Pidato kebijakan Dewan Gubernur ECB & rilis PMI Zona Euro.`;
+          todayCatalyst = euKeyReleaseText || `Pidato kebijakan Dewan Gubernur ECB & rilis PMI Zona Euro.`;
           marketReaction = `Diperdagangkan spot di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); bereaksi terhadap diferensial spread yield sovereign 2Y Zona Euro-AS.`;
           conditionsToChange = `Forward guidance pemotongan suku bunga ECB yang dipercepat akan melemahkan EUR; rebound tak terduga pesanan industri Jerman akan membalik bias ke BULLISH.`;
           confidence = 90;
@@ -276,7 +311,7 @@ export class IntradayMarketMapEngine {
             `Gubernur Bailey mengakui potensi pemotongan suku bunga lebih agresif jika pendinginan inflasi dipercepat.`,
             `Kendala pengetatan anggaran fiskal dapat menimbulkan hambatan bagi pertumbuhan PDB riil Inggris.`,
           ];
-          todayCatalyst = ukKeyRelease ? `${ukKeyRelease.event_name}` : `Ekspektasi suku bunga MPC Bank of England & metrik pertumbuhan upah Inggris.`;
+          todayCatalyst = ukKeyReleaseText || `Ekspektasi suku bunga MPC Bank of England & metrik pertumbuhan upah Inggris.`;
           marketReaction = `GBPUSD bergerak di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); permintaan institusional stabil terlihat terhadap EUR dan JPY.`;
           conditionsToChange = `Perlambatan cepat inflasi jasa Inggris di bawah 4,5% akan menghilangkan dukungan hawkish BoE dan membalik bias ke BEARISH.`;
           confidence = 93;
@@ -291,7 +326,7 @@ export class IntradayMarketMapEngine {
           topDrivers = [
             `Gubernur Bank of Japan Ueda secara eksplisit menegaskan kembali jalur kenaikan suku bunga jika target inflasi inti bertahan.`,
             `CPI Tokyo dan Nasional bergerak di atas ambang stabilitas harga 2,0% BoJ.`,
-            `Kerentanan ekstrem terhadap pembongkaran carry trade menciptakan lonjakan safe-haven asimetris yang tajam saat volatilitas.`,
+            `Kerentanan ekstrem terhadap pembongkaran carry trade menciptakan lonjakan aset aman yang asimetris dan tajam saat volatilitas.`,
           ];
           conflictingFactors = [
             `Diferensial suku bunga besar (0,25% vs 4,75%+ di AS) menciptakan tekanan jual carry trade persisten pada spot JPY.`,
@@ -338,7 +373,7 @@ export class IntradayMarketMapEngine {
             `Suku bunga nominal (4,75%) masih memberikan carry positif relatif terhadap Swiss Franc dan Japanese Yen.`,
             `Harga lelang produk susu menunjukkan stabilitas permintaan yang stabil di perdagangan Oseania.`,
           ];
-          todayCatalyst = `Hasil lelang Global Dairy Trade (GDT) & pricing trajektori pelonggaran RBNZ.`;
+          todayCatalyst = `Hasil lelang Global Dairy Trade (GDT) & trajektori harga pelonggaran RBNZ.`;
           marketReaction = `NZDUSD di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); mengikuti divergensi lintas Tasman terhadap AUD yang lebih kuat.`;
           conditionsToChange = `Rebound naik PDB NZ yang mengejutkan atau jeda langkah pemotongan 50bps RBNZ akan menetralkan bias bearish.`;
           confidence = 89;

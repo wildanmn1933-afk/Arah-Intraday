@@ -481,7 +481,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                   <span className="px-1.5 py-0.5 rounded bg-amber-950/90 text-amber-300 border border-amber-800/80 text-[9px] font-mono font-bold">
                     DAMPAK TINGGI • FOMC
                   </span>
-                  <span className="text-[10px] font-mono text-slate-500">2m ago</span>
+                  <span className="text-[10px] font-mono text-slate-500">2 mnt lalu</span>
                 </div>
                 <div className="text-xs font-bold text-slate-100 leading-snug">
                   Kebijakan Suku Bunga Federal Reserve & Yield Obligasi AS

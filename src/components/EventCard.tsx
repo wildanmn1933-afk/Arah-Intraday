@@ -26,13 +26,13 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
 
   const timeAgo = (dateStr: string) => {
     const time = new Date(dateStr).getTime();
-    if (isNaN(time)) return 'recently';
+    if (isNaN(time)) return 'baru saja';
     const diff = Math.floor((Date.now() - time) / 1000);
-    if (diff <= 15) return 'just now';
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff <= 15) return 'baru saja';
+    if (diff < 60) return `${diff} dtk lalu`;
+    if (diff < 3600) return `${Math.floor(diff / 60)} mnt lalu`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
+    return `${Math.floor(diff / 86400)} hr lalu`;
   };
 
   return (

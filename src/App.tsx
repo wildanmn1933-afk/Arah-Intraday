@@ -366,10 +366,14 @@ export default function App() {
         } else {
           if (isMounted) setUser(null);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.warn('Session verification notice:', err);
-        setAuthToken(null);
-        if (isMounted) setUser(null);
+        // Hanya buang kredensial bila server menolak token (401/403).
+        // Gangguan jaringan sesaat (mis. server restart) tidak boleh memaksa logout diam-diam.
+        if (err?.status === 401 || err?.status === 403) {
+          setAuthToken(null);
+          if (isMounted) setUser(null);
+        }
       } finally {
         if (isMounted) setIsAuthChecking(false);
       }

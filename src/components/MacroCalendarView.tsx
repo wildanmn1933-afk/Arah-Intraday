@@ -805,7 +805,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                                   Keyakinan: <strong className="text-emerald-400 font-bold">{item.confidence || 95}%</strong>
                                 </span>
                                 <span className="text-[10px] font-mono text-slate-400">
-                                  Freshness: <strong className="text-slate-200">{item.freshness || 'Terverifikasi Live'}</strong>
+                                  Kesegaran: <strong className="text-slate-200">{item.freshness || 'Terverifikasi Live'}</strong>
                                 </span>
                               </div>
 

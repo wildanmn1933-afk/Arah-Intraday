@@ -605,7 +605,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                               setResetPasswordInput('');
                               setGeneratedTempPass(null);
                             }}
-                            title="Reset Kata Sandi Pengguna"
+                            title="Atur Ulang Kata Sandi Pengguna"
                             className="p-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded border border-slate-700 transition cursor-pointer"
                           >
                             <Key className="w-3.5 h-3.5" />
@@ -614,7 +614,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                           {/* Edit Details */}
                           <button
                             onClick={() => handleOpenEdit(u)}
-                            title="Ubah Role & Paket Langganan"
+                            title="Ubah Peran & Paket Langganan"
                             className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 transition cursor-pointer"
                           >
                             <Edit2 className="w-3.5 h-3.5" />

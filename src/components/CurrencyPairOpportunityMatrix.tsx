@@ -97,19 +97,19 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
       if (delta >= 4.0) {
         action = 'STRONG_BUY';
         tier = 'PRIME';
-        tradeStyle = 'Trend Follow / Buy Dips';
+        tradeStyle = 'Ikuti Tren / Beli Saat Melemah';
       } else if (delta >= 2.0) {
         action = 'BUY';
         tier = 'MODERATE';
-        tradeStyle = 'Bullish Continuation';
+        tradeStyle = 'Kelanjutan Bullish';
       } else if (delta <= -4.0) {
         action = 'STRONG_SELL';
         tier = 'PRIME';
-        tradeStyle = 'Trend Follow / Sell Rallies';
+        tradeStyle = 'Ikuti Tren / Jual Saat Menguat';
       } else if (delta <= -2.0) {
         action = 'SELL';
         tier = 'MODERATE';
-        tradeStyle = 'Bearish Continuation';
+        tradeStyle = 'Kelanjutan Bearish';
       } else {
         action = 'NEUTRAL_CHOP';
         tier = 'CHOP_AVOID';
@@ -241,7 +241,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               {topLong.catalyst}
             </p>
             <div className="mt-2 text-[10px] text-emerald-400 font-mono">
-              Action: Buy the dips / Trend-following
+              Aksi: Beli saat melemah / Ikuti tren
             </div>
           </div>
         )}

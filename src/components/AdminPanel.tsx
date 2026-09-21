@@ -330,7 +330,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     </td>
 
                     <td className="py-2.5 px-2.5 text-slate-400">
-                      {ch.last_ingested_at ? new Date(ch.last_ingested_at).toLocaleTimeString() : 'Pending'}
+                      {ch.last_ingested_at ? new Date(ch.last_ingested_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta' }) : 'Pending'}
                     </td>
 
                     <td className="py-2.5 px-2.5 text-slate-400">
@@ -409,7 +409,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     {src.interval_seconds}s
                   </td>
                   <td className="py-2.5 px-2.5 text-slate-400">
-                    {src.last_success_at ? new Date(src.last_success_at).toLocaleTimeString() : 'N/A'}
+                    {src.last_success_at ? new Date(src.last_success_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta' }) : 'N/A'}
                   </td>
                   <td className="py-2.5 px-2.5 text-slate-400 font-bold">
                     {src.error_count}

@@ -727,7 +727,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
 
                   {/* Footer with Chart Link & Timestamp */}
                   <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                    <span>Diperbarui: {new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span>Diperbarui: {new Date(item.last_updated).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' })}</span>
                     {onOpenChart && (
                       <button
                         onClick={() => onOpenChart(sym)}

@@ -91,13 +91,13 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
     if (diff > 0) {
       const hours = Math.floor(diff / 3600000);
       const mins = Math.floor((diff % 3600000) / 60000);
-      if (hours > 0) return `In ${hours}h ${mins}m`;
-      return `In ${mins}m`;
+      if (hours > 0) return `Dalam ${hours} jam ${mins} mnt`;
+      return `Dalam ${mins} mnt`;
     } else {
       const pastMin = Math.floor(Math.abs(diff) / 60000);
-      if (pastMin < 60) return `${pastMin}m ago`;
+      if (pastMin < 60) return `${pastMin} mnt lalu`;
       const pastHours = Math.floor(pastMin / 60);
-      return `${pastHours}h ago`;
+      return `${pastHours} jam lalu`;
     }
   };
 

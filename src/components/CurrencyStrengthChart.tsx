@@ -324,7 +324,7 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
                   ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 shadow-xs'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
-              title="View current trading session from 04:00 WIB open"
+              title="Lihat sesi perdagangan saat ini sejak pembukaan 04:00 WIB"
             >
               hari ini (1D)
             </button>

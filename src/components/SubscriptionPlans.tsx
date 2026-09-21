@@ -338,11 +338,11 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                     {isUpgrading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Updating Plan...
+                        Memperbarui Paket...
                       </>
                     ) : !user ? (
                       <>
-                        {tier.id === 'FREE' ? 'Mulai Gratis' : `Get Started with ${tier.name}`}
+                        {tier.id === 'FREE' ? 'Mulai Gratis' : `Mulai dengan ${tier.name}`}
                         <ArrowRight className="w-3.5 h-3.5" />
                       </>
                     ) : (

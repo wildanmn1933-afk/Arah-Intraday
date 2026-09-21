@@ -615,7 +615,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                       )}
                     </div>
                     <span className="text-[11px] text-slate-500">
-                      {new Date(s.published_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(s.published_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
 

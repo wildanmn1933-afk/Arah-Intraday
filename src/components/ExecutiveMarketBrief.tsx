@@ -357,7 +357,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         tradeStyle: 'Super-Tren Teknologi & Beli Saat Pullback',
         entryZone: `Area demand/discount H1 ${Math.round(us100Price.price - 85)} - ${Math.round(us100Price.price - 25)}`,
         invalidationLevel: us100Bias?.conditions_to_change_bias || `Penembusan valid di bawah support ${Math.round(us100Price.price - 190)}`,
-        targetProjection: `Ekspansi resistensi All-Time High ${Math.round(us100Price.price + 260)}+ (RR 1:2.8)`,
+        targetProjection: `Ekspansi resistensi rekor tertinggi ${Math.round(us100Price.price + 260)}+ (RR 1:2.8)`,
         fundamentalDriver: us100Bias?.top_drivers?.[0] || us100Bias?.today_key_catalyst || 'Aset paling bullish di pasar global: Belanja modal AI hyperscalers & pendapatan emiten semikonduktor solid, imbal hasil obligasi stabil menopang valuasi ekuitas growth.',
         riskNote: 'Volatilitas tinggi saat lonjakan volume pembukaan bursa Wall Street (20:30 WIB)',
         tier: 'PRIME_A',

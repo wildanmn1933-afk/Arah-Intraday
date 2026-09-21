@@ -270,7 +270,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
                       {translateStatus(item.status)}
                     </span>
                   </MetricTooltip>
-                  <span>Updated: {new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  <span>Updated: {new Date(item.last_updated).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
               </div>
             );
