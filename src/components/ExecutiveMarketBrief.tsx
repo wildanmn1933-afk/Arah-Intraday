@@ -589,7 +589,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                 1
               </div>
               <p className="text-slate-300 leading-snug">
-                <strong className="text-slate-100">US100 Bullish Tech Leadership:</strong> Nasdaq 100 menunjukkan momentum bullish terkuat di pasar global berkat ketahanan belanja modal AI & pendapatan semikonduktor solid.
+                <strong className="text-slate-100">Kepemimpinan Teknologi Bullish US100:</strong> Nasdaq 100 menunjukkan momentum bullish terkuat di pasar global berkat ketahanan belanja modal AI & pendapatan semikonduktor solid.
               </p>
             </div>
 
@@ -607,7 +607,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                 3
               </div>
               <p className="text-slate-300 leading-snug">
-                <strong className="text-slate-100">Safe-Haven & Gold Bid:</strong> Emas (XAU/USD) dan Swiss Franc mempertahankan arus akumulasi institusional sebagai lindung nilai makro.
+                <strong className="text-slate-100">Permintaan Safe-Haven & Emas:</strong> Emas (XAU/USD) dan Swiss Franc mempertahankan arus akumulasi institusional sebagai lindung nilai makro.
               </p>
             </div>
           </div>

@@ -31,7 +31,7 @@ export function seedDatabase(): void {
       email: 'admin@marketintel.pro',
       password_hash: adminPass.hash,
       salt: adminPass.salt,
-      name: 'Chief Market Officer',
+      name: 'Kepala Strategi Pasar',
       role: 'ADMIN',
       is_verified: true,
       plan: 'INSTITUTIONAL',
