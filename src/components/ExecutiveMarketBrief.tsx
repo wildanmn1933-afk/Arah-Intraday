@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { Tooltip, MetricTooltip, MetricInfoIcon } from './Tooltip';
 import { getCurrencyFlagUrl, ASSET_VISUAL_MAP } from '../lib/assets';
+import { findAsset } from '../../shared/canonicalAssets';
 
 interface ExecutiveMarketBriefProps {
   strengths: CurrencyStrength[];
@@ -55,6 +56,45 @@ interface TradeSuggestion {
   fundamentalDriver: string;
   riskNote: string;
   tier: 'PRIME_A' | 'HIGH' | 'SPECULATIVE' | 'AVOID';
+  /** false = tidak ada harga live, jadi level angka pada kartu ini bukan level pasar nyata. */
+  hasLivePrice: boolean;
+}
+
+/**
+ * Harga untuk cross FX (mis. CHFJPY) tidak tersedia langsung di feed, yang
+ * mengutip FX sebagai kode mata uang tunggal. Level angka hanya boleh ditampilkan
+ * bila pair-nya sendiri punya harga; kalau tidak, entry/SL/target akan berisi
+ * angka karangan. Kembalikan null agar UI memilih deskripsi tanpa angka.
+ */
+function pairPrice(priceMap: Map<string, MarketPrice>, pairSymbol: string): number | null {
+  const asset = findAsset(pairSymbol);
+  if (!asset) return null;
+  return priceMap.get(asset.symbol)?.price ?? null;
+}
+
+/** Jumlah desimal yang wajar untuk sebuah level harga. */
+function levelDigits(price: number): number {
+  if (price >= 1000) return 1;
+  if (price >= 100) return 3;
+  if (price >= 10) return 3;
+  return 4;
+}
+
+/** Rencana level untuk pair FX: zona entry, batas risiko, dan target pada RR 1:2. */
+function fxLevelPlan(price: number, action: TradeSuggestion['action']) {
+  const isLong = action === 'STRONG_BUY' || action === 'BUY';
+  const f = (x: number) => x.toFixed(levelDigits(price));
+  return isLong
+    ? {
+        entryZone: `Zona beli ${f(price * 0.9985)} - ${f(price)}`,
+        invalidationLevel: `Batas risiko bila tembus di bawah ${f(price * 0.997)}`,
+        targetProjection: `Target ${f(price * 1.006)} (RR 1:2)`,
+      }
+    : {
+        entryZone: `Zona jual ${f(price)} - ${f(price * 1.0015)}`,
+        invalidationLevel: `Batas risiko bila tembus di atas ${f(price * 1.003)}`,
+        targetProjection: `Target ${f(price * 0.994)} (RR 1:2)`,
+      };
 }
 
 export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
@@ -149,14 +189,14 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       weakest,
       summaryText,
       topCatalysts,
-      goldPrice: gold?.price ?? 2724.5,
-      goldChange: gold?.change_24h_pct ?? 0.65,
-      dxyPrice: dxy?.price ?? 101.42,
-      dxyChange: dxy?.change_24h_pct ?? -0.15,
-      us100Price: us100?.price ?? 20185.0,
-      us100Change: us100?.change_24h_pct ?? 1.22,
-      us10yPrice: us10y?.price ?? 4.085,
-      us10yChange: us10y?.change_24h_pct ?? -0.85,
+      goldPrice: gold?.price ?? null,
+      goldChange: gold?.change_24h_pct ?? null,
+      dxyPrice: dxy?.price ?? null,
+      dxyChange: dxy?.change_24h_pct ?? null,
+      us100Price: us100?.price ?? null,
+      us100Change: us100?.change_24h_pct ?? null,
+      us10yPrice: us10y?.price ?? null,
+      us10yChange: us10y?.change_24h_pct ?? null,
     };
   }, [strengths, priceMap, biasMap, todayCatalysts]);
 
@@ -205,7 +245,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         category: 'FX_MAJOR' as const,
         base: 'EUR',
         quote: 'USD',
-        catalyst: 'Konsolidasi DXY di bawah resistensi 101.80 & stabilisasi data PMI manufaktur kawasan Eropa.',
+        catalyst: 'Dolar AS berkonsolidasi menyusul stabilisasi data PMI manufaktur kawasan Eropa.',
         entryLogic: 'Pasang limit beli pada area demand sesi London 1.0820 - 1.0840',
         invalidation: 'Penetrasi valid di bawah level support psikologis kunci',
         target: 'High sesi New York / Resistensi 1.0910',
@@ -297,6 +337,9 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
 
       const confidence = Math.min(94, Math.max(50, Math.round(55 + absDelta * 11)));
 
+      const fxPrice = pairPrice(priceMap, p.symbol);
+      const plan = fxPrice ? fxLevelPlan(fxPrice, action) : null;
+
       list.push({
         id: p.symbol,
         symbol: p.symbol,
@@ -307,12 +350,13 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         biasConfidence: confidence,
         deltaOrScore: `Divergensi: ${delta > 0 ? '+' : ''}${delta.toFixed(1)}pt`,
         tradeStyle,
-        entryZone: p.entryLogic,
-        invalidationLevel: p.invalidation,
-        targetProjection: p.target,
+        entryZone: plan?.entryZone ?? p.entryLogic,
+        invalidationLevel: plan?.invalidationLevel ?? p.invalidation,
+        targetProjection: plan?.targetProjection ?? p.target,
         fundamentalDriver: p.catalyst,
         riskNote: tier === 'PRIME_A' ? 'Probabilitas tertinggi dengan flow dua arah searah' : 'Waspadai rilis data berimpak tinggi hari ini',
         tier,
+        hasLivePrice: fxPrice !== null,
       });
     }
 
@@ -337,6 +381,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         fundamentalDriver: goldBias?.top_drivers?.[0] || goldBias?.today_key_catalyst || 'Permintaan defensif geopolitik & penurunan yield obligasi riil AS.',
         riskNote: 'Volatilitas tinggi saat jam pembukaan sesi New York (19:30 WIB)',
         tier: 'PRIME_A',
+        hasLivePrice: true,
       });
     }
 
@@ -361,6 +406,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         fundamentalDriver: us100Bias?.top_drivers?.[0] || us100Bias?.today_key_catalyst || 'Aset paling bullish di pasar global: Belanja modal AI hyperscalers & pendapatan emiten semikonduktor solid, imbal hasil obligasi stabil menopang valuasi ekuitas growth.',
         riskNote: 'Volatilitas tinggi saat lonjakan volume pembukaan bursa Wall Street (20:30 WIB)',
         tier: 'PRIME_A',
+        hasLivePrice: true,
       });
     }
 
@@ -385,6 +431,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         fundamentalDriver: 'Ketahanan makro ekonomi AS & partisipasi institusional pada ekuitas pasar luas.',
         riskNote: 'Korelasi tinggi dengan data rilis inflasi dan yield Treasury AS',
         tier: 'HIGH',
+        hasLivePrice: true,
       });
     }
 
@@ -393,6 +440,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
     const us10yPrice = priceMap.get('US10Y');
     if (us10yPrice) {
       const isYieldEasing = us10yPrice.change_24h_pct <= 0;
+      const y = us10yPrice.price;
       list.push({
         id: 'US10Y',
         symbol: 'US10Y',
@@ -401,14 +449,15 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         action: isYieldEasing ? 'BUY' : 'SELL',
         actionLabel: isYieldEasing ? 'YIELD MELONGGAR (PENOPANG RISK-ON)' : 'LONJAKAN YIELD (WASPADA RISIKO)',
         biasConfidence: 84,
-        deltaOrScore: `Yield: ${us10yPrice.price.toFixed(3)}% (${us10yPrice.change_24h_pct >= 0 ? '+' : ''}${us10yPrice.change_24h_pct.toFixed(2)}%)`,
+        deltaOrScore: `Yield: ${y.toFixed(3)}% (${us10yPrice.change_24h_pct >= 0 ? '+' : ''}${us10yPrice.change_24h_pct.toFixed(2)}%)`,
         tradeStyle: 'Kurva Diskon Makro & Engine Valuasi',
-        entryZone: `Pivot level 4.050% - 4.120%`,
-        invalidationLevel: `Penetrasi yield > 4.220% memicu koreksi aset berisiko`,
-        targetProjection: `Zona stabilisasi 3.980% - 4.060%`,
+        entryZone: `Pivot di sekitar ${(y - 0.05).toFixed(2)}% - ${(y + 0.02).toFixed(2)}%`,
+        invalidationLevel: `Yield menembus ${(y + 0.10).toFixed(2)}% memicu koreksi aset berisiko`,
+        targetProjection: `Zona stabilisasi ${(y - 0.20).toFixed(2)}% - ${(y - 0.05).toFixed(2)}%`,
         fundamentalDriver: 'Ekspektasi pelonggaran Fed menjaga imbal hasil obligasi AS bertenor 10 tahun terkendali, menopang valuasi ekuitas teknologi (US100) dan akumulasi Emas (XAU/USD).',
         riskNote: 'Sensitif terhadap rilis data lelang Treasury, lelang obligasi, dan komentar pejabat The Fed',
         tier: 'HIGH',
+        hasLivePrice: true,
       });
     }
 
@@ -519,57 +568,65 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
               </span>
             </div>
 
-            <div
-              onClick={() => onOpenChart('US100')}
-              className="bg-slate-900/90 p-2 rounded-lg border border-emerald-800/40 bg-emerald-950/20 hover:border-emerald-700 transition cursor-pointer"
-              title="Klik untuk membuka Chart Interaktif TradingView US100"
-            >
-              <span className="text-[10px] text-slate-400 block flex items-center justify-between">
-                <span>Nasdaq (US100)</span>
-                <span className="text-[9px] font-bold text-emerald-400 font-mono px-1 rounded bg-emerald-900/60">NAIK</span>
-              </span>
-              <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us100Change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                <ArrowUpRight className="w-3 h-3" />
-                {marketSynthesis.us100Price.toLocaleString(undefined, { maximumFractionDigits: 0 })} ({marketSynthesis.us100Change >= 0 ? '+' : ''}{marketSynthesis.us100Change.toFixed(2)}%)
-              </span>
-            </div>
+            {marketSynthesis.us100Price !== null && marketSynthesis.us100Change !== null && (
+              <div
+                onClick={() => onOpenChart('US100')}
+                className="bg-slate-900/90 p-2 rounded-lg border border-emerald-800/40 bg-emerald-950/20 hover:border-emerald-700 transition cursor-pointer"
+                title="Klik untuk membuka Chart Interaktif TradingView US100"
+              >
+                <span className="text-[10px] text-slate-400 block flex items-center justify-between">
+                  <span>Nasdaq (US100)</span>
+                  <span className="text-[9px] font-bold text-emerald-400 font-mono px-1 rounded bg-emerald-900/60">NAIK</span>
+                </span>
+                <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us100Change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  <ArrowUpRight className="w-3 h-3" />
+                  {marketSynthesis.us100Price.toLocaleString(undefined, { maximumFractionDigits: 0 })} ({marketSynthesis.us100Change >= 0 ? '+' : ''}{marketSynthesis.us100Change.toFixed(2)}%)
+                </span>
+              </div>
+            )}
 
-            <div
-              onClick={() => onOpenChart('US10Y')}
-              className="bg-slate-900/90 p-2 rounded-lg border border-cyan-800/40 bg-cyan-950/20 hover:border-cyan-700 transition cursor-pointer"
-              title="Klik untuk membuka Chart Interaktif TradingView US10Y Benchmark"
-            >
-              <span className="text-[10px] text-slate-400 block flex items-center justify-between">
-                <span>Yield 10Y (US10Y)</span>
-                <span className="text-[9px] font-bold text-cyan-400 font-mono px-1 rounded bg-cyan-900/60">MAKRO</span>
-              </span>
-              <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us10yChange <= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
-                <Activity className="w-3 h-3" />
-                {marketSynthesis.us10yPrice.toFixed(3)}% ({marketSynthesis.us10yChange >= 0 ? '+' : ''}{marketSynthesis.us10yChange.toFixed(2)}%)
-              </span>
-            </div>
+            {marketSynthesis.us10yPrice !== null && marketSynthesis.us10yChange !== null && (
+              <div
+                onClick={() => onOpenChart('US10Y')}
+                className="bg-slate-900/90 p-2 rounded-lg border border-cyan-800/40 bg-cyan-950/20 hover:border-cyan-700 transition cursor-pointer"
+                title="Klik untuk membuka Chart Interaktif TradingView US10Y Benchmark"
+              >
+                <span className="text-[10px] text-slate-400 block flex items-center justify-between">
+                  <span>Yield 10Y (US10Y)</span>
+                  <span className="text-[9px] font-bold text-cyan-400 font-mono px-1 rounded bg-cyan-900/60">MAKRO</span>
+                </span>
+                <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us10yChange <= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  <Activity className="w-3 h-3" />
+                  {marketSynthesis.us10yPrice.toFixed(3)}% ({marketSynthesis.us10yChange >= 0 ? '+' : ''}{marketSynthesis.us10yChange.toFixed(2)}%)
+                </span>
+              </div>
+            )}
 
-            <div
-              onClick={() => onOpenChart('XAUUSD')}
-              className="bg-slate-900/90 p-2 rounded-lg border border-slate-800 hover:border-slate-700 transition cursor-pointer"
-              title="Klik untuk membuka Chart Interaktif TradingView XAUUSD"
-            >
-              <span className="text-[10px] text-slate-400 block">Emas (XAU/USD)</span>
-              <span className={`font-bold mt-0.5 block ${marketSynthesis.goldChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                ${marketSynthesis.goldPrice.toFixed(1)} ({marketSynthesis.goldChange >= 0 ? '+' : ''}{marketSynthesis.goldChange.toFixed(2)}%)
-              </span>
-            </div>
+            {marketSynthesis.goldPrice !== null && marketSynthesis.goldChange !== null && (
+              <div
+                onClick={() => onOpenChart('XAUUSD')}
+                className="bg-slate-900/90 p-2 rounded-lg border border-slate-800 hover:border-slate-700 transition cursor-pointer"
+                title="Klik untuk membuka Chart Interaktif TradingView XAUUSD"
+              >
+                <span className="text-[10px] text-slate-400 block">Emas (XAU/USD)</span>
+                <span className={`font-bold mt-0.5 block ${marketSynthesis.goldChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  ${marketSynthesis.goldPrice.toFixed(1)} ({marketSynthesis.goldChange >= 0 ? '+' : ''}{marketSynthesis.goldChange.toFixed(2)}%)
+                </span>
+              </div>
+            )}
 
-            <div
-              onClick={() => onOpenChart('USD')}
-              className="bg-slate-900/90 p-2 rounded-lg border border-slate-800 hover:border-slate-700 transition cursor-pointer"
-              title="Klik untuk membuka Chart Interaktif TradingView DXY"
-            >
-              <span className="text-[10px] text-slate-400 block">DXY (Indeks Dolar AS)</span>
-              <span className="font-bold text-slate-200 mt-0.5 block">
-                {marketSynthesis.dxyPrice.toFixed(2)} ({marketSynthesis.dxyChange >= 0 ? '+' : ''}{marketSynthesis.dxyChange.toFixed(2)}%)
-              </span>
-            </div>
+            {marketSynthesis.dxyPrice !== null && marketSynthesis.dxyChange !== null && (
+              <div
+                onClick={() => onOpenChart('USD')}
+                className="bg-slate-900/90 p-2 rounded-lg border border-slate-800 hover:border-slate-700 transition cursor-pointer"
+                title="Klik untuk membuka Chart Interaktif TradingView DXY"
+              >
+                <span className="text-[10px] text-slate-400 block">DXY (Indeks Dolar AS)</span>
+                <span className="font-bold text-slate-200 mt-0.5 block">
+                  {marketSynthesis.dxyPrice.toFixed(2)} ({marketSynthesis.dxyChange >= 0 ? '+' : ''}{marketSynthesis.dxyChange.toFixed(2)}%)
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -862,20 +919,27 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                 {/* Plan Execution Guidance: Entry Zone, Invalidation, Target */}
                 <div className="space-y-2 pt-1">
                   {!isAvoid ? (
-                    <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono bg-slate-900/50 p-2 rounded-lg border border-slate-800/60">
-                      <div>
-                        <span className="text-slate-500 block">Area Entry Ideal</span>
-                        <span className="text-slate-200 font-semibold block truncate" title={item.entryZone}>
-                          {item.entryZone}
-                        </span>
+                    <>
+                      <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono bg-slate-900/50 p-2 rounded-lg border border-slate-800/60">
+                        <div>
+                          <span className="text-slate-500 block">Area Entry Ideal</span>
+                          <span className="text-slate-200 font-semibold block truncate" title={item.entryZone}>
+                            {item.entryZone}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block">Batas Risiko (SL)</span>
+                          <span className="text-rose-400 font-semibold block truncate" title={item.invalidationLevel}>
+                            {item.invalidationLevel}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-slate-500 block">Batas Risiko (SL)</span>
-                        <span className="text-rose-400 font-semibold block truncate" title={item.invalidationLevel}>
-                          {item.invalidationLevel}
-                        </span>
-                      </div>
-                    </div>
+                      {!item.hasLivePrice && (
+                        <p className="px-1 text-[10px] font-sans text-amber-300/90">
+                          Catatan: belum ada harga live untuk pair ini, jadi panduan di atas berupa pendekatan deskriptif tanpa level angka pasti.
+                        </p>
+                      )}
+                    </>
                   ) : (
                     <div className="p-2 rounded-lg bg-amber-950/30 border border-amber-900/50 text-[11px] text-amber-300 font-sans">
                       Divergensi mendekati 0. Disarankan hindari breakout, potensi whipsaw tinggi.
