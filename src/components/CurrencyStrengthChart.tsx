@@ -4,7 +4,7 @@ import { api } from '../lib/api';
 import { RefreshCw, TrendingUp, Sparkles, ExternalLink, Calendar, SlidersHorizontal } from 'lucide-react';
 
 export const CURRENCY_COLORS: Record<string, { hex: string; bg: string; text: string; border: string; name: string }> = {
-  USD: { hex: '#ff9900', bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30', name: 'US Dollar' },
+  USD: { hex: '#ff9900', bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30', name: 'Dolar AS' },
   EUR: { hex: '#ff0000', bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/30', name: 'Euro' },
   JPY: { hex: '#00ccff', bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/30', name: 'Japanese Yen' },
   GBP: { hex: '#00cc00', bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/30', name: 'British Pound' },

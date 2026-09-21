@@ -27,18 +27,18 @@ export interface CanonicalAsset {
 const TV = (q: string) => `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(q)}`;
 
 export const CANONICAL_ASSETS: readonly CanonicalAsset[] = [
-  { symbol: 'XAUUSD', displayName: 'Emas / US Dollar', assetClass: 'COMMODITY', tvSymbol: 'TVC:GOLD', tvUrl: TV('TVC:GOLD') },
-  { symbol: 'BTC', displayName: 'Bitcoin / US Dollar', assetClass: 'CRYPTO', tvSymbol: 'BITSTAMP:BTCUSD', tvUrl: 'https://www.tradingview.com/x/zRklu6Fj/' },
+  { symbol: 'XAUUSD', displayName: 'Emas / Dolar AS', assetClass: 'COMMODITY', tvSymbol: 'TVC:GOLD', tvUrl: TV('TVC:GOLD') },
+  { symbol: 'BTC', displayName: 'Bitcoin / Dolar AS', assetClass: 'CRYPTO', tvSymbol: 'BITSTAMP:BTCUSD', tvUrl: 'https://www.tradingview.com/x/zRklu6Fj/' },
   { symbol: 'US30', displayName: 'Indeks Dow Jones 30', assetClass: 'INDEX', tvSymbol: 'FOREXCOM:US30', tvUrl: 'https://www.tradingview.com/x/McUWwa6F/' },
   { symbol: 'US500', displayName: 'Indeks S&P 500', assetClass: 'INDEX', tvSymbol: 'CAPITALCOM:SPX500', tvUrl: 'https://www.tradingview.com/x/mMOtpRJZ/' },
   { symbol: 'US100', displayName: 'Indeks Nasdaq 100', assetClass: 'INDEX', tvSymbol: 'SKILLING:US100', tvUrl: 'https://www.tradingview.com/x/pWHPW2sk/' },
   { symbol: 'US10Y', displayName: 'Yield Treasury AS 10 Tahun', assetClass: 'BOND', tvSymbol: 'TVC:US10Y', tvUrl: 'https://www.tradingview.com/symbols/TVC-US10Y/' },
   { symbol: 'USD', displayName: 'Indeks Dolar AS (DXY)', assetClass: 'FOREX', tvSymbol: 'TVC:DXY', tvUrl: 'https://www.tradingview.com/x/mxhFtDj9/' },
   { symbol: 'EUR', pair: 'EURUSD', displayName: 'Euro / Dolar AS', assetClass: 'FOREX', tvSymbol: 'FX:EURUSD', tvUrl: TV('FX:EURUSD') },
-  { symbol: 'GBP', pair: 'GBPUSD', displayName: 'Pound Inggris / USD', assetClass: 'FOREX', tvSymbol: 'FX:GBPUSD', tvUrl: TV('FX:GBPUSD') },
+  { symbol: 'GBP', pair: 'GBPUSD', displayName: 'Pound Inggris / Dolar AS', assetClass: 'FOREX', tvSymbol: 'FX:GBPUSD', tvUrl: TV('FX:GBPUSD') },
   { symbol: 'JPY', pair: 'USDJPY', displayName: 'Dolar AS / Yen Jepang', assetClass: 'FOREX', tvSymbol: 'FX:USDJPY', tvUrl: TV('FX:USDJPY') },
-  { symbol: 'AUD', pair: 'AUDUSD', displayName: 'Dolar Australia / USD', assetClass: 'FOREX', tvSymbol: 'FX:AUDUSD', tvUrl: TV('FX:AUDUSD') },
-  { symbol: 'NZD', pair: 'NZDUSD', displayName: 'Dolar Selandia Baru / USD', assetClass: 'FOREX', tvSymbol: 'FX:NZDUSD', tvUrl: TV('FX:NZDUSD') },
+  { symbol: 'AUD', pair: 'AUDUSD', displayName: 'Dolar Australia / Dolar AS', assetClass: 'FOREX', tvSymbol: 'FX:AUDUSD', tvUrl: TV('FX:AUDUSD') },
+  { symbol: 'NZD', pair: 'NZDUSD', displayName: 'Dolar Selandia Baru / Dolar AS', assetClass: 'FOREX', tvSymbol: 'FX:NZDUSD', tvUrl: TV('FX:NZDUSD') },
   { symbol: 'CAD', pair: 'USDCAD', displayName: 'Dolar AS / Dolar Kanada', assetClass: 'FOREX', tvSymbol: 'FX:USDCAD', tvUrl: TV('FX:USDCAD') },
   { symbol: 'CHF', pair: 'USDCHF', displayName: 'Dolar AS / Franc Swiss', assetClass: 'FOREX', tvSymbol: 'FX:USDCHF', tvUrl: TV('FX:USDCHF') },
 ] as const;

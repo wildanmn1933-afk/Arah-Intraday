@@ -80,7 +80,7 @@ const PRESET_TRIGGER_OPTIONS = [
     title: 'Kilat Makro AS (CPI / NFP / Imbal Hasil)',
     desc: 'Kejutan inflasi US Core CPI dan pergerakan yield obligasi US10Y',
     category: 'MACRO',
-    customTitle: 'US Core CPI Rilis di Bawah Konsensus; US Dollar Index (DXY) Melemah dan Emas Naik Tajam',
+    customTitle: 'US Core CPI Rilis di Bawah Konsensus; Indeks Dolar AS (DXY) Melemah dan Emas Naik Tajam',
     customContent: 'Data inflasi inti bulanan AS yang melambat memicu lonjakan probabilitas pemangkasan suku bunga Fed. Imbal hasil obligasi AS terkoreksi di seluruh kurva.',
     affected_assets: ['XAUUSD', 'EURUSD', 'USDJPY', 'US30'],
     affected_currencies: ['USD', 'EUR', 'JPY'],

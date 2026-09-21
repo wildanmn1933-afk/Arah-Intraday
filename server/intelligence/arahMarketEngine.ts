@@ -113,7 +113,7 @@ export class ArahMarketEngine {
         targetPair: 'EURUSD',
         interpretation:
           usDeSpread > 1.7
-            ? 'Spread melebar untuk keunggulan US Dollar (Gravitasi EUR/USD cenderung tertahan/tertekan).'
+            ? 'Spread melebar untuk keunggulan Dolar AS (Gravitasi EUR/USD cenderung tertahan/tertekan).'
             : 'Spread menyempit (membuka ruang penguatan bagi mata uang Euro).',
       },
       {
@@ -127,7 +127,7 @@ export class ArahMarketEngine {
         targetPair: 'USDJPY',
         interpretation:
           usJpSpread > 3.0
-            ? 'Selisih suku bunga AS-Jepang sangat lebar (Bahan bakar utama kenaikan USD/JPY / Carry Trade long USD).'
+            ? 'Selisih suku bunga AS-Jepang sangat lebar (Bahan bakar utama kenaikan USD/JPY / Carry Trade beli USD).'
             : 'Selisih bunga melandai (waspada pembalikan penguatan Yen / aksi unwinding).',
       },
       {
@@ -141,7 +141,7 @@ export class ArahMarketEngine {
         targetPair: 'XAUUSD',
         interpretation:
           realYield10y > 1.9
-            ? 'Real yield tinggi menaikkan opportunity cost emas (XAU/USD rentan menghadapi resistensi saat reli).'
+            ? 'Yield riil tinggi menaikkan biaya peluang memegang emas (XAU/USD rentan menghadapi resistensi saat reli).'
             : 'Real yield melandai di bawah 1.8% (Katalis positif bagi reli safe-haven Emas).',
       },
     ];
@@ -301,11 +301,11 @@ export class ArahMarketEngine {
 
         paBias = chg > 0.1 ? 'BULLISH' : chg < -0.1 ? 'BEARISH' : 'NEUTRAL';
         paStructure = chg < -0.2 ? 'SESSION_BREAKOUT' : 'CHOP_RANGE';
-        actionableZone = chg < 0 ? 'Sell on rally di resisten terdekat' : 'Buy on dip di support sesi';
+        actionableZone = chg < 0 ? 'Jual saat reli di resisten terdekat' : 'Buy on dip di support sesi';
         paScore = chg > 0.1 ? 30 : -35;
 
         recommendedAction = interBias === 'BEARISH' ? 'LOOK_FOR_SELL' : 'LOOK_FOR_BUY';
-        invalidation = 'Breakout berlawanan pada DXY melintasi Session Open';
+        invalidation = 'Breakout berlawanan pada DXY melintasi harga buka sesi';
       } else if (tp.pair === 'USDJPY') {
         fundBias = 'BULLISH';
         fundDriver = 'Kesenjangan suku bunga ekstrim The Fed vs suku bunga rendah Bank of Japan';
@@ -346,7 +346,7 @@ export class ArahMarketEngine {
 
         paBias = chg > 0.15 ? 'BULLISH' : chg < -0.15 ? 'BEARISH' : 'NEUTRAL';
         paStructure = chg > 0.4 ? 'SESSION_BREAKOUT' : chg < -0.4 ? 'RETEST_SUPPORT' : 'CHOP_RANGE';
-        actionableZone = chg > 0 ? 'Buy on pullback ke demand sesi' : 'Tunggu retest supply sebelum sell';
+        actionableZone = chg > 0 ? 'Beli saat pullback ke area demand sesi' : 'Tunggu retest area supply sebelum jual';
         paScore = chg > 0.15 ? 35 : chg < -0.15 ? -35 : 0;
 
         // Cross-reference rotasi antar indeks sebagai konfirmasi tambahan

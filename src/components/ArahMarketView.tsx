@@ -28,6 +28,21 @@ import {
 } from 'lucide-react';
 import { getCurrencyFlagUrl } from '../lib/assets';
 
+const SESSION_LABELS: Record<string, string> = {
+  SYDNEY: 'SYDNEY',
+  TOKYO: 'TOKYO',
+  LONDON: 'LONDON',
+  NEW_YORK: 'NEW YORK',
+  OVERLAP: 'LONDON / NEW YORK',
+};
+
+const ACTION_LABELS: Record<string, string> = {
+  LOOK_FOR_BUY: 'CARI PELUANG BELI',
+  LOOK_FOR_SELL: 'CARI PELUANG JUAL',
+  WAIT_ON_SUPPORT: 'TUNGGU DI SUPPORT',
+  CAUTION_NO_TRADE: 'HATI-HATI / JANGAN TRANSAKSI',
+};
+
 interface ArahMarketViewProps {
   data: ArahMarketTodayData | null;
   isLoading: boolean;
@@ -134,7 +149,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
               </span>
               <span className="px-2 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-slate-300 text-[10px] font-mono flex items-center gap-1">
                 <Clock className="w-3 h-3 text-cyan-400" />
-                <span className="font-bold text-white">{activeSession} SESI</span>
+                <span className="font-bold text-white">SESI {SESSION_LABELS[activeSession] || activeSession}</span>
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
@@ -164,7 +179,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
             <div>
               <div className="flex items-center justify-between gap-2 mb-1.5">
                 <span className="text-[10px] font-mono text-slate-500 uppercase font-bold tracking-wider">
-                  GLOBAL INTRADAY REGIME
+                  REZIM INTRADAY GLOBAL
                 </span>
                 <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${globalRegime.badgeColor}`}>
                   {globalRegime.title}
@@ -189,13 +204,13 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
           <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/90 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mb-2">
-                <span className="uppercase font-bold">DXY vs Session Open:</span>
+                <span className="uppercase font-bold">DXY vs Harga Buka Sesi:</span>
                 <span className={`font-black px-1.5 py-0.2 rounded ${
                   globalRegime.dxyBiasVsOpen === 'ABOVE_OPEN'
                     ? 'bg-rose-950 text-rose-300 border border-rose-800'
                     : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                 }`}>
-                  {globalRegime.dxyBiasVsOpen === 'ABOVE_OPEN' ? '▲ DI ATAS OPEN (DOLLAR BULLISH)' : '▼ DI BAWAH OPEN (DOLLAR BEARISH)'}
+                  {globalRegime.dxyBiasVsOpen === 'ABOVE_OPEN' ? '▲ DI ATAS HARGA BUKA (DOLAR BULLISH)' : '▼ DI BAWAH HARGA BUKA (DOLAR BEARISH)'}
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 leading-snug">
@@ -295,7 +310,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
               </span>
             </h2>
             <p className="text-xs text-slate-400">
-              Setiap aset dianalisis melalui 3 saringan: Fundamental, Intermarket, dan Struktur Price Action.
+              Setiap aset dianalisis melalui 3 saringan: Fundamental, Intermarket, dan Struktur Aksi Harga.
             </p>
           </div>
 
@@ -462,7 +477,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
                         ? 'bg-rose-950 text-rose-300 border border-rose-800'
                         : 'bg-slate-800 text-slate-300 border border-slate-700'
                     }`}>
-                      {p.intradayPlan.recommendedAction.replace(/_/g, ' ')}
+                      {ACTION_LABELS[p.intradayPlan.recommendedAction] || p.intradayPlan.recommendedAction.replace(/_/g, ' ')}
                     </span>
                   </div>
 
