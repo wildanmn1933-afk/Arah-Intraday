@@ -27,7 +27,8 @@ import { IntradayMarketMapEngine } from './server/intelligence/intradayMarketMap
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  // Port bisa diatur lewat env agar bisa jalan di 12000/12001 (host kerja) tanpa mengubah kode.
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Core middlewares
   app.use(express.json({ limit: '10mb' }));
