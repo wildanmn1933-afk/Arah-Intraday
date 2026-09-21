@@ -10,6 +10,11 @@ function getBaseUrl(req: any): string {
   return `${protocol}://${host}`;
 }
 
+// Token verifikasi hanya boleh dikembalikan di respons saat pengembangan. Di production
+// token itu dikirim lewat email; membocorkannya di respons membuat siapa pun yang tahu
+// alamat email bisa mengambil alih akun yang belum terverifikasi.
+const EKSPOS_TOKEN_VERIFIKASI = process.env.NODE_ENV !== 'production';
+
 authRouter.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
@@ -26,7 +31,7 @@ authRouter.post('/register', async (req, res) => {
       status: 'pending_verification',
       message: result.message,
       email: result.user.email,
-      verificationUrl: result.verificationUrl, // Exposed in dev mode for swift testing
+      verificationUrl: EKSPOS_TOKEN_VERIFIKASI ? result.verificationUrl : undefined,
       user: {
         id: result.user.id,
         email: result.user.email,
@@ -78,7 +83,7 @@ authRouter.post('/login', (req, res) => {
     if (err.code === 'EMAIL_NOT_VERIFIED') {
       const user = db.getUserByEmail(err.email || cleanEmail);
       let verificationUrl: string | undefined;
-      if (user) {
+      if (user && EKSPOS_TOKEN_VERIFIKASI) {
         const tokenRecord = db.createVerificationToken(user.id, user.email, 24);
         verificationUrl = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(tokenRecord.token)}`;
       }
@@ -198,7 +203,7 @@ authRouter.post('/resend-verification', async (req, res) => {
     res.json({
       success: true,
       message: result.message,
-      verificationUrl: result.verificationUrl,
+      verificationUrl: EKSPOS_TOKEN_VERIFIKASI ? result.verificationUrl : undefined,
     });
   } catch (err: any) {
     res.status(400).json({ error: err.message });

@@ -13,6 +13,12 @@ Repo knowledge for ArahMarket 2.0 (market intelligence platform).
 - Type-check: `npx tsc --noEmit`.
 - Build: `npx vite build`.
 
+## Deployment (container ini)
+- Jalankan production dengan `./start-prod.sh` (bukan `npx tsx server.ts`, itu mode dev/Vite). Skrip ini memuat `.env` lewat `set -a`, menyetel `NODE_ENV=production`, dan memakai `PORT` (default 12000 supaya terjangkau host kerja).
+- Port host kerja: 12000 (work-1) dan 12001 (work-2). Aplikasi harus listen di port itu; port lain tidak bisa dibuka dari luar.
+- `NODE_ENV=production` wajib. Tanpa itu Vite dev middleware ikut jalan dan `APP_SECRET` jatuh ke nilai fallback yang ada di repo (auth bisa dipalsukan).
+- `APP_SECRET` wajib >= 32 karakter, jika tidak server menolak start saat production. Buat dengan `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
+
 ## Conventions
 - UI language is Indonesian. Keep terminology consistent: domain terms stay as-is (Intermarket, Makro, G8, DXY, AI), everything else Indonesian. Do not mix both languages in one label.
 - Nav labels come from `src/lib/navLabels.ts` (`NAV_LABELS` / `getNavLabel`) — Sidebar and Header both read from it. Never re-add a local label map.
@@ -28,4 +34,6 @@ Repo knowledge for ArahMarket 2.0 (market intelligence platform).
 - The shared `shared/` directory is imported by both client and server code; server-side importers use a `.js` extension (NodeNext), client-side importers do not.
 - `data/market_intelligence.db.json` is git-ignored runtime state: the dev server rewrites it on every ingest (timestamps, new news rows). `seedDatabase()` (called from `server.ts`) recreates the schema and all admin accounts when the file is missing, so a fresh clone boots fine — verified by deleting the file. Never re-add it to git: it holds password hashes and user emails. If you must inspect it, files with emoji contain lone surrogates — read/write with `errors='surrogatepass'`, not plain `json.load`/`json.dump`.
 - Auth: dashboard requires a JWT. Tokens come from `POST /api/auth/login`; seeded admin is `admin@marketintel.pro`.
+- Env precedence: this container's shell already exports the app's secrets (they are auto-injected at session start), and `dotenv` does NOT override existing env vars. So a stale shell value beats `.env` — this is why `APP_SECRET` appeared "unset" even after fixing `.env`. `start-prod.sh` loads `.env` with `set -a` to force `.env` to win. Any new secret must also exist in `.env` for production runs.
+- The DB is a single JSON file loaded into memory once. Two servers against the same file (e.g. a dev instance left running) will clobber each other: each writes its full in-memory snapshot, so rows created by one disappear when the other saves. Kill every server before editing `data/market_intelligence.db.json` by hand.
 - Browser-automation caveat: synthetic `type`/`click` via tooling can fail to dispatch React's `onChange`, so controlled inputs re-render empty and forms submit with blank state. Verify form flows over HTTP (`POST /api/auth/login` + `GET /api/auth/me`) instead of concluding the UI is broken. Note `localStorage` is not cleared by setting an empty origins list — blank each token value explicitly (`arah_market_auth_token`, `nexus_auth_token`, `auth_token`) to test the unauthenticated path.
