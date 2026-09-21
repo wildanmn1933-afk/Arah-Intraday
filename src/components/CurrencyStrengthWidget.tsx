@@ -1,3 +1,4 @@
+import { translateStatus, translateAction } from '../lib/statusLabels';
 import React, { useState, useEffect } from 'react';
 import { CurrencyStrength, HistoricalCurrencyComparison } from '../types';
 import {
@@ -99,12 +100,12 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-cyan-400" />
             <h2 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-              CURRENCY STRENGTH MATRIX (G8)
+              MATRIKS KEKUATAN MATA UANG (G8)
             </h2>
             <MetricInfoIcon term="CURRENCY_STRENGTH" position="bottom" />
           </div>
           <div className="flex items-center gap-1.5 mt-0.5 text-[10px] font-mono text-slate-500">
-            <span>Source:</span>
+            <span>Sumber:</span>
             <a
               href="https://currency-strength.com/en/"
               target="_blank"
@@ -120,7 +121,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
         <button
           onClick={onRefresh}
           disabled={isRefreshing}
-          title="Refresh currency strength scores"
+          title="Segarkan skor kekuatan mata uang"
           className="p-1.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition cursor-pointer disabled:opacity-50"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
@@ -159,7 +160,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          7D Delta
+          Delta 7H
         </button>
         <button
           onClick={() => setSubTab('ARCHIVE')}
@@ -169,7 +170,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          Archive
+          Arsip
         </button>
       </div>
 
@@ -185,7 +186,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
         </div>
       )}
 
-      {/* VIEW 1: LIVE FLOW METER */}
+      {/* TAMPILAN 1: METER ALIRAN LANGSUNG */}
       {subTab === 'LIVE' && (
         <div className="space-y-2 flex-1 overflow-y-auto pr-1">
           {strengths.map(item => {
@@ -216,12 +217,12 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
                     </MetricTooltip>
 
                     <Tooltip
-                      title="Arah Aliran Modal (Directional Flow)"
-                      content={`Sentimen pasar saat ini untuk ${item.currency} berkategori ${item.change_direction.replace('_', ' ')}.`}
+                      title="Arah Aliran Modal"
+                      content={`Sentimen pasar saat ini untuk ${item.currency} berkategori ${translateAction(item.change_direction)}.`}
                       position="top"
                     >
                       <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold border uppercase tracking-wider cursor-help ${getDirectionBadge(item.change_direction)}`}>
-                        {item.change_direction.replace('_', ' ')}
+                        {translateAction(item.change_direction)}
                       </span>
                     </Tooltip>
                   </div>
@@ -266,7 +267,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
                   <MetricTooltip term="SSE_STATUS" underline={false}>
                     <span className="flex items-center gap-1 cursor-help hover:text-slate-300">
                       <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'LIVE' ? 'bg-emerald-400' : 'bg-cyan-400'}`} />
-                      {item.status}
+                      {translateStatus(item.status)}
                     </span>
                   </MetricTooltip>
                   <span>Updated: {new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -311,7 +312,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
 
                 <div className="grid grid-cols-4 gap-1 text-[10px] tabular-nums text-slate-300 bg-slate-950/60 p-1.5 rounded border border-slate-850 mb-1">
                   <div>
-                    <span className="text-[9px] text-slate-500 block">Today</span>
+                    <span className="text-[9px] text-slate-500 block">Hari Ini</span>
                     <span className="font-bold text-cyan-300">{c.today_score.toFixed(1)}</span>
                   </div>
                   <div>
@@ -319,18 +320,18 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
                     <span>{c.yesterday_score.toFixed(1)}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] text-slate-500 block">3-Day</span>
+                    <span className="text-[9px] text-slate-500 block">3 Hari</span>
                     <span>{c.three_day_score.toFixed(1)}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] text-slate-500 block">7-Day</span>
+                    <span className="text-[9px] text-slate-500 block">7 Hari</span>
                     <span>{c.seven_day_score.toFixed(1)}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] text-slate-400 mt-1">
                   <span>vs Yesterday: <strong className={c.delta_yesterday >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{c.delta_yesterday >= 0 ? '+' : ''}{c.delta_yesterday.toFixed(2)}</strong></span>
-                  <span>7D Delta: <strong className={c.delta_7d >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{c.delta_7d >= 0 ? '+' : ''}{c.delta_7d.toFixed(2)}</strong></span>
+                  <span>Delta 7H: <strong className={c.delta_7d >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{c.delta_7d >= 0 ? '+' : ''}{c.delta_7d.toFixed(2)}</strong></span>
                 </div>
               </div>
             );
@@ -344,7 +345,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
           <div className="p-2 rounded bg-slate-900/60 border border-slate-800 flex items-center justify-between gap-2">
             <span className="text-[10px] text-slate-400 flex items-center gap-1 font-semibold">
               <Calendar className="w-3 h-3 text-cyan-400" />
-              DATE:
+              TANGGAL:
             </span>
             <input
               type="date"
@@ -389,7 +390,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
                       <span className="text-slate-500 font-bold text-[10px]">#{item.rank}</span>
                       <span className="font-bold text-slate-100">{item.currency}</span>
                       <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold border uppercase ${getDirectionBadge(item.direction || 'NEUTRAL')}`}>
-                        {(item.direction || 'NEUTRAL').replace('_', ' ')}
+                        {translateAction(item.direction || 'NEUTRAL')}
                       </span>
                     </div>
                     <div className="font-bold text-cyan-300 tabular-nums">
@@ -419,7 +420,7 @@ export const CurrencyStrengthWidget: React.FC<CurrencyStrengthWidgetProps> = ({
             </span>
           </div>
           <p className="text-[10px] text-slate-400 leading-tight">
-            Strongest ({strengths[0]?.currency} @ {strengths[0]?.strength_score}) vs Weakest ({strengths[strengths.length - 1]?.currency} @ {strengths[strengths.length - 1]?.strength_score}) creates highest probability directional divergence.
+            Terkuat ({strengths[0]?.currency} @ {strengths[0]?.strength_score}) vs Terlemah ({strengths[strengths.length - 1]?.currency} @ {strengths[strengths.length - 1]?.strength_score}) menciptakan divergensi arah dengan probabilitas tertinggi.
           </p>
         </div>
       )}

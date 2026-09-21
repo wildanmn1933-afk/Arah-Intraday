@@ -145,7 +145,7 @@ adminRouter.post('/telegram/:handle/scrape', async (req, res) => {
   const cleanHandle = req.params.handle.startsWith('@') ? req.params.handle : `@${req.params.handle}`;
   const channel = db.getTelegramChannel(cleanHandle);
   if (!channel) {
-    res.status(404).json({ error: 'Channel not found.' });
+    res.status(404).json({ error: 'Channel tidak ditemukan.' });
     return;
   }
 
@@ -398,7 +398,7 @@ adminRouter.patch('/users/:id', (req: AuthenticatedRequest, res: Response) => {
   if (target.role === 'ADMIN' && role === 'USER') {
     const adminCount = db.getAllUsers().filter(u => u.role === 'ADMIN').length;
     if (adminCount <= 1) {
-      res.status(400).json({ error: 'Cannot demote the only remaining administrator.' });
+      res.status(400).json({ error: 'Tidak dapat menurunkan satu-satunya administrator yang tersisa.' });
       return;
     }
   }
@@ -412,7 +412,7 @@ adminRouter.patch('/users/:id', (req: AuthenticatedRequest, res: Response) => {
     if (cleanEmail !== target.email.toLowerCase()) {
       const exists = db.getUserByEmail(cleanEmail);
       if (exists) {
-        res.status(400).json({ error: 'Another user already uses this email.' });
+        res.status(400).json({ error: 'Email ini sudah digunakan pengguna lain.' });
         return;
       }
       updates.email = cleanEmail;
@@ -463,7 +463,7 @@ adminRouter.delete('/users/:id', (req: AuthenticatedRequest, res: Response) => {
   // Prevent admin from deleting themselves
   if (req.user && req.user.id === id) {
     res.status(400).json({
-      error: 'Cannot delete your own active administrator account.',
+      error: 'Tidak dapat menghapus akun administrator Anda sendiri yang sedang aktif.',
     });
     return;
   }
@@ -473,7 +473,7 @@ adminRouter.delete('/users/:id', (req: AuthenticatedRequest, res: Response) => {
     const remainingAdmins = db.getAllUsers().filter(u => u.role === 'ADMIN' && u.id !== id);
     if (remainingAdmins.length === 0) {
       res.status(400).json({
-        error: 'Cannot delete the only remaining administrator account in the system.',
+        error: 'Tidak dapat menghapus satu-satunya akun administrator yang tersisa di sistem.',
       });
       return;
     }

@@ -178,7 +178,7 @@ historyRouter.post('/generate-snapshot', (req, res) => {
     ],
     ai_risk: [
       'High-impact central bank speaker commentary.',
-      'Cross-asset liquidation cascades during illiquid session transitions.',
+      'Kaskade likuidasi lintas aset saat transisi sesi yang tidak likuid.',
     ],
     ai_context: [
       `System memory tracks historical persistence since platform launch date.`,

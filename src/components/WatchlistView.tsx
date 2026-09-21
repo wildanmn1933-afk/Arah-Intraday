@@ -64,7 +64,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
         <form onSubmit={handleAdd} className="flex items-center gap-2">
           <input
             type="text"
-            placeholder="Add Symbol (e.g. XAUUSD)"
+            placeholder="Tambah Simbol (mis. XAUUSD)"
             value={newSymbol}
             onChange={(e) => setNewSymbol(e.target.value)}
             className="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded text-xs font-mono text-slate-200 placeholder:text-slate-600 outline-none w-44"
@@ -73,7 +73,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
             type="submit"
             className="px-3 py-1 rounded bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs font-mono transition cursor-pointer"
           >
-            + Add
+            + Tambah
           </button>
         </form>
       </div>
@@ -92,7 +92,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
               onClick={onOpenAuth}
               className="px-3 py-1 rounded bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-[11px] transition cursor-pointer shrink-0"
             >
-              Trader Login
+              Login Trader
             </button>
           )}
         </div>
@@ -100,7 +100,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
 
       {/* Quick Add Pills */}
       <div className="flex items-center gap-1.5 flex-wrap text-xs font-mono">
-        <span className="text-slate-500 text-[10px]">QUICK ADD:</span>
+        <span className="text-slate-500 text-[10px]">TAMBAH CEPAT:</span>
         {commonAssets.map(sym => {
           const isAdded = watchlist.some(w => w.symbol === sym);
           return (
@@ -123,20 +123,20 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
       {/* Watchlist Table */}
       {watchlist.length === 0 ? (
         <div className="py-12 text-center text-xs font-mono text-slate-500 bg-slate-900/20 rounded-lg border border-slate-800/60">
-          Your watchlist is currently empty. Click the star on any market instrument to track it here.
+          Daftar pantau Anda saat ini kosong. Klik ikon bintang pada instrumen pasar mana pun untuk memantau di sini.
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 uppercase text-[10px]">
-                <th className="py-2 px-2.5">Symbol / Asset</th>
-                <th className="py-2 px-2.5 text-right">Price</th>
+                <th className="py-2 px-2.5">Simbol / Aset</th>
+                <th className="py-2 px-2.5 text-right">Harga</th>
                 <th className="py-2 px-2.5 text-right">24h Change</th>
                 <th className="py-2 px-2.5 text-right">24h High</th>
                 <th className="py-2 px-2.5 text-right">24h Low</th>
                 <th className="py-2 px-2.5 text-center">Status</th>
-                <th className="py-2 px-2.5 text-right">Action</th>
+                <th className="py-2 px-2.5 text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">

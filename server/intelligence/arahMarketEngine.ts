@@ -14,6 +14,7 @@
  */
 
 import { db } from '../db/database.js';
+import { findAsset } from '../../shared/canonicalAssets.js';
 import {
   ArahMarketTodayData,
   IntradayPairConfluence,
@@ -224,19 +225,25 @@ export class ArahMarketEngine {
     }
 
     // 5. Matriks Pasangan Intraday (Triple-Confluence Synthesis)
-    const targetPairs = [
-      { pair: 'XAUUSD', name: 'Gold / US Dollar', tv: 'TVC:GOLD' },
-      { pair: 'EURUSD', name: 'Euro / US Dollar', tv: 'FX:EURUSD' },
-      { pair: 'GBPUSD', name: 'British Pound / USD', tv: 'FX:GBPUSD' },
-      { pair: 'USDJPY', name: 'US Dollar / Japanese Yen', tv: 'FX:USDJPY' },
-      { pair: 'AUDUSD', name: 'Australian Dollar / USD', tv: 'FX:AUDUSD' },
-      { pair: 'USDCAD', name: 'US Dollar / Canadian Dollar', tv: 'FX:USDCAD' },
-      { pair: 'US500', name: 'S&P 500 E-mini Index', tv: 'CAPITALCOM:SPX500' },
-      { pair: 'BTC', name: 'Bitcoin / US Dollar', tv: 'BITSTAMP:BTCUSD' },
-    ];
+    // Hanya aset yang relevan untuk arah intraday; detail nama/TV symbol tetap
+    // diambil dari registry kanonik agar tidak ada duplikasi data.
+    const ARAH_MARKET_SYMBOLS = ['XAUUSD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'US500', 'US100', 'US30', 'BTC'];
+
+    const targetPairs = ARAH_MARKET_SYMBOLS.map(symbol => {
+      const asset = findAsset(symbol);
+      if (!asset) throw new Error(`Aset '${symbol}' tidak terdaftar di CANONICAL_ASSETS`);
+      return {
+        pair: asset.pair || asset.symbol,
+        name: asset.displayName,
+        tv: asset.tvSymbol,
+        priceSymbol: asset.symbol,
+      };
+    });
 
     const pairs: IntradayPairConfluence[] = targetPairs.map(tp => {
-      const pObj = priceMap.get(tp.pair);
+      // FX dikuotasi di feed sebagai kode mata uang tunggal (EUR, GBP, JPY, dst),
+      // sedangkan kartu menampilkan nama pasangan (EURUSD, GBPUSD, dst).
+      const pObj = priceMap.get(tp.priceSymbol || tp.pair);
       const curPrice = pObj?.price || 0;
       const chg = pObj?.change_24h_pct || 0;
       const usdScore = strengthMap.get('USD')?.strength_score || 5.0;
@@ -315,6 +322,53 @@ export class ArahMarketEngine {
 
         recommendedAction = 'LOOK_FOR_BUY';
         invalidation = 'Sinyal intervensi verbal pejabat MoF/BoJ';
+      } else if (tp.pair === 'US100' || tp.pair === 'US30') {
+        // Indeks saham AS: sensitif terhadap ekspektasi suku bunga (yield) & selera risiko,
+        // dengan Nasdaq (US100) jauh lebih sensitif terhadap yield dibanding Dow (US30).
+        const isTechIndex = tp.pair === 'US100';
+        const peerSymbol = isTechIndex ? 'US30' : 'US100';
+        const peerChange = priceMap.get(peerSymbol)?.change_24h_pct || 0;
+        const rotationGap = Number((chg - peerChange).toFixed(2));
+
+        fundBias = chg > 0.3 ? 'BULLISH' : chg < -0.3 ? 'BEARISH' : 'NEUTRAL';
+        fundDriver = isTechIndex
+          ? 'Ekspektasi suku bunga The Fed & sensitivitas tinggi yield terhadap saham pertumbuhan'
+          : 'Ekspektasi suku bunga The Fed & rotasi modal ke sektor industri siklikal';
+        fundScore = fundBias === 'BULLISH' ? 40 : fundBias === 'BEARISH' ? -40 : 0;
+
+        // Yield naik menekan indeks (Nasdaq lebih tertekan), yield turun menjadi bahan bakar reli
+        const yieldThreshold = isTechIndex ? 0.05 : 0.15;
+        interBias = us10yChange > yieldThreshold ? 'BEARISH' : dxyBiasVsOpen === 'BELOW_OPEN' ? 'BULLISH' : 'NEUTRAL';
+        interSymptom = us10yChange > yieldThreshold
+          ? `Yield US10Y naik ${us10yChange.toFixed(2)}% menekan valuasi ${isTechIndex ? 'saham teknologi' : 'indeks saham'}`
+          : `DXY ${dxyBiasVsOpen === 'ABOVE_OPEN' ? 'di atas' : 'di bawah'} harga buka sesi`;
+        interScore = interBias === 'BULLISH' ? 35 : interBias === 'BEARISH' ? -35 : 0;
+
+        paBias = chg > 0.15 ? 'BULLISH' : chg < -0.15 ? 'BEARISH' : 'NEUTRAL';
+        paStructure = chg > 0.4 ? 'SESSION_BREAKOUT' : chg < -0.4 ? 'RETEST_SUPPORT' : 'CHOP_RANGE';
+        actionableZone = chg > 0 ? 'Buy on pullback ke demand sesi' : 'Tunggu retest supply sebelum sell';
+        paScore = chg > 0.15 ? 35 : chg < -0.15 ? -35 : 0;
+
+        // Cross-reference rotasi antar indeks sebagai konfirmasi tambahan
+        const rotationNote = isTechIndex
+          ? rotationGap > 0.2
+            ? ' | Rotasi gap vs Dow +' + rotationGap + '%: growth memimpin.'
+            : rotationGap < -0.2
+              ? ' | Rotasi gap vs Dow ' + rotationGap + '%: value siklikal lebih kuat dari teknologi.'
+              : ''
+          : rotationGap > 0.2
+            ? ' | Rotasi gap vs Nasdaq +' + rotationGap + '%: industrials melampaui teknologi (rotasi ke value).'
+            : rotationGap < -0.2
+              ? ' | Rotasi gap vs Nasdaq ' + rotationGap + '%: teknologi memimpin, Dow tertinggal.'
+              : '';
+        if (rotationNote) interSymptom += rotationNote;
+
+        recommendedAction = fundBias === 'BULLISH' && interBias === 'BULLISH' ? 'LOOK_FOR_BUY'
+          : fundBias === 'BEARISH' && interBias === 'BEARISH' ? 'LOOK_FOR_SELL'
+          : chg > 0.15 && interBias !== 'BEARISH' ? 'LOOK_FOR_BUY'
+          : chg < -0.15 && interBias !== 'BULLISH' ? 'LOOK_FOR_SELL'
+          : 'WAIT_ON_SUPPORT';
+        invalidation = 'Pembalikan arah menembus level pembukaan sesi atau lonjakan yield AS';
       } else {
         // Generic asset mapping
         const isUp = chg > 0.1;

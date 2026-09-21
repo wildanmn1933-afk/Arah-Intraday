@@ -329,7 +329,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
         <div className="text-[11px] font-mono text-slate-500 hidden sm:flex items-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-          <span>INSTITUTIONAL GATEWAY</span>
+          <span>GATEWAY INSTITUSIONAL</span>
         </div>
       </header>
 
@@ -928,7 +928,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
       {/* Bottom Disclaimer */}
       <footer className="py-4 text-center text-[10px] text-slate-600 font-mono border-t border-slate-900">
-        ARAHMARKET INTELLIGENCE TERMINAL • SECURE ENCRYPTED VERIFICATION GATEWAY
+        TERMINAL INTELIJEN ARAHMARKET • GATEWAY VERIFIKASI TERENKRIPSI AMAN
       </footer>
     </div>
   );

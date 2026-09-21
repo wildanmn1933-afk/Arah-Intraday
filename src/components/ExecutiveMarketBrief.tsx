@@ -122,11 +122,11 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
     const isUs100Bullish = (us100 && us100.change_24h_pct >= 0) || (us100Bias && us100Bias.overall_bias === 'BULLISH');
 
     if (isUs100Bullish && (gold && gold.change_24h_pct > 0.2)) {
-      regimeTitle = 'Tech Bullish & Defensive Barbell';
+      regimeTitle = 'Bullish Teknologi & Barbell Defensif';
       regimeBadgeColor = 'bg-emerald-950/80 text-emerald-300 border-emerald-800/80';
       summaryText = `Kondisi pasar saat ini sangat dipengaruhi oleh kekuatan sektor teknologi: US100 (Nasdaq 100) menjadi aset paling bullish (${us100 ? us100.price.toLocaleString(undefined, { maximumFractionDigits: 0 }) : '20,185'} poin) berkat belanja modal masif AI dan kinerja solid emiten semikonduktor. Pada saat yang sama, Emas (XAU/USD ${gold ? `$${gold.price.toFixed(1)}` : 'menguat'}) dan mata uang safe-haven ${strongest.currency} (${strongest.strength_score.toFixed(1)}pt) tetap kokoh, sementara mata uang pendanaan berimbal hasil rendah seperti ${weakest.currency} (${weakest.strength_score.toFixed(1)}pt) mengalami tekanan jual.`;
     } else if (strongest.currency === 'CHF' || strongest.currency === 'JPY' || (gold && gold.change_24h_pct > 0.3)) {
-      regimeTitle = 'Defensive / Safe-Haven Flight';
+      regimeTitle = 'Defensif / Pelarian Safe-Haven';
       regimeBadgeColor = 'bg-emerald-950/80 text-emerald-300 border-emerald-800/80';
       summaryText = `Sentimen pasar saat ini dipimpin oleh rotasi defensif dan komoditas lindung nilai (XAU/USD). Di sektor ekuitas, US100 (Nasdaq 100) mempertahankan kekuatan tren bullish yang sangat tangguh (${us100 ? us100.price.toLocaleString() : '20,000+'} poin). Dolar AS berkonsolidasi, sementara disparitas G8 didominasi keunggulan ${strongest.currency} atas ${weakest.currency}.`;
     } else if (strongest.currency === 'AUD' || strongest.currency === 'NZD' || (spx && spx.change_24h_pct > 0.4)) {
@@ -134,7 +134,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       regimeBadgeColor = 'bg-cyan-950/80 text-cyan-300 border-cyan-800/80';
       summaryText = `Pasar berada dalam mode Risk-On dengan kepemimpinan bullish terkuat pada US100 (Nasdaq 100) serta apresiasi mata uang komoditas (${strongest.currency} memimpin di skor ${strongest.strength_score.toFixed(1)}pt). Investor aktif memburu imbal hasil dan saham pertumbuhan teknologi.`;
     } else {
-      regimeTitle = 'Macro Consolidation & Tech Resilience';
+      regimeTitle = 'Konsolidasi Makro & Ketahanan Teknologi';
       regimeBadgeColor = 'bg-purple-950/80 text-purple-300 border-purple-800/80';
       summaryText = `Kondisi pasar makro bergerak selektif dengan divergensi yang jelas: US100 (Nasdaq 100) memimpin sentimen bullish di sektor ekuitas, sementara pasar valas terfokus pada disparitas ${strongest.currency} vs ${weakest.currency}.`;
     }
@@ -168,73 +168,73 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
     const CANDIDATE_PAIRS = [
       {
         symbol: 'CHFJPY',
-        name: 'Swiss Franc vs Japanese Yen',
+        name: 'Franc Swiss vs Yen Jepang',
         category: 'FX_CROSS' as const,
         base: 'CHF',
         quote: 'JPY',
-        catalyst: 'Safe-haven defensive premium & Swiss balance sheet strength vs BoJ negative real rate suppression.',
+        catalyst: 'Premi defensif safe-haven & kekuatan neraca Swiss vs penekanan suku bunga riil negatif BoJ.',
         entryLogic: 'Pullback ke EMA20 intraday / retest swing support sesi London',
         invalidation: 'Break di bawah swing low harian (terjadi pembalikan yield spread)',
         target: 'Kelanjutan ekspansi tren +60 hingga +120 pips',
       },
       {
         symbol: 'GBPJPY',
-        name: 'British Pound vs Japanese Yen',
+        name: 'Pound Inggris vs Yen Jepang',
         category: 'FX_CROSS' as const,
         base: 'GBP',
         quote: 'JPY',
-        catalyst: 'BoE persistensi suku bunga ketat vs pelemahan yield obligasi Jepang JGB.',
-        entryLogic: 'Buy on dip saat harga menguji area discount 50%-61.8% Fibonacci intraday',
+        catalyst: 'BoE mempertahankan suku bunga ketat vs pelemahan yield obligasi JGB Jepang.',
+        entryLogic: 'Beli saat harga menguji area diskon 50%-61.8% Fibonacci intraday',
         invalidation: 'Penutupan H1 di bawah support struktur sebelumnya',
         target: 'Target resistensi mayor berikutnya (RR 1:2.5)',
       },
       {
         symbol: 'AUDJPY',
-        name: 'Australian Dollar vs Japanese Yen',
+        name: 'Dolar Australia vs Yen Jepang',
         category: 'FX_CROSS' as const,
         base: 'AUD',
         quote: 'JPY',
-        catalyst: 'RBA hawkish stance & commodity flow vs pelemahan carry currency Yen.',
+        catalyst: 'Sikap hawkish RBA & aliran komoditas vs pelemahan mata uang carry Yen.',
         entryLogic: 'Breakout konfirmasi di atas high sesi Asia dengan retest',
         invalidation: 'Breakdown di bawah base akumulasi sesi Tokyo',
         target: 'Retest zona supply mingguan (RR 1:2)',
       },
       {
         symbol: 'EURUSD',
-        name: 'Euro vs US Dollar',
+        name: 'Euro vs Dolar AS',
         category: 'FX_MAJOR' as const,
         base: 'EUR',
         quote: 'USD',
         catalyst: 'Konsolidasi DXY di bawah resistensi 101.80 & stabilisasi data PMI manufaktur kawasan Eropa.',
-        entryLogic: 'Entry limit buy pada area demand sesi London 1.0820 - 1.0840',
+        entryLogic: 'Pasang limit beli pada area demand sesi London 1.0820 - 1.0840',
         invalidation: 'Penetrasi valid di bawah level support psikologis kunci',
         target: 'High sesi New York / Resistensi 1.0910',
       },
       {
         symbol: 'GBPUSD',
-        name: 'British Pound vs US Dollar',
+        name: 'Pound Inggris vs Dolar AS',
         category: 'FX_MAJOR' as const,
         base: 'GBP',
         quote: 'USD',
         catalyst: 'Surplus perdagangan jasa Inggris vs perlambatan laju penciptaan lapangan kerja AS.',
-        entryLogic: 'Trend following: Buy saat terjadi breakout retest neckline intraday',
+        entryLogic: 'Ikuti tren: Beli saat terjadi breakout retest neckline intraday',
         invalidation: 'Break di bawah moving average 50 H1',
         target: 'Area target likuiditas atas 1.3050+',
       },
       {
         symbol: 'USDJPY',
-        name: 'US Dollar vs Japanese Yen',
+        name: 'Dolar AS vs Yen Jepang',
         category: 'FX_MAJOR' as const,
         base: 'USD',
         quote: 'JPY',
         catalyst: 'Divergensi suku bunga US-Japan dengan pantauan intervensi verbal Kementerian Keuangan Jepang.',
         entryLogic: 'Scalp long pada retest level support Fibonacci intraday',
-        invalidation: 'Break di bawah support kunci 153.20 jika tensi intervensi menguat',
+        invalidation: 'Tembus di bawah support kunci 153.20 jika tensi intervensi menguat',
         target: 'Test resistensi atas 155.00',
       },
       {
         symbol: 'USDCAD',
-        name: 'US Dollar vs Canadian Dollar',
+        name: 'Dolar AS vs Dolar Kanada',
         category: 'FX_MAJOR' as const,
         base: 'USD',
         quote: 'CAD',
@@ -245,7 +245,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       },
       {
         symbol: 'EURGBP',
-        name: 'Euro vs British Pound',
+        name: 'Euro vs Pound Inggris',
         category: 'FX_CROSS' as const,
         base: 'EUR',
         quote: 'GBP',
@@ -266,33 +266,33 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       let action: TradeSuggestion['action'] = 'AVOID_CHOP';
       let actionLabel = 'HINDARI (CHOP / SIDEWAYS)';
       let tier: TradeSuggestion['tier'] = 'AVOID';
-      let tradeStyle = 'Chop / No Flow';
+      let tradeStyle = 'Choppy / Tanpa Aliran';
 
       if (delta >= 3.0) {
         action = 'STRONG_BUY';
-        actionLabel = 'STRONG BUY (LONG)';
+        actionLabel = 'BELI KUAT (LONG)';
         tier = 'PRIME_A';
-        tradeStyle = 'Strong Trend Continuation';
+        tradeStyle = 'Kelanjutan Tren Kuat';
       } else if (delta >= 1.6) {
         action = 'BUY';
-        actionLabel = 'BUY ON PULLBACK';
+        actionLabel = 'BELI SAAT PULLBACK';
         tier = 'HIGH';
         tradeStyle = 'Dip Buying';
       } else if (delta <= -3.0) {
         action = 'STRONG_SELL';
-        actionLabel = 'STRONG SELL (SHORT)';
+        actionLabel = 'JUAL KUAT (SHORT)';
         tier = 'PRIME_A';
-        tradeStyle = 'Strong Downtrend Flow';
+        tradeStyle = 'Aliran Tren Turun Kuat';
       } else if (delta <= -1.6) {
         action = 'SELL';
-        actionLabel = 'SELL ON RALLY';
+        actionLabel = 'JUAL SAAT RELI';
         tier = 'HIGH';
         tradeStyle = 'Rally Shorting';
       } else {
         action = 'AVOID_CHOP';
-        actionLabel = 'HINDARI (FLAT BASKET)';
+        actionLabel = 'HINDARI (BASIS FLAT)';
         tier = 'AVOID';
-        tradeStyle = 'Sideways / Low Momentum';
+        tradeStyle = 'Sideways / Momentum Rendah';
       }
 
       const confidence = Math.min(94, Math.max(50, Math.round(55 + absDelta * 11)));
@@ -324,13 +324,13 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       list.push({
         id: 'XAUUSD',
         symbol: 'XAUUSD',
-        name: 'Gold / US Dollar',
+        name: 'Emas / Dolar AS',
         category: 'COMMODITY',
         action: isBull ? 'STRONG_BUY' : 'SELL',
-        actionLabel: isBull ? 'STRONG BUY (BUY THE DIP)' : 'SELL ON RALLY',
+        actionLabel: isBull ? 'BELI KUAT (BELI SAAT DIP)' : 'JUAL SAAT RELI',
         biasConfidence: goldBias?.confidence ?? 78,
         deltaOrScore: `Bias: ${goldBias?.overall_bias ?? 'BULLISH'} (${goldPrice.change_24h_pct >= 0 ? '+' : ''}${goldPrice.change_24h_pct.toFixed(2)}%)`,
-        tradeStyle: 'Safe-Haven Momentum / Dip Buying',
+        tradeStyle: 'Momentum Safe-Haven / Beli Saat Dip',
         entryZone: `Area demand intraday $${(goldPrice.price - 8.5).toFixed(1)} - $${(goldPrice.price - 3.0).toFixed(1)}`,
         invalidationLevel: goldBias?.conditions_to_change_bias || `Break di bawah $${(goldPrice.price - 22.0).toFixed(1)}`,
         targetProjection: `$${(goldPrice.price + 25.0).toFixed(1)} / Resistensi ATH`,
@@ -348,13 +348,13 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       list.push({
         id: 'US100',
         symbol: 'US100',
-        name: 'Nasdaq 100 Tech Index',
+        name: 'Indeks Teknologi Nasdaq 100',
         category: 'INDEX',
         action: isUs100Bull ? 'STRONG_BUY' : 'BUY',
-        actionLabel: isUs100Bull ? 'STRONG BUY (MOMENTUM LONG)' : 'BUY ON PULLBACK',
+        actionLabel: isUs100Bull ? 'BELI KUAT (LONG MOMENTUM)' : 'BELI SAAT PULLBACK',
         biasConfidence: Math.max(86, us100Bias?.confidence ?? 88),
         deltaOrScore: `Tech Bias: ${us100Bias?.overall_bias ?? 'BULLISH'} (${us100Price.change_24h_pct >= 0 ? '+' : ''}${us100Price.change_24h_pct.toFixed(2)}%)`,
-        tradeStyle: 'Tech Super-Trend & Pullback Dip',
+        tradeStyle: 'Super-Tren Teknologi & Beli Saat Pullback',
         entryZone: `Area demand/discount H1 ${Math.round(us100Price.price - 85)} - ${Math.round(us100Price.price - 25)}`,
         invalidationLevel: us100Bias?.conditions_to_change_bias || `Breakdown valid di bawah support ${Math.round(us100Price.price - 190)}`,
         targetProjection: `Ekspansi resistensi All-Time High ${Math.round(us100Price.price + 260)}+ (RR 1:2.8)`,
@@ -372,17 +372,17 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       list.push({
         id: 'US500',
         symbol: 'US500',
-        name: 'S&P 500 Composite Index',
+        name: 'Indeks Komposit S&P 500',
         category: 'INDEX',
         action: isUs500Bull ? 'BUY' : 'SELL',
-        actionLabel: isUs500Bull ? 'BUY ON PULLBACK' : 'SELL ON RALLY',
+        actionLabel: isUs500Bull ? 'BELI SAAT PULLBACK' : 'JUAL SAAT RELI',
         biasConfidence: Math.max(78, us500Bias?.confidence ?? 80),
         deltaOrScore: `Bias: ${us500Bias?.overall_bias ?? 'BULLISH'} (${us500Price.change_24h_pct >= 0 ? '+' : ''}${us500Price.change_24h_pct.toFixed(2)}%)`,
-        tradeStyle: 'Broad Market Trend Following',
+        tradeStyle: 'Mengikuti Tren Pasar Luas',
         entryZone: `Pullback ke area EMA21 H1 ${Math.round(us500Price.price - 28)} - ${Math.round(us500Price.price - 12)}`,
         invalidationLevel: `Penutupan H1 di bawah support ${Math.round(us500Price.price - 55)}`,
         targetProjection: `Target ekspansi swing high ${Math.round(us500Price.price + 65)}`,
-        fundamentalDriver: 'Ketahanan makro ekonomi AS & partisipasi institusional pada broad market equities.',
+        fundamentalDriver: 'Ketahanan makro ekonomi AS & partisipasi institusional pada ekuitas pasar luas.',
         riskNote: 'Korelasi tinggi dengan data rilis inflasi dan yield Treasury AS',
         tier: 'HIGH',
       });
@@ -396,13 +396,13 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       list.push({
         id: 'US10Y',
         symbol: 'US10Y',
-        name: 'US 10-Year Benchmark Yield',
+        name: 'Yield Benchmark AS 10 Tahun',
         category: 'BOND',
         action: isYieldEasing ? 'BUY' : 'SELL',
-        actionLabel: isYieldEasing ? 'YIELD EASING (RISK-ON ANCHOR)' : 'YIELD SPIKE (RISK WATCH)',
+        actionLabel: isYieldEasing ? 'YIELD MELONGGAR (PENOPANG RISK-ON)' : 'LONJAKAN YIELD (WASPADA RISIKO)',
         biasConfidence: 84,
         deltaOrScore: `Yield: ${us10yPrice.price.toFixed(3)}% (${us10yPrice.change_24h_pct >= 0 ? '+' : ''}${us10yPrice.change_24h_pct.toFixed(2)}%)`,
-        tradeStyle: 'Macro Discount Curve & Valuation Engine',
+        tradeStyle: 'Kurva Diskon Makro & Engine Valuasi',
         entryZone: `Pivot level 4.050% - 4.120%`,
         invalidationLevel: `Penetrasi yield > 4.220% memicu koreksi risk assets`,
         targetProjection: `Zona stabilisasi 3.980% - 4.060%`,
@@ -463,7 +463,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
               KESIMPULAN PASAR & SARAN ENTRY HARI INI
             </h2>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-800/80">
-              LIVE SYNTHESIS
+              SINTESIS LANGSUNG
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1 leading-relaxed">
@@ -493,7 +493,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
               <span>Ringkasan Eksekutif Hari Ini</span>
             </span>
             <span className="text-[10px] font-mono text-slate-500">
-              WIB / Live Feed
+              WIB / Feed Langsung
             </span>
           </div>
 
@@ -526,7 +526,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
             >
               <span className="text-[10px] text-slate-400 block flex items-center justify-between">
                 <span>Nasdaq (US100)</span>
-                <span className="text-[9px] font-bold text-emerald-400 font-mono px-1 rounded bg-emerald-900/60">BULLISH</span>
+                <span className="text-[9px] font-bold text-emerald-400 font-mono px-1 rounded bg-emerald-900/60">NAIK</span>
               </span>
               <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us100Change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 <ArrowUpRight className="w-3 h-3" />
@@ -541,7 +541,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
             >
               <span className="text-[10px] text-slate-400 block flex items-center justify-between">
                 <span>Yield 10Y (US10Y)</span>
-                <span className="text-[9px] font-bold text-cyan-400 font-mono px-1 rounded bg-cyan-900/60">MACRO</span>
+                <span className="text-[9px] font-bold text-cyan-400 font-mono px-1 rounded bg-cyan-900/60">MAKRO</span>
               </span>
               <span className={`font-bold mt-0.5 flex items-center gap-1 ${marketSynthesis.us10yChange <= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
                 <Activity className="w-3 h-3" />
@@ -565,7 +565,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
               className="bg-slate-900/90 p-2 rounded-lg border border-slate-800 hover:border-slate-700 transition cursor-pointer"
               title="Klik untuk membuka Chart Interaktif TradingView DXY"
             >
-              <span className="text-[10px] text-slate-400 block">DXY (US Dollar)</span>
+              <span className="text-[10px] text-slate-400 block">DXY (Indeks Dolar AS)</span>
               <span className="font-bold text-slate-200 mt-0.5 block">
                 {marketSynthesis.dxyPrice.toFixed(2)} ({marketSynthesis.dxyChange >= 0 ? '+' : ''}{marketSynthesis.dxyChange.toFixed(2)}%)
               </span>
@@ -628,7 +628,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4 text-emerald-400" />
             <h3 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-              SARAN ENTRY PAIR TERBAIK (TRADE OPPORTUNITIES)
+              SARAN ENTRY PAIR TERBAIK (PELUANG TRADING)
             </h3>
             <span className="text-[10px] font-mono text-slate-500">
               ({filteredSuggestions.length} Setup)
@@ -696,7 +696,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              FX Crosses
+              Silang FX
             </button>
             <button
               onClick={() => setFilterCategory('MAJORS')}
@@ -706,7 +706,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              FX Majors
+              Mayor FX
             </button>
             <button
               onClick={() => setFilterCategory('AVOID')}
@@ -799,13 +799,13 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                           ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-800/60'
                           : 'text-slate-400 bg-slate-900 border border-slate-800'
                       }`}>
-                        {item.category === 'INDEX' ? 'INDEX' : item.category === 'COMMODITY' ? 'COMMODITY' : item.category === 'FX_MAJOR' ? 'MAJOR' : 'CROSS'}
+                        {item.category === 'INDEX' ? 'INDEKS' : item.category === 'COMMODITY' ? 'KOMODITAS' : item.category === 'FX_MAJOR' ? 'MAYOR' : 'SILANG'}
                       </span>
                     </div>
 
                     <div className="text-right">
                       <span className="text-[10px] font-mono text-slate-400 block">
-                        Konveksi
+                        Konfluensi
                       </span>
                       <span className="text-xs font-mono font-bold text-cyan-300">
                         {item.biasConfidence}%
@@ -896,7 +896,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
                       className="py-1.5 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-slate-200 border border-slate-800 text-[11px] font-mono transition cursor-pointer"
                       title="Sorot pair ini di Surveillance"
                     >
-                      Surveillance →
+                      Pengawasan →
                     </button>
                   </div>
                 </div>

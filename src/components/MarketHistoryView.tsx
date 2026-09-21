@@ -28,6 +28,7 @@ import {
   CalendarDays,
 } from 'lucide-react';
 import { api } from '../lib/api';
+import { CANONICAL_ASSETS, getAssetCategory, getAssetDisplayName } from '../../shared/canonicalAssets';
 import {
   DailyMarketSnapshot,
   MarketMemoryInsight,
@@ -134,7 +135,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
 
   const handleGenerateSnapshot = async () => {
     setIsGenerating(true);
-    setStatusMessage('Compiling daily market snapshot from all real feeds...');
+    setStatusMessage('Menyusun snapshot pasar harian dari semua feed riil...');
     try {
       const res = await api.generateDailySnapshot(selectedDate);
       if (res.success && res.snapshot) {
@@ -153,50 +154,8 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
     }
   };
 
-  // 14 Target assets
-  const target14Keys = [
-    'XAUUSD',
-    'BTC',
-    'US100',
-    'US500',
-    'US30',
-    'US10Y',
-    'AUD',
-    'NZD',
-    'CAD',
-    'JPY',
-    'GBP',
-    'EUR',
-    'CHF',
-    'USD',
-  ];
-
-  const getAssetCategory = (sym: string): 'METALS_CRYPTO' | 'INDICES' | 'BONDS' | 'FOREX' => {
-    if (sym === 'XAUUSD' || sym === 'BTC') return 'METALS_CRYPTO';
-    if (sym === 'US10Y') return 'BONDS';
-    if (sym.startsWith('US')) return 'INDICES';
-    return 'FOREX';
-  };
-
-  const getAssetDisplayName = (sym: string): string => {
-    switch (sym) {
-      case 'XAUUSD': return 'Gold / Spot USD';
-      case 'BTC': return 'Bitcoin (BTC)';
-      case 'US100': return 'Nasdaq 100 Index';
-      case 'US500': return 'S&P 500 Index';
-      case 'US30': return 'Dow Jones 30 Index';
-      case 'US10Y': return 'US 10-Yr Benchmark Yield';
-      case 'USD': return 'US Dollar Index (DXY)';
-      case 'EUR': return 'Euro (EUR/USD)';
-      case 'GBP': return 'British Pound (GBP/USD)';
-      case 'JPY': return 'Japanese Yen (USD/JPY)';
-      case 'AUD': return 'Australian Dollar (AUD/USD)';
-      case 'NZD': return 'New Zealand Dollar (NZD/USD)';
-      case 'CAD': return 'Canadian Dollar (USD/CAD)';
-      case 'CHF': return 'Swiss Franc (USD/CHF)';
-      default: return sym;
-    }
-  };
+  // Daftar aset inti yang diarsipkan, diambil dari registry kanonik.
+  const target14Keys = CANONICAL_ASSETS.map(a => a.symbol);
 
   const formatAssetPriceStr = (sym: string, price: number): string => {
     if (sym === 'US10Y') return `${price.toFixed(3)}%`;
@@ -253,11 +212,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                 <Database className="w-4 h-4" />
               </div>
               <h1 className="text-sm font-mono font-bold text-slate-100 tracking-wide uppercase">
-                MARKET INTELLIGENCE ARCHITECTURE & PERMANENT MEMORY
+                ARSITEKTUR INTELIJEN PASAR & MEMORI PERMANEN
               </h1>
             </div>
             <p className="text-xs text-slate-400 mt-1 font-mono">
-              Interconnected continuous workflow: Telemetry never overwritten &bull; Historical comparison &bull; Permanent multi-session dossier.
+              Alur kerja berkelanjutan: Telemetri tidak pernah ditimpa &bull; Perbandingan historis &bull; Dossier lintas sesi permanen.
             </p>
           </div>
 
@@ -268,13 +227,13 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
               className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
             >
               <Save className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
-              <span>{isGenerating ? 'Capturing...' : 'Snapshot Current Day'}</span>
+              <span>{isGenerating ? 'Menangkap...' : 'Snapshot Hari Ini'}</span>
             </button>
             <button
               onClick={loadInitialData}
               disabled={isLoading}
               className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition cursor-pointer disabled:opacity-50"
-              title="Reload memory database"
+              title="Muat ulang basis data memori"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-cyan-400' : ''}`} />
             </button>
@@ -285,13 +244,13 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
         <div className="overflow-x-auto pb-1">
           <div className="flex items-center min-w-[760px] text-[11px] font-mono">
             {[
-              { step: '1. NEWS', desc: 'Canonical Wire' },
-              { step: '2. MACRO', desc: 'Economic Events' },
-              { step: '3. CURRENCY STRENGTH', desc: 'G8 Real Flow' },
-              { step: '4. REACTION', desc: 'Price Action' },
-              { step: '5. AI ANALYSIS', desc: 'Grounded Synth' },
-              { step: '6. BIAS', desc: '13 Assets' },
-              { step: '7. HISTORY', desc: 'Permanent Memory', active: true },
+              { step: '1. BERITA', desc: 'Berita Kanonik' },
+              { step: '2. MAKRO', desc: 'Agenda Ekonomi' },
+              { step: '3. KEKUATAN VALAS', desc: 'Aliran G8' },
+              { step: '4. REAKSI', desc: 'Aksi Harga' },
+              { step: '5. ANALISIS AI', desc: 'Sintesis Berbasis Data' },
+              { step: '6. BIAS', desc: '14 Aset' },
+              { step: '7. RIWAYAT', desc: 'Memori Permanen', active: true },
             ].map((node, i, arr) => (
               <React.Fragment key={node.step}>
                 <div
@@ -327,7 +286,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-mono text-slate-400 font-semibold flex items-center gap-1.5 mr-1">
               <CalendarDays className="w-3.5 h-3.5 text-cyan-400" />
-              ARCHIVE DATE:
+              TANGGAL ARSIP:
             </span>
 
             {snapshots.map(s => {
@@ -374,7 +333,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
               }`}
             >
               <Scale className="w-3.5 h-3.5" />
-              <span>{isCompareMode ? 'Exit Compare Mode' : 'Compare Two Dates'}</span>
+              <span>{isCompareMode ? 'Keluar Mode Banding' : 'Bandingkan Dua Tanggal'}</span>
             </button>
 
             {isCompareMode && (
@@ -406,11 +365,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <h2 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-                MARKET MEMORY INSIGHTS (DERIVED FROM STORED HISTORY)
+                WAWASAN MEMORI PASAR (TURUNAN DARI RIWAYAT TERSIMPAN)
               </h2>
             </div>
             <span className="text-[10px] font-mono text-slate-500">
-              Multi-Session Persistent Intelligence &bull; Zero Guesswork
+              Intelijen Persisten Lintas Sesi &bull; Tanpa Tebakan
             </span>
           </div>
 
@@ -433,10 +392,10 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                   {item.description}
                 </p>
                 <div className="mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono text-slate-500 flex items-center justify-between">
-                  <span>Confidence: {item.confidence}%</span>
+                  <span>Keyakinan: {item.confidence}%</span>
                   <span className="text-emerald-400 flex items-center gap-1">
                     <CheckCircle2 className="w-2.5 h-2.5" />
-                    Verified
+                    Terverifikasi
                   </span>
                 </div>
               </div>
@@ -452,11 +411,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
             <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-emerald-400" />
               <h2 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-                HISTORICAL CURRENCY STRENGTH COMPARISON (G8)
+                PERBANDINGAN KEKUATAN MATA UANG HISTORIS (G8)
               </h2>
             </div>
             <p className="text-[10px] font-mono text-slate-500 mt-0.5">
-              Today vs Yesterday vs 3 Days vs 7 Days &bull; Grounded in historical interval database
+              Hari Ini vs Kemarin vs 3 Hari vs 7 Hari &bull; Berbasis basis data interval historis
             </p>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
@@ -477,13 +436,13 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
           <table className="w-full text-left text-xs font-mono">
             <thead>
               <tr className="border-b border-slate-800/80 text-[11px] text-slate-400 font-bold uppercase">
-                <th className="py-2 px-3">Currency</th>
-                <th className="py-2 px-3">Today Score</th>
-                <th className="py-2 px-3">Yesterday</th>
-                <th className="py-2 px-3">3-Day Ago</th>
-                <th className="py-2 px-3">7-Day Ago</th>
-                <th className="py-2 px-3">Net 7D Delta</th>
-                <th className="py-2 px-3">Macro Flow Trend</th>
+                <th className="py-2 px-3">Mata Uang</th>
+                <th className="py-2 px-3">Skor Hari Ini</th>
+                <th className="py-2 px-3">Kemarin</th>
+                <th className="py-2 px-3">3 Hari Lalu</th>
+                <th className="py-2 px-3">7 Hari Lalu</th>
+                <th className="py-2 px-3">Delta Bersih 7J</th>
+                <th className="py-2 px-3">Tren Aliran Makro</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-850">
@@ -655,7 +614,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
         </div>
       )}
 
-      {/* 6. DAILY MARKET SNAPSHOT DOSSIER (THE 13 CORE ASSETS) */}
+      {/* 6. DAILY MARKET SNAPSHOT DOSSIER (THE 14 ASET UTAMA) */}
       {activeSnapshot && (
         <div className="bg-slate-950 border border-slate-800/90 rounded-xl p-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-800/80 mb-4 gap-3">
@@ -667,18 +626,18 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                 </h2>
               </div>
               <p className="text-xs text-slate-400 font-mono mt-1">
-                Archived dossier for all 14 core markets &bull; Saved permanently in relational database
+                Dossier terarsip untuk 14 pasar inti &bull; Tersimpan permanen di basis data relasional
               </p>
             </div>
 
             {/* Asset Filter Pills */}
             <div className="flex flex-wrap items-center gap-1.5">
               {[
-                { id: 'ALL', label: 'All 14 Assets' },
+                { id: 'ALL', label: 'Semua 14 Aset' },
                 { id: 'METALS_CRYPTO', label: 'XAUUSD & BTC' },
-                { id: 'INDICES', label: 'US Equities (3)' },
-                { id: 'BONDS', label: 'Bonds (US10Y)' },
-                { id: 'FOREX', label: 'Currencies (8)' },
+                { id: 'INDICES', label: 'Saham AS (3)' },
+                { id: 'BONDS', label: 'Obligasi (US10Y)' },
+                { id: 'FOREX', label: 'Valas (8)' },
               ].map(f => (
                 <button
                   key={f.id}
@@ -699,7 +658,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
           <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800/80 mb-4">
             <div className="flex items-center gap-2 mb-1 text-xs font-mono font-bold text-slate-200">
               <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-              <span>AI MACRO SYNTHESIS FOR {activeSnapshot.date}:</span>
+              <span>SINTESIS MAKRO AI FOR {activeSnapshot.date}:</span>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed mb-2 font-mono">
               {activeSnapshot.ai_summary}
@@ -739,7 +698,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                     {/* Price & Change */}
                     <div className="flex items-baseline justify-between py-2 border-y border-slate-800/60 mb-2 font-mono">
                       <div>
-                        <span className="text-xs text-slate-500 mr-1.5">Price:</span>
+                        <span className="text-xs text-slate-500 mr-1.5">Harga:</span>
                         <span className="text-base font-bold text-slate-100 tabular-nums">
                           {formatAssetPriceStr(sym, item.price)}
                         </span>
@@ -759,7 +718,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                       <div className="text-slate-300 leading-snug">
                         <span className="text-slate-500 text-[10px] uppercase block">Major Catalyst:</span>
                         <p className="text-slate-300 text-xs mt-0.5 line-clamp-2">
-                          {item.major_catalyst || 'Digestive consolidation and macro cross-flows.'}
+                          {item.major_catalyst || 'Konsolidasi digestif dan aliran silang makro.'}
                         </p>
                       </div>
                     </div>
@@ -773,7 +732,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                         onClick={() => onOpenChart(sym)}
                         className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
                       >
-                        <span>Chart</span>
+                        <span>Grafik</span>
                         <ExternalLink className="w-2.5 h-2.5" />
                       </button>
                     )}
@@ -790,11 +749,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-cyan-400" />
                   <h3 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-                    CURRENCY STRENGTH RANKING ON {activeSnapshot.date}
+                    PERINGKAT KEKUATAN MATA UANG PADA {activeSnapshot.date}
                   </h3>
                 </div>
                 <span className="text-[10px] font-mono text-slate-500">
-                  Relative Capital Flow Hierarchy
+                  Hierarki Aliran Modal Relatif
                 </span>
               </div>
 
@@ -825,7 +784,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
             <div className="p-3 bg-slate-900/50 border border-slate-800 rounded-lg">
               <div className="text-xs font-mono font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>WHY THE MARKET MOVED (EVIDENCE)</span>
+                <span>MENGAPA PASAR BERGERAK (BUKTI)</span>
               </div>
               <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
                 {activeSnapshot.ai_why?.map((w, idx) => (
@@ -833,7 +792,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                     <span className="text-emerald-500 mt-0.5">&bull;</span>
                     <span className="leading-snug">{w}</span>
                   </li>
-                )) || <li className="text-slate-500">Historical evidence recorded.</li>}
+                )) || <li className="text-slate-500">Bukti historis tercatat.</li>}
               </ul>
             </div>
 
@@ -841,7 +800,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
             <div className="p-3 bg-slate-900/50 border border-slate-800 rounded-lg">
               <div className="text-xs font-mono font-bold text-amber-400 mb-2 flex items-center gap-1.5">
                 <AlertCircle className="w-3.5 h-3.5" />
-                <span>IDENTIFIED RISKS & INVALIDATIONS</span>
+                <span>RISIKO & INVALIDASI TERIDENTIFIKASI</span>
               </div>
               <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
                 {activeSnapshot.ai_risk?.map((r, idx) => (
@@ -849,7 +808,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                     <span className="text-amber-500 mt-0.5">&bull;</span>
                     <span className="leading-snug">{r}</span>
                   </li>
-                )) || <li className="text-slate-500">Normal session volatility conditions.</li>}
+                )) || <li className="text-slate-500">Kondisi volatilitas sesi normal.</li>}
               </ul>
             </div>
 
@@ -857,7 +816,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
             <div className="p-3 bg-slate-900/50 border border-slate-800 rounded-lg">
               <div className="text-xs font-mono font-bold text-indigo-400 mb-2 flex items-center gap-1.5">
                 <History className="w-3.5 h-3.5" />
-                <span>HISTORICAL MEMORY & CONTINUITY</span>
+                <span>MEMORI HISTORIS & KESINAMBUNGAN</span>
               </div>
               <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
                 {activeSnapshot.historical_insights?.map((h, idx) => (
@@ -865,7 +824,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                     <span className="text-indigo-400 mt-0.5">&bull;</span>
                     <span className="leading-snug">{h}</span>
                   </li>
-                )) || <li className="text-slate-500">Persistent memory tracking active.</li>}
+                )) || <li className="text-slate-500">Pelacakan memori permanen aktif.</li>}
               </ul>
             </div>
           </div>

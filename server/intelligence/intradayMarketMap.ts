@@ -4,7 +4,7 @@
  * Computes deterministic, grounded intraday directional bias:
  * BULLISH / BEARISH / NEUTRAL / MIXED
  * 
- * For 13 Core Assets:
+ * For 14 Core Assets:
  * XAUUSD, BTC, US30, US500, US100, USD, EUR, GBP, JPY, AUD, NZD, CAD, CHF
  * 
  * Combines:
@@ -23,6 +23,7 @@
  */
 
 import { db } from '../db/database.js';
+import { CANONICAL_ASSETS } from '../../shared/canonicalAssets.js';
 import {
   IntradayAssetBias,
   MarketDirectionBias,
@@ -35,7 +36,7 @@ import { MacroIntelligenceEngine } from './macroIntelligence.js';
 
 export class IntradayMarketMapEngine {
   /**
-   * Generates the real-time Intraday Market Map for all 13 assets
+   * Generates the real-time Intraday Market Map for all 14 assets
    */
   public static getIntradayMarketMap(): IntradayAssetBias[] {
     const prices = db.getAllMarketPrices();
@@ -56,28 +57,13 @@ export class IntradayMarketMapEngine {
     const now = new Date();
     const nowIso = now.toISOString();
 
-    const targetSymbols: Array<{
-      symbol: string;
-      displayName: string;
-      assetType: 'COMMODITY' | 'CRYPTO' | 'INDEX' | 'FOREX' | 'BOND';
-      tvSymbol: string;
-      tvUrl?: string;
-    }> = [
-      { symbol: 'XAUUSD', displayName: 'Gold / US Dollar', assetType: 'COMMODITY', tvSymbol: 'TVC:GOLD', tvUrl: 'https://www.tradingview.com/chart/?symbol=TVC%3AGOLD' },
-      { symbol: 'BTC', displayName: 'Bitcoin / US Dollar', assetType: 'CRYPTO', tvSymbol: 'BITSTAMP:BTCUSD', tvUrl: 'https://www.tradingview.com/x/zRklu6Fj/' },
-      { symbol: 'US30', displayName: 'Dow Jones 30 Index', assetType: 'INDEX', tvSymbol: 'FOREXCOM:US30', tvUrl: 'https://www.tradingview.com/x/McUWwa6F/' },
-      { symbol: 'US500', displayName: 'S&P 500 Index', assetType: 'INDEX', tvSymbol: 'CAPITALCOM:SPX500', tvUrl: 'https://www.tradingview.com/x/mMOtpRJZ/' },
-      { symbol: 'US100', displayName: 'Nasdaq 100 Index', assetType: 'INDEX', tvSymbol: 'SKILLING:US100', tvUrl: 'https://www.tradingview.com/x/pWHPW2sk/' },
-      { symbol: 'US10Y', displayName: 'US 10Y Treasury Yield', assetType: 'BOND', tvSymbol: 'TVC:US10Y', tvUrl: 'https://www.tradingview.com/symbols/TVC-US10Y/' },
-      { symbol: 'USD', displayName: 'US Dollar Index (DXY)', assetType: 'FOREX', tvSymbol: 'TVC:DXY', tvUrl: 'https://www.tradingview.com/x/mxhFtDj9/' },
-      { symbol: 'EUR', displayName: 'Euro / US Dollar', assetType: 'FOREX', tvSymbol: 'FX:EURUSD', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AEURUSD' },
-      { symbol: 'GBP', displayName: 'British Pound / USD', assetType: 'FOREX', tvSymbol: 'FX:GBPUSD', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AGBPUSD' },
-      { symbol: 'JPY', displayName: 'US Dollar / Japanese Yen', assetType: 'FOREX', tvSymbol: 'FX:USDJPY', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AUSDJPY' },
-      { symbol: 'AUD', displayName: 'Australian Dollar / USD', assetType: 'FOREX', tvSymbol: 'FX:AUDUSD', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AAUDUSD' },
-      { symbol: 'NZD', displayName: 'New Zealand Dollar / USD', assetType: 'FOREX', tvSymbol: 'FX:NZDUSD', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3ANZDUSD' },
-      { symbol: 'CAD', displayName: 'US Dollar / Canadian Dollar', assetType: 'FOREX', tvSymbol: 'FX:USDCAD', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AUSDCAD' },
-      { symbol: 'CHF', displayName: 'US Dollar / Swiss Franc', assetType: 'FOREX', tvSymbol: 'FX:USDCHF', tvUrl: 'https://www.tradingview.com/chart/?symbol=FX%3AUSDCHF' },
-    ];
+    const targetSymbols = CANONICAL_ASSETS.map(a => ({
+      symbol: a.symbol,
+      displayName: a.displayName,
+      assetType: a.assetClass,
+      tvSymbol: a.tvSymbol,
+      tvUrl: a.tvUrl,
+    }));
 
     // Identify today's high-impact releases
     const highImpactToday = macroEvents.filter(e => e.impact === 'CRITICAL' || e.impact === 'HIGH');
@@ -112,22 +98,22 @@ export class IntradayMarketMapEngine {
           priceActionScore = change24h >= 0 ? Math.min(85, Math.round(change24h * 30 + 30)) : Math.max(-70, Math.round(change24h * 30 - 20));
           
           topDrivers = [
-            `Real rate easing expectation anchors spot price firmly above $${(Math.floor(currentPrice / 50) * 50).toLocaleString()}/oz.`,
-            `Global central bank reserve diversification continues at sustained structural pace.`,
-            `Geopolitical hedging premia and safe-haven flows support bid depth on intraday pullbacks.`,
-            `US Dollar Index relative positioning (${usdStrength.toFixed(1)}/10) provides favorable currency tailwind.`,
+            `Ekspektasi pelonggaran suku bunga riil menahan harga spot kokoh di atas $${(Math.floor(currentPrice / 50) * 50).toLocaleString()}/oz.`,
+            `Diversifikasi cadangan bank sentral global berlanjut pada laju struktural yang stabil.`,
+            `Premi lindung nilai geopolitik dan arus safe-haven menopang kedalaman permintaan saat pullback intraday.`,
+            `Posisi relatif Indeks Dolar AS (${usdStrength.toFixed(1)}/10) memberikan tailwind mata uang yang menguntungkan.`,
           ];
           conflictingFactors = [
-            `US Treasury 10-year benchmark yields holding above 4.05% caps rapid speculative runaway momentum.`,
-            `Short-term overbought technical condition on 4-hour RSI around upper Bollinger envelope.`,
+            `Yield benchmark Treasury 10 tahun AS yang bertahan di atas 4,05% membatasi momentum spekulatif yang melonjak cepat.`,
+            `Kondisi teknis overbought jangka pendek pada RSI 4 jam di sekitar batas atas Bollinger.`,
           ];
           todayCatalyst = usKeyRelease
             ? `${usKeyRelease.event_name} (${usKeyRelease.date_time_utc ? new Date(usKeyRelease.date_time_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Today'}) — Focus on real yield transmission.`
-            : `US Treasury auction supply & FOMC speaker guidance on terminal interest rate expectations.`;
+            : `Pasokan lelang Treasury AS & panduan pembicara FOMC tentang ekspektasi suku bunga terminal.`;
           marketReaction = change24h >= 0
-            ? `Trading +${change24h.toFixed(2)}% higher today at $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; strong dip-buying absorption registered on active session opens.`
-            : `Consolidating down ${change24h.toFixed(2)}% at $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; bids established at previous daily value area support.`;
-          conditionsToChange = `A decisive break below $${(Math.floor(currentPrice * 0.985)).toLocaleString()} accompanied by a >10 bps spike in US 10Y real yields would invalidate the intraday bullish posture.`;
+            ? `Diperdagangkan naik +${change24h.toFixed(2)}% hari ini di $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; penyerapan beli saat dip tercatat kuat pada pembukaan sesi aktif.`
+            : `Konsolidasi turun ${change24h.toFixed(2)}% di $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; permintaan terbentuk di support area nilai harian sebelumnya.`;
+          conditionsToChange = `Tembusnya secara tegas di bawah $${(Math.floor(currentPrice * 0.985)).toLocaleString()} disertai lonjakan yield riil US 10Y >10 bps akan membatalkan sikap bullish intraday.`;
           confidence = 94;
           break;
         }
@@ -137,19 +123,19 @@ export class IntradayMarketMapEngine {
           fundamentalScore = 65;
           priceActionScore = change24h >= 0 ? Math.min(80, Math.round(change24h * 15 + 25)) : Math.max(-75, Math.round(change24h * 15 - 25));
           topDrivers = [
-            `Institutional spot ETF accumulation maintains steady daily net liquidity absorption.`,
-            `Global M2 monetary supply expansion and central bank easing cycle provide macro baseline bid.`,
-            `Stable hash rate and long-term holder illiquid supply concentration restrict exchange float.`,
+            `Akumulasi spot ETF institusional menjaga penyerapan likuiditas bersih harian yang stabil.`,
+            `Ekspansi pasokan moneter M2 global dan siklus pelonggaran bank sentral memberi dasar permintaan makro.`,
+            `Hash rate yang stabil dan konsentrasi pasokan illikuid pemegang jangka panjang membatasi float di bursa.`,
           ];
           conflictingFactors = [
-            `Periodic regulatory scrutiny and digital asset options expiration gamma pins around major strike clusters.`,
-            `Correlation to high-beta tech equity sentiment leaves intraday action vulnerable to risk-off pulses.`,
+            `Pengawasan regulasi berkala dan gamma pin opsi aset digital menjelang kedaluwarsa di sekitar klaster strike utama.`,
+            `Korelasi dengan sentimen ekuitas teknologi high-beta membuat pergerakan intraday rentan terhadap pulsa risk-off.`,
           ];
-          todayCatalyst = `Global liquidity index trajectory + US crypto ETF net inflow report at session close.`;
+          todayCatalyst = `Trajektori indeks likuiditas global + laporan arus masuk bersih ETF kripto AS saat penutupan sesi.`;
           marketReaction = change24h >= 0
-            ? `Extending +${change24h.toFixed(2)}% to $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}; aggressive spot buying stepping in on minor orderbook dips.`
-            : `Pulling back ${change24h.toFixed(2)}% to $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}; consolidating within structural weekly support range.`;
-          conditionsToChange = `Sudden surge in exchange spot deposits or breakdown beneath key VWAP support at $${Math.floor(currentPrice * 0.96).toLocaleString()} would flip short-term bias to BEARISH.`;
+            ? `Menguat +${change24h.toFixed(2)}% ke $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}; pembelian spot agresif masuk pada penurunan orderbook minor.`
+            : `Menurun ${change24h.toFixed(2)}% ke $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}; konsolidasi dalam rentang support mingguan struktural.`;
+          conditionsToChange = `Lonjakan mendadak deposit spot di bursa atau tembusnya support VWAP kunci di $${Math.floor(currentPrice * 0.96).toLocaleString()} akan membalik bias jangka pendek ke BEARISH.`;
           confidence = 88;
           break;
         }
@@ -159,17 +145,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = 55;
           priceActionScore = change24h >= 0 ? Math.min(75, Math.round(change24h * 40 + 20)) : Math.max(-70, Math.round(change24h * 40 - 20));
           topDrivers = [
-            `Industrial blue-chip balance sheets benefit from stable domestic consumer demand.`,
-            `Rate reduction path relieves borrowing costs for capital-intensive cyclicals and financial constituents.`,
-            `Resilient US macroeconomic backdrop softens recession probability.`,
+            `Neraca blue-chip industri diuntungkan permintaan konsumen domestik yang stabil.`,
+            `Jalur penurunan suku bunga meringankan biaya pinjaman bagi sektor siklikal padat modal dan konstituen keuangan.`,
+            `Latar makroekonomi AS yang tangguh mengurangi probabilitas resesi.`,
           ];
           conflictingFactors = [
-            `Manufacturing sector surveys reflect localized margin compression.`,
-            `High dividend yields in short-term cash alternatives compete for conservative investor flows.`,
+            `Survei sektor manufaktur mencerminkan kompresi margin lokal.`,
+            `Yield dividen tinggi pada alternatif kas jangka pendek bersaing memperebutkan arus investor konservatif.`,
           ];
-          todayCatalyst = `US Industrial Production data & corporate earnings guidance across industrial and financial heavyweights.`;
-          marketReaction = `Trading at ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); rotational breadth between defensive health care and cyclical machinery.`;
-          conditionsToChange = `Downward revisions in cyclical earnings guidance or widening high-yield credit spreads would shift posture to BEARISH.`;
+          todayCatalyst = `Data Produksi Industri AS & panduan laba korporasi pada perusahaan industrial dan keuangan besar.`;
+          marketReaction = `Diperdagangkan di ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); breadth rotasional antara kesehatan defensif dan mesin siklikal.`;
+          conditionsToChange = `Revisi turun panduan laba siklikal atau pelebaran spread kredit high-yield akan menggeser sikap ke BEARISH.`;
           confidence = 91;
           break;
         }
@@ -179,17 +165,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = 65;
           priceActionScore = change24h >= 0 ? Math.min(80, Math.round(change24h * 35 + 25)) : Math.max(-75, Math.round(change24h * 35 - 25));
           topDrivers = [
-            `Broad corporate earnings growth tracking positive mid-single-digit YoY expansion.`,
-            `Monetary easing expectations expand equity valuation multiple tolerances.`,
-            `Systematic CTA trend-followers maintaining structural equity long exposure.`,
+            `Pertumbuhan laba korporasi secara luas mengikuti ekspansi YoY satu digit menengah.`,
+            `Ekspektasi pelonggaran moneter memperluas toleransi kelipatan valuasi ekuitas.`,
+            `Pengikut tren CTA sistematis mempertahankan eksposur long ekuitas struktural.`,
           ];
           conflictingFactors = [
-            `Price-to-earnings ratios at top decile historical valuations limit rapid multiple expansion.`,
-            `Geopolitical energy risks could trigger localized cost spikes.`,
+            `Rasio harga terhadap laba pada desil tertinggi valuasi historis membatasi ekspansi kelipatan secara cepat.`,
+            `Risiko energi geopolitik dapat memicu lonjakan biaya lokal.`,
           ];
-          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name} release` : `FOMC policy outlook & S&P corporate earnings updates.`;
-          marketReaction = `Quoting at ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); systematic bid support defending the 20-day moving average.`;
-          conditionsToChange = `A close below key volume-profile point of control with VIX spiking above 20 would trigger an immediate de-risking bias.`;
+          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name} release` : `Prospek kebijakan FOMC & pembaruan laba korporasi S&P.`;
+          marketReaction = `Diperdagangkan di ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); dukungan permintaan sistematis mempertahankan moving average 20 hari.`;
+          conditionsToChange = `Penutupan di bawah point of control volume profile kunci dengan VIX melonjak di atas 20 akan memicu bias pengurangan risiko secara langsung.`;
           confidence = 93;
           break;
         }
@@ -199,17 +185,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = 70;
           priceActionScore = change24h >= 0 ? Math.min(85, Math.round(change24h * 30 + 30)) : Math.max(-80, Math.round(change24h * 30 - 30));
           topDrivers = [
-            `Generative AI capex commitments across hyper-scalers (Microsoft, Alphabet, Amazon, Meta) sustain semiconductor hardware demand.`,
-            `Lower discount rate trajectory disproportionately benefits long-duration software and semiconductor cash-flow multiples.`,
-            `Strong balance sheets with negative net debt insulate mega-cap tech from tight credit conditions.`,
+            `Komitmen belanja modal AI generatif di hyper-scaler (Microsoft, Alphabet, Amazon, Meta) menopang permintaan perangkat keras semikonduktor.`,
+            `Trajektori suku bunga diskonto yang lebih rendah secara tidak proporsional menguntungkan kelipatan arus kas perangkat lunak dan semikonduktor berdurasi panjang.`,
+            `Neraca kuat dengan utang bersih negatif melindungi teknologi mega-cap dari kondisi kredit ketat.`,
           ];
           conflictingFactors = [
-            `Extreme market concentration in the top 7 constituents creates idiosyncratic headline vulnerability.`,
-            `Semiconductor export regulatory headlines create episodic supply chain friction.`,
+            `Konsentrasi pasar ekstrem pada 7 konstituen teratas menciptakan kerentanan headline idiosinkratik.`,
+            `Headline regulasi ekspor semikonduktor menciptakan friksi rantai pasok episodik.`,
           ];
-          todayCatalyst = `Semiconductor earnings commentary & US 10-year Treasury yield response to economic releases.`;
-          marketReaction = `Index printed at ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); tech futures absorbing sell orders with active dip-buying liquidity.`;
-          conditionsToChange = `US 10-year yield breaking >4.20% or cloud capex guide-downs would instantly temper growth multiple appetite.`;
+          todayCatalyst = `Komentar laba semikonduktor & respons yield Treasury 10 tahun AS terhadap rilis ekonomi.`;
+          marketReaction = `Indeks tercatat di ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); futures teknologi menyerap order jual dengan likuiditas beli saat dip yang aktif.`;
+          conditionsToChange = `Yield 10 tahun AS menembus >4,20% atau panduan belanja modal cloud yang diturunkan akan langsung meredam selera kelipatan pertumbuhan.`;
           confidence = 95;
           break;
         }
@@ -241,17 +227,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = currStrength > 6.0 ? 55 : currStrength < 4.0 ? -55 : 10;
           priceActionScore = change24h >= 0 ? Math.min(70, Math.round(change24h * 40)) : Math.max(-70, Math.round(change24h * 40));
           topDrivers = [
-            `US economic outperformance relative to European and UK GDP growth maintains comparative yield cushion.`,
-            `Federal Reserve balanced dual-mandate signaling prevents aggressive front-loaded rate cutting.`,
-            `Global reserve currency demand in cross-border settlement limits deep dollar pullbacks.`,
+            `Kinerja ekonomi AS yang lebih unggul dibanding pertumbuhan PDB Eropa dan Inggris menjaga bantalan yield komparatif.`,
+            `Sinyal mandat ganda berimbang Federal Reserve mencegah pemotongan suku bunga agresif di awal.`,
+            `Permintaan mata uang cadangan global dalam penyelesaian lintas batas membatasi pelemahan dolar yang dalam.`,
           ];
           conflictingFactors = [
-            `Fed rate easing trajectory naturally compresses nominal short-end interest rate differentials over time.`,
-            `Foreign central banks (e.g. BoJ) hiking rates creates countervailing upward pressure on non-dollar pairs.`,
+            `Trajektori pelonggaran suku bunga Fed secara alami memampatkan diferensial suku bunga nominal ujung pendek seiring waktu.`,
+            `Bank sentral asing (mis. BoJ) yang menaikkan suku bunga menciptakan tekanan naik penyeimbang pada pair non-dolar.`,
           ];
-          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name}` : `Fed Chair Powell policy communications and Treasury yield movements.`;
-          marketReaction = `DXY holding at ${currentPrice.toFixed(2)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); range-bound oscillation within tight 100.80 - 101.80 macro channel.`;
-          conditionsToChange = `A strong upside surprise in core inflation would trigger sharp USD short-covering; an inflation miss would accelerate dollar selling.`;
+          todayCatalyst = usKeyRelease ? `${usKeyRelease.event_name}` : `Komunikasi kebijakan Ketua Fed Powell dan pergerakan yield Treasury.`;
+          marketReaction = `DXY bertahan di ${currentPrice.toFixed(2)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); osilasi terbatas dalam kanal makro sempit 100,80 - 101,80.`;
+          conditionsToChange = `Kejutan kenaikan inflasi inti yang kuat akan memicu short-covering USD tajam; inflasi di bawah ekspektasi akan mempercepat aksi jual dolar.`;
           confidence = 92;
           break;
         }
@@ -262,16 +248,16 @@ export class IntradayMarketMapEngine {
           fundamentalScore = currStrength > 6.0 ? 50 : currStrength < 4.0 ? -45 : -10;
           priceActionScore = change24h >= 0 ? Math.min(65, Math.round(change24h * 50)) : Math.max(-65, Math.round(change24h * 50));
           topDrivers = [
-            `ECB data-dependent meeting-by-meeting framework prevents pre-committed rate collapse.`,
-            `Services sector employment resilience maintains wage growth floor across Germany and France.`,
+            `Kerangka ECB yang berbasis data dari rapat ke rapat mencegah penurunan suku bunga yang sudah ditetapkan sebelumnya.`,
+            `Ketahanan lapangan kerja sektor jasa menjaga batas bawah pertumbuhan upah di Jerman dan Prancis.`,
           ];
           conflictingFactors = [
-            `German manufacturing PMI in protracted contraction territory dampens capital expenditure.`,
-            `Disinflation in headline European CPI (2.2%) keeps additional ECB rate cuts firmly on the table.`,
+            `PMI manufaktur Jerman di wilayah kontraksi berkepanjangan menekan belanja modal.`,
+            `Disinflasi CPI headline Eropa (2,2%) menjaga pemotongan suku bunga ECB tambahan tetap terbuka.`,
           ];
-          todayCatalyst = euKeyRelease ? `${euKeyRelease.event_name}` : `ECB Governing Council policy speeches & Eurozone PMI prints.`;
-          marketReaction = `Spot trading at ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); reacting to Eurozone-US 2Y sovereign yield spread differentials.`;
-          conditionsToChange = `Accelerated ECB rate cut forward guidance would weaken EUR; unexpected rebound in German industrial orders would flip bias BULLISH.`;
+          todayCatalyst = euKeyRelease ? `${euKeyRelease.event_name}` : `Pidato kebijakan Dewan Gubernur ECB & rilis PMI Zona Euro.`;
+          marketReaction = `Diperdagangkan spot di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); bereaksi terhadap diferensial spread yield sovereign 2Y Zona Euro-AS.`;
+          conditionsToChange = `Forward guidance pemotongan suku bunga ECB yang dipercepat akan melemahkan EUR; rebound tak terduga pesanan industri Jerman akan membalik bias ke BULLISH.`;
           confidence = 90;
           break;
         }
@@ -282,17 +268,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = currStrength > 6.0 ? 65 : 20;
           priceActionScore = change24h >= 0 ? Math.min(75, Math.round(change24h * 50)) : Math.max(-75, Math.round(change24h * 50));
           topDrivers = [
-            `UK Services CPI stickiness (5.2%) compels Bank of England to maintain restrictive 5.00% benchmark rate.`,
-            `Highest policy rate among European G7 economies sustains favorable carry trade capital inflows.`,
-            `Currency strength index ranks GBP among top performers across global spot pairs.`,
+            `Kekakuan CPI Jasa Inggris (5,2%) memaksa Bank of England mempertahankan suku bunga acuan restriktif 5,00%.`,
+            `Suku bunga kebijakan tertinggi di antara ekonomi G7 Eropa menopang arus masuk modal carry trade yang menguntungkan.`,
+            `Indeks kekuatan mata uang menempatkan GBP di antara yang terkuat pada pair spot global.`,
           ];
           conflictingFactors = [
-            `Governor Bailey acknowledging potential for more activist rate cuts if inflation cooling accelerates.`,
-            `Fiscal budget tightening constraints could introduce headwinds to UK real GDP growth.`,
+            `Gubernur Bailey mengakui potensi pemotongan suku bunga lebih agresif jika pendinginan inflasi dipercepat.`,
+            `Kendala pengetatan anggaran fiskal dapat menimbulkan hambatan bagi pertumbuhan PDB riil Inggris.`,
           ];
-          todayCatalyst = ukKeyRelease ? `${ukKeyRelease.event_name}` : `Bank of England MPC rate expectations & UK wage growth metrics.`;
-          marketReaction = `GBPUSD hovering at ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); steady institutional demand visible against EUR and JPY.`;
-          conditionsToChange = `Rapid deceleration in UK services inflation below 4.5% would remove BoE hawkish support and flip bias BEARISH.`;
+          todayCatalyst = ukKeyRelease ? `${ukKeyRelease.event_name}` : `Ekspektasi suku bunga MPC Bank of England & metrik pertumbuhan upah Inggris.`;
+          marketReaction = `GBPUSD bergerak di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); permintaan institusional stabil terlihat terhadap EUR dan JPY.`;
+          conditionsToChange = `Perlambatan cepat inflasi jasa Inggris di bawah 4,5% akan menghilangkan dukungan hawkish BoE dan membalik bias ke BEARISH.`;
           confidence = 93;
           break;
         }
@@ -303,17 +289,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = currStrength > 5.5 ? 40 : -45;
           priceActionScore = change24h <= 0 ? Math.min(60, Math.abs(Math.round(change24h * 40))) : Math.max(-60, -Math.round(change24h * 40)); // USDJPY down = JPY strong
           topDrivers = [
-            `Bank of Japan Governor Ueda explicitly reaffirms rate hike trajectory if core inflation targets hold.`,
-            `Tokyo and National CPI trending above BoJ 2.0% price stability threshold.`,
-            `Extreme vulnerability to carry trade unwinding creates sharp asymmetric safe-haven surges during volatility.`,
+            `Gubernur Bank of Japan Ueda secara eksplisit menegaskan kembali jalur kenaikan suku bunga jika target inflasi inti bertahan.`,
+            `CPI Tokyo dan Nasional bergerak di atas ambang stabilitas harga 2,0% BoJ.`,
+            `Kerentanan ekstrem terhadap pembongkaran carry trade menciptakan lonjakan safe-haven asimetris yang tajam saat volatilitas.`,
           ];
           conflictingFactors = [
-            `Vast interest rate differential (0.25% vs 4.75%+ in US) generates persistent carry trade selling pressure on spot JPY.`,
-            `Ministry of Finance reluctant to deploy direct currency intervention unless rapid speculative volatility occurs.`,
+            `Diferensial suku bunga besar (0,25% vs 4,75%+ di AS) menciptakan tekanan jual carry trade persisten pada spot JPY.`,
+            `Kementerian Keuangan enggan melakukan intervensi mata uang langsung kecuali terjadi volatilitas spekulatif yang cepat.`,
           ];
-          todayCatalyst = `Bank of Japan policy communications & US-Japan 10-year sovereign bond yield spread.`;
-          marketReaction = `USDJPY quoting at ${currentPrice.toFixed(2)}; price action reflects delicate balance between rate carry selling and BoJ hike anticipation.`;
-          conditionsToChange = `Sudden escalation in global risk aversion triggering broad carry trade liquidation would create an immediate strong BULLISH JPY spike.`;
+          todayCatalyst = `Komunikasi kebijakan Bank of Japan & spread yield obligasi sovereign 10 tahun AS-Jepang.`;
+          marketReaction = `USDJPY di ${currentPrice.toFixed(2)}; aksi harga mencerminkan keseimbangan halus antara penjualan carry suku bunga dan antisipasi kenaikan BoJ.`;
+          conditionsToChange = `Eskalasi mendadak penghindaran risiko global yang memicu likuidasi carry trade luas akan menciptakan lonjakan BULLISH JPY yang kuat secara langsung.`;
           confidence = 91;
           break;
         }
@@ -324,17 +310,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = currStrength > 6.0 ? 60 : 15;
           priceActionScore = change24h >= 0 ? Math.min(75, Math.round(change24h * 50)) : Math.max(-70, Math.round(change24h * 50));
           topDrivers = [
-            `Reserve Bank of Australia maintains high 4.35% cash rate; Governor Bullock rules out near-term rate cuts.`,
-            `Australian labor market remains exceptionally tight with near-record labor force participation (67.1%).`,
-            `Underlying Trimmed Mean CPI at 3.9% forces prolonged hawkish policy divergence against G10 peers.`,
+            `Reserve Bank of Australia mempertahankan suku bunga acuan tinggi 4,35%; Gubernur Bullock menepis pemotongan suku bunga dalam waktu dekat.`,
+            `Pasar tenaga kerja Australia tetap sangat ketat dengan partisipasi angkatan kerja mendekati rekor (67,1%).`,
+            `Trimmed Mean CPI dasar 3,9% memaksa divergensi kebijakan hawkish berkepanjangan terhadap peer G10.`,
           ];
           conflictingFactors = [
-            `Domestic household consumption constrained by variable-rate mortgage debt service.`,
-            `Chinese industrial recovery pacing and commodity import demand fluctuations impact iron ore pricing.`,
+            `Konsumsi rumah tangga domestik terkendala cicilan kredit perumahan berbunga variabel.`,
+            `Laju pemulihan industri Tiongkok dan fluktuasi permintaan impor komoditas memengaruhi harga bijih besi.`,
           ];
-          todayCatalyst = `RBA policy commentary & iron ore / base metal commodity price momentum.`;
-          marketReaction = `AUDUSD trading at ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); supported by strong yield carry against EUR and JPY.`;
-          conditionsToChange = `A drop in Trimmed Mean CPI toward target or significant slump in commodity demand would shift bias to BEARISH.`;
+          todayCatalyst = `Komentar kebijakan RBA & momentum harga komoditas bijih besi / logam dasar.`;
+          marketReaction = `AUDUSD di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); didukung carry yield kuat terhadap EUR dan JPY.`;
+          conditionsToChange = `Penurunan Trimmed Mean CPI mendekati target atau anjloknya permintaan komoditas akan menggeser bias ke BEARISH.`;
           confidence = 92;
           break;
         }
@@ -345,16 +331,16 @@ export class IntradayMarketMapEngine {
           fundamentalScore = -30;
           priceActionScore = change24h >= 0 ? Math.min(60, Math.round(change24h * 40)) : Math.max(-70, Math.round(change24h * 40));
           topDrivers = [
-            `Reserve Bank of New Zealand cutting OCR in accelerated 50bps increments to alleviate domestic recession.`,
-            `Rapid cooling in CPI (2.2%) gives RBNZ leeway to aggressively reduce monetary restriction.`,
+            `Reserve Bank of New Zealand memangkas OCR dalam kenaikan dipercepat 50bps untuk meredakan resesi domestik.`,
+            `Pendinginan cepat CPI (2,2%) memberi ruang bagi RBNZ untuk mengurangi restriksi moneter secara agresif.`,
           ];
           conflictingFactors = [
-            `Nominal interest rate (4.75%) still provides positive carry relative to Swiss Franc and Japanese Yen.`,
-            `Dairy auction prices demonstrating steady demand stability in Oceania trading.`,
+            `Suku bunga nominal (4,75%) masih memberikan carry positif relatif terhadap Swiss Franc dan Japanese Yen.`,
+            `Harga lelang produk susu menunjukkan stabilitas permintaan yang stabil di perdagangan Oseania.`,
           ];
-          todayCatalyst = `Global Dairy Trade (GDT) auction results & RBNZ forward easing trajectory pricing.`;
-          marketReaction = `NZDUSD at ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); tracking cross-Tasman divergence against stronger AUD.`;
-          conditionsToChange = `Surprise upside rebound in NZ GDP or pause in RBNZ 50bps rate-cut steps would neutralize the bearish bias.`;
+          todayCatalyst = `Hasil lelang Global Dairy Trade (GDT) & pricing trajektori pelonggaran RBNZ.`;
+          marketReaction = `NZDUSD di ${currentPrice.toFixed(5)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); mengikuti divergensi lintas Tasman terhadap AUD yang lebih kuat.`;
+          conditionsToChange = `Rebound naik PDB NZ yang mengejutkan atau jeda langkah pemotongan 50bps RBNZ akan menetralkan bias bearish.`;
           confidence = 89;
           break;
         }
@@ -365,17 +351,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = -35;
           priceActionScore = change24h >= 0 ? Math.min(60, Math.round(change24h * 40)) : Math.max(-65, Math.round(change24h * 40));
           topDrivers = [
-            `Bank of Canada executing sequential rate cuts as headline inflation drops to 2.0% target midpoint.`,
-            `Canadian labor slack increasing with unemployment rising to 6.6%.`,
-            `High household debt-to-income ratio dampens domestic economic growth.`,
+            `Bank of Canada menjalankan pemotongan suku bunga beruntun seiring inflasi headline turun ke titik tengah target 2,0%.`,
+            `Kelonggaran tenaga kerja Kanada meningkat dengan pengangguran naik ke 6,6%.`,
+            `Rasio utang terhadap pendapatan rumah tangga yang tinggi menekan pertumbuhan ekonomi domestik.`,
           ];
           conflictingFactors = [
-            `WTI crude oil supply constraints provide occasional baseline support to Canadian energy export terms of trade.`,
-            `US economic resilience supports cross-border trade throughput.`,
+            `Kendala pasokan minyak mentah WTI memberi dukungan dasar sesekali pada terma perdagangan ekspor energi Kanada.`,
+            `Ketahanan ekonomi AS menopang volume perdagangan lintas batas.`,
           ];
-          todayCatalyst = `WTI Crude Oil price fluctuations & Bank of Canada policy outlook statements.`;
-          marketReaction = `USDCAD trading at ${currentPrice.toFixed(5)}; Canadian dollar underperforming higher-yielding commodity peers.`;
-          conditionsToChange = `Crude oil spike above $85/bbl or Bank of Canada signaling a pause in rate cuts would flip bias to BULLISH.`;
+          todayCatalyst = `Fluktuasi harga Minyak Mentah WTI & pernyataan prospek kebijakan Bank of Canada.`;
+          marketReaction = `USDCAD di ${currentPrice.toFixed(5)}; dolar Kanada tertinggal dari peer komoditas dengan yield lebih tinggi.`;
+          conditionsToChange = `Lonjakan minyak mentah di atas $85/barel atau sinyal jeda pemotongan suku bunga Bank of Canada akan membalik bias ke BULLISH.`;
           confidence = 90;
           break;
         }
@@ -386,17 +372,17 @@ export class IntradayMarketMapEngine {
           fundamentalScore = -40;
           priceActionScore = change24h >= 0 ? Math.min(60, Math.round(change24h * 45)) : Math.max(-65, Math.round(change24h * 45));
           topDrivers = [
-            `Swiss National Bank was first G10 bank to ease rates, lowering policy rate to 1.00%.`,
-            `Very low domestic CPI (1.1%) leaves inflation near bottom of SNB price stability range.`,
-            `SNB explicitly communicates willingness to intervene in FX markets to prevent excessive franc appreciation.`,
+            `Swiss National Bank adalah bank G10 pertama yang melonggarkan suku bunga, menurunkan suku bunga kebijakan ke 1,00%.`,
+            `CPI domestik sangat rendah (1,1%) menempatkan inflasi di dekat batas bawah rentang stabilitas harga SNB.`,
+            `SNB secara eksplisit menyampaikan kesediaan melakukan intervensi di pasar valas untuk mencegah apresiasi franc berlebihan.`,
           ];
           conflictingFactors = [
-            `Perennial safe-haven status triggers sudden defensive capital flight during geopolitical flashpoints.`,
-            `Strong pharmaceutical export surplus provides solid structural balance of payments support.`,
+            `Status safe-haven abadi memicu pelarian modal defensif mendadak saat titik panas geopolitik.`,
+            `Surplus ekspor farmasi yang kuat memberi dukungan struktural neraca pembayaran yang solid.`,
           ];
-          todayCatalyst = `SNB Chairman policy remarks & European risk sentiment shifts.`;
-          marketReaction = `USDCHF printing at ${currentPrice.toFixed(5)}; franc yields remain among lowest in G10, driving carry trade funding outflows.`;
-          conditionsToChange = `Major escalation in European geopolitical conflict triggering acute safe-haven demand would flip CHF bias sharply BULLISH.`;
+          todayCatalyst = `Pernyataan kebijakan Ketua SNB & perubahan sentimen risiko Eropa.`;
+          marketReaction = `USDCHF di ${currentPrice.toFixed(5)}; yield franc tetap terendah di G10, mendorong arus keluar pendanaan carry trade.`;
+          conditionsToChange = `Eskalasi besar konflik geopolitik Eropa yang memicu permintaan safe-haven akut akan membalik bias CHF tajam ke BULLISH.`;
           confidence = 91;
           break;
         }
@@ -437,7 +423,7 @@ export class IntradayMarketMapEngine {
         today_key_catalyst: todayCatalyst,
         current_market_reaction: marketReaction,
         conditions_to_change_bias: conditionsToChange,
-        source: `TradingView + Official Macro Feeds + Central Bank Stances`,
+        source: `TradingView + Feed Makro Resmi + Sikap Bank Sentral`,
         timestamp: nowIso,
         last_updated: nowIso,
         status: priceStatus,
@@ -510,8 +496,8 @@ export class IntradayMarketMapEngine {
         change: event.change || null,
         related_assets: relatedAssets,
         status: isReleased ? 'RELEASED' : isPast ? 'RELEASED' : 'UPCOMING',
-        actual_market_reaction: event.actual_market_reaction || (isReleased ? 'Observed immediate algorithmic volume burst across primary currency pair.' : 'Pending scheduled release execution.'),
-        fundamental_implication: event.fundamental_implication || 'Macro release transmission directly impacts central bank rate path pricing and sovereign yield differentials.',
+        actual_market_reaction: event.actual_market_reaction || (isReleased ? 'Terlihat lonjakan volume algoritmik langsung pada pair mata uang utama.' : 'Menunggu eksekusi rilis terjadwal.'),
+        fundamental_implication: event.fundamental_implication || 'Transmisi rilis makro berdampak langsung pada pricing jalur suku bunga bank sentral dan diferensial yield sovereign.',
         source: event.source,
         last_updated: nowIso,
         data_status: event.data_status || 'LIVE',

@@ -20,7 +20,114 @@ import {
   LineChart,
 } from 'lucide-react';
 import { User } from '../types';
-import { CATEGORY_HERO_IMAGES, getCurrencyFlagUrl } from '../lib/assets';
+import { getCurrencyFlagUrl } from '../lib/assets';
+
+/*
+ * Banner visual untuk kartu fitur: grid + sparkline/batang sintetis yang menyerupai
+ * panel data terminal, menggantikan foto stok agar tampilan terasa seperti produk asli.
+ */
+const BANNER_GRID_STYLE: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(to right, rgba(148,163,184,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.08) 1px, transparent 1px)',
+  backgroundSize: '22px 22px',
+};
+
+const SPARK_VIEWBOX = { w: 320, h: 110 };
+
+const buildSparkline = (series: number[]): string => {
+  const max = Math.max(...series);
+  const min = Math.min(...series);
+  const span = max - min || 1;
+  return series
+    .map((value, index) => {
+      const x = (index / (series.length - 1)) * SPARK_VIEWBOX.w;
+      const y = SPARK_VIEWBOX.h - ((value - min) / span) * (SPARK_VIEWBOX.h - 16) - 8;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(' ');
+};
+
+interface FeatureBannerProps {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  accent: { text: string; border: string; bg: string; stroke: string };
+  series: number[];
+  variant?: 'sparkline' | 'bars';
+}
+
+const FeatureBanner: React.FC<FeatureBannerProps> = ({
+  id,
+  label,
+  icon,
+  accent,
+  series,
+  variant = 'sparkline',
+}) => {
+  const max = Math.max(...series);
+  const barWidth = SPARK_VIEWBOX.w / series.length;
+
+  return (
+    <div className="relative h-36 w-full overflow-hidden bg-slate-950">
+      <div className="absolute inset-0" style={BANNER_GRID_STYLE} />
+      <svg
+        viewBox={`0 0 ${SPARK_VIEWBOX.w} ${SPARK_VIEWBOX.h}`}
+        preserveAspectRatio="none"
+        className="absolute inset-0 w-full h-full"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id={`banner-fill-${id}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={accent.stroke} stopOpacity="0.35" />
+            <stop offset="100%" stopColor={accent.stroke} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {variant === 'sparkline' ? (
+          <>
+            <polygon
+              points={`0,${SPARK_VIEWBOX.h} ${buildSparkline(series)} ${SPARK_VIEWBOX.w},${SPARK_VIEWBOX.h}`}
+              fill={`url(#banner-fill-${id})`}
+            />
+            <polyline
+              points={buildSparkline(series)}
+              fill="none"
+              stroke={accent.stroke}
+              strokeWidth="2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          </>
+        ) : (
+          series.map((value, index) => {
+            const height = (value / max) * (SPARK_VIEWBOX.h - 24);
+            return (
+              <rect
+                key={index}
+                x={index * barWidth + barWidth * 0.22}
+                y={SPARK_VIEWBOX.h - height}
+                width={barWidth * 0.56}
+                height={height}
+                rx="1.5"
+                fill={accent.stroke}
+                opacity={0.3 + (value / max) * 0.6}
+              />
+            );
+          })
+        )}
+      </svg>
+      <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/30 to-transparent" />
+      <div className="absolute bottom-3 left-3 flex items-center gap-2">
+        <div
+          className={`w-8 h-8 rounded-lg border flex items-center justify-center ${accent.bg} ${accent.border} ${accent.text}`}
+        >
+          {icon}
+        </div>
+        <span className="text-xs font-bold text-slate-100">{label}</span>
+      </div>
+    </div>
+  );
+};
 
 interface PublicLandingPageProps {
   currentPath: string;
@@ -92,7 +199,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
               className="px-3 py-1.5 rounded-md text-cyan-400 hover:text-cyan-300 transition cursor-pointer font-medium flex items-center gap-1"
             >
               <Compass className="w-3.5 h-3.5" />
-              <span>Live Terminal</span>
+              <span>Terminal Live</span>
             </button>
           </nav>
         </div>
@@ -119,15 +226,14 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
       {/* Hero Section with Photographic Atmosphere */}
       <section className="relative px-4 sm:px-8 pt-12 sm:pt-16 pb-20 max-w-6xl mx-auto w-full text-center flex flex-col items-center">
-        {/* Background Curated Photographic Glow & Depth */}
-        <div className="absolute inset-0 max-h-[520px] overflow-hidden pointer-events-none -z-10">
-          <img
-            src={CATEGORY_HERO_IMAGES.OVERVIEW}
-            alt="Macro Intelligence Trading Desk"
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover opacity-15 filter blur-xs"
-          />
-          <div className="absolute inset-0 bg-linear-to-b from-slate-950/40 via-slate-950/80 to-slate-950" />
+        {/* Latar grid teknikal + glow, bukan foto stok */}
+        <div
+          className="absolute inset-0 max-h-[520px] overflow-hidden pointer-events-none -z-10"
+          style={BANNER_GRID_STYLE}
+        >
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[42rem] h-[42rem] rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-b from-slate-950/20 via-slate-950/70 to-slate-950" />
         </div>
 
         {/* Professional Pill Badge */}
@@ -177,7 +283,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Bias Intraday 13 Aset Terkini</span>
+            <span>Bias Intraday 14 Aset Terkini</span>
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -207,14 +313,14 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
           {/* Preview Content Grid */}
           <div className="p-4 sm:p-6 bg-slate-950/95 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Card 1: Intraday Bias Radar with Flags */}
+            {/* Card 1: Radar Bias Intraday with Flags */}
             <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-300 pb-2 border-b border-slate-800">
                 <span className="font-bold flex items-center gap-1.5 text-cyan-400">
                   <Activity className="w-3.5 h-3.5" />
                   BIAS 13 ASET INTRADAY
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">LIVE UPDATE</span>
+                <span className="text-[10px] text-emerald-400 font-mono">PEMBARUAN LIVE</span>
               </div>
               <div className="space-y-2 text-xs">
                 {/* GBPJPY */}
@@ -236,7 +342,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     </div>
                     <div>
                       <span className="font-bold text-slate-100 font-mono">GBPJPY</span>
-                      <span className="text-[10px] text-slate-400 block font-sans">BoE hold vs BoJ easing</span>
+                      <span className="text-[10px] text-slate-400 block font-sans">BoE tahan vs pelonggaran BoJ</span>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
@@ -258,11 +364,11 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     </div>
                     <div>
                       <span className="font-bold text-slate-100 font-mono">XAUUSD</span>
-                      <span className="text-[10px] text-slate-400 block font-sans">Gold safe-haven momentum</span>
+                      <span className="text-[10px] text-slate-400 block font-sans">Momentum safe-haven emas</span>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
-                    BULLISH
+                    NAIK
                   </span>
                 </div>
 
@@ -285,11 +391,11 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     </div>
                     <div>
                       <span className="font-bold text-slate-100 font-mono">EURUSD</span>
-                      <span className="text-[10px] text-slate-400 block font-sans">ECB vs Fed stance</span>
+                      <span className="text-[10px] text-slate-400 block font-sans">Sikap ECB vs Fed</span>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700 font-mono">
-                    NEUTRAL
+                    NETRAL
                   </span>
                 </div>
               </div>
@@ -373,7 +479,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
               <div className="rounded-lg border border-slate-800 bg-slate-950 p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="px-1.5 py-0.5 rounded bg-amber-950/90 text-amber-300 border border-amber-800/80 text-[9px] font-mono font-bold">
-                    HIGH IMPACT • FOMC
+                    DAMPAK TINGGI • FOMC
                   </span>
                   <span className="text-[10px] font-mono text-slate-500">2m ago</span>
                 </div>
@@ -384,8 +490,8 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                   Yield US 10-Year melandai ke 4.12% pasca pernyataan inflasi; memicu pelemahan DXY dan reli penguatan pada pasangan valuta EUR/USD dan Emas.
                 </p>
                 <div className="pt-1.5 border-t border-slate-900 flex items-center gap-1.5 text-[10px] font-mono">
-                  <span className="px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/80 font-bold">EUR/USD ▲ BULLISH</span>
-                  <span className="px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 border border-rose-800/80 font-bold">USD/JPY ▼ BEARISH</span>
+                  <span className="px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/80 font-bold">EUR/USD ▲ NAIK</span>
+                  <span className="px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 border border-rose-800/80 font-bold">USD/JPY ▼ TURUN</span>
                 </div>
               </div>
             </div>
@@ -423,21 +529,13 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Feature 1: G8 Matrix with Visual Photography */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.FOREX}
-                  alt="Forex Currencies"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-cyan-950/90 border border-cyan-800 flex items-center justify-center text-cyan-400">
-                    <TrendingUp className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">G8 Currency Strength</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="g8"
+                label="Kekuatan Mata Uang (G8)"
+                icon={<TrendingUp className="w-4 h-4" />}
+                accent={{ text: 'text-cyan-400', border: 'border-cyan-800', bg: 'bg-cyan-950/90', stroke: '#22d3ee' }}
+                series={[46, 52, 49, 58, 55, 63, 60, 68, 72, 66, 74, 79]}
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Perhitungan matematis across 28 pair mata uang dunia. Menyoroti divergensi mata uang terkuat vs terlemah untuk setup trend-following dengan probabilitas tinggi.
@@ -451,24 +549,17 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
             {/* Feature 2: Intraday Market Mapping with Visual Photography */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.OVERVIEW}
-                  alt="Market Mapping"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-950/90 border border-emerald-800 flex items-center justify-center text-emerald-400">
-                    <Activity className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">Intraday Bias 13 Aset</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="intraday"
+                label="Peta Pasar Hari Ini"
+                icon={<Activity className="w-4 h-4" />}
+                accent={{ text: 'text-emerald-400', border: 'border-emerald-800', bg: 'bg-emerald-950/90', stroke: '#34d399' }}
+                series={[20, 24, 22, 30, 27, 26, 34, 38, 35, 44, 41, 48]}
+                variant="bars"
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  Memetakan arah bias harian pada 13 aset likuid mencakup Forex, Emas (XAUUSD), Minyak Brent, Indeks Saham (S&P 500, Nasdaq), Bitcoin, dan US10Y.
+                  Memetakan arah bias harian pada 14 aset likuid mencakup Forex, Emas (XAUUSD), Minyak Brent, Indeks Saham (S&P 500, Nasdaq 100, Dow Jones 30), Bitcoin, dan US10Y.
                 </p>
                 <div className="pt-2 text-[11px] text-emerald-400 font-medium flex items-center gap-1">
                   <span>Dilengkapi alert pulsa harga</span>
@@ -479,21 +570,14 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
             {/* Feature 3: Canonical News Wire with Photography */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.NEWS_WIRE}
-                  alt="Market News"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-950/90 border border-purple-800 flex items-center justify-center text-purple-400">
-                    <Radio className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">News Wire & Analisis Dampak</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="wire"
+                label="Berita Kanonik & Analisis Dampak"
+                icon={<Radio className="w-4 h-4" />}
+                accent={{ text: 'text-purple-400', border: 'border-purple-800', bg: 'bg-purple-950/90', stroke: '#c084fc' }}
+                series={[12, 30, 18, 42, 26, 55, 34, 62, 40, 70, 48, 66]}
+                variant="bars"
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Agregasi berita keuangan kanonikal dari sumber terpercaya tanpa duplikasi. Menganalisis sentimen dampak langsung terhadap mata uang dan instrumen terkait.
@@ -507,21 +591,13 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
             {/* Feature 4: Central Bank Telemetry with Architecture Photo */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.CENTRAL_BANK}
-                  alt="Central Bank Telemetry"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-amber-950/90 border border-amber-800 flex items-center justify-center text-amber-400">
-                    <Brain className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">Pemantauan Bank Sentral</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="cb"
+                label="Katalis Hari Ini & Bank Sentral"
+                icon={<Brain className="w-4 h-4" />}
+                accent={{ text: 'text-amber-400', border: 'border-amber-800', bg: 'bg-amber-950/90', stroke: '#fbbf24' }}
+                series={[62, 60, 58, 59, 56, 54, 55, 52, 50, 51, 48, 47]}
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Lacak arah kebijakan suku bunga Fed (FOMC), ECB, BoE, dan Bank of Japan, lengkap dengan pidato pejabat penting dan indikator pergeseran hawkish/dovish.
@@ -535,21 +611,13 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
             {/* Feature 5: Intermarket Flow with Global Macro Photo */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.INTERMARKET}
-                  alt="Intermarket Flow"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-950/90 border border-indigo-800 flex items-center justify-center text-indigo-400">
-                    <Zap className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">Transmisi Intermarket</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="intermarket"
+                label="Matriks Intermarket"
+                icon={<Zap className="w-4 h-4" />}
+                accent={{ text: 'text-indigo-400', border: 'border-indigo-800', bg: 'bg-indigo-950/90', stroke: '#818cf8' }}
+                series={[40, 44, 38, 47, 42, 51, 45, 55, 48, 58, 52, 61]}
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Membedah relasi dinamis antara DXY (indeks dolar), US10Y (yield obligasi AS), Emas, dan Indeks Saham untuk konfirmasi bias yang kuat sebelum mengambil posisi.
@@ -563,21 +631,14 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
 
             {/* Feature 6: Economic Calendar & Data Visualization */}
             <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition overflow-hidden flex flex-col group shadow-lg">
-              <div className="relative h-36 w-full overflow-hidden bg-slate-950">
-                <img
-                  src={CATEGORY_HERO_IMAGES.MACRO_DATA}
-                  alt="Macroeconomic Calendar"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-950/90 border border-blue-800 flex items-center justify-center text-blue-400">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-100">Kalender Rilis Data Ekonomi</span>
-                </div>
-              </div>
+              <FeatureBanner
+                id="cal"
+                label="Kalender Makro"
+                icon={<Clock className="w-4 h-4" />}
+                accent={{ text: 'text-blue-400', border: 'border-blue-800', bg: 'bg-blue-950/90', stroke: '#60a5fa' }}
+                series={[25, 0, 40, 0, 65, 0, 35, 0, 80, 0, 50, 0]}
+                variant="bars"
+              />
               <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Jadwal rilis CPI, NFP, GDP, dan data manufaktur dengan konversi otomatis waktu lokal WIB/Jakarta, deviasi aktual vs konsensus, dan riwayat historis.
@@ -620,7 +681,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     <img src={getCurrencyFlagUrl('EUR')} alt="EUR" className="w-3.5 h-2.5 object-cover rounded-xs" />
                     <span className="font-bold text-slate-100 font-mono">EUR/USD</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Euro / Dollar</span>
+                  <span className="text-slate-400 text-[11px]">Euro / Dolar</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <div className="flex items-center gap-2">
@@ -634,7 +695,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     <img src={getCurrencyFlagUrl('JPY')} alt="JPY" className="w-3.5 h-2.5 object-cover rounded-xs" />
                     <span className="font-bold text-slate-100 font-mono">USD/JPY</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Dollar / Yen</span>
+                  <span className="text-slate-400 text-[11px]">Dolar / Yen</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <div className="flex items-center gap-2">
@@ -658,28 +719,28 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     <span className="w-4 h-3 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold flex items-center justify-center">Au</span>
                     <span className="font-bold text-slate-100 font-mono">XAU/USD</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Spot Gold</span>
+                  <span className="text-slate-400 text-[11px]">Emas Spot</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <div className="flex items-center gap-2">
-                    <span className="w-4 h-3 rounded bg-orange-500/20 text-orange-300 text-[9px] font-bold flex items-center justify-center">Oil</span>
+                    <span className="w-4 h-3 rounded bg-orange-500/20 text-orange-300 text-[9px] font-bold flex items-center justify-center">Minyak</span>
                     <span className="font-bold text-slate-100 font-mono">BRENT</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Crude Oil</span>
+                  <span className="text-slate-400 text-[11px]">Minyak Mentah</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-3 rounded bg-slate-500/20 text-slate-300 text-[9px] font-bold flex items-center justify-center">Ag</span>
                     <span className="font-bold text-slate-100 font-mono">XAG/USD</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Spot Silver</span>
+                  <span className="text-slate-400 text-[11px]">Perak Spot</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-3 rounded bg-orange-500/20 text-orange-300 text-[9px] font-bold flex items-center justify-center">WTI</span>
-                    <span className="font-bold text-slate-100 font-mono">WTI CRUDE</span>
+                    <span className="font-bold text-slate-100 font-mono">WTI MENTAH</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">US Oil</span>
+                  <span className="text-slate-400 text-[11px]">Minyak AS</span>
                 </div>
               </div>
             </div>
@@ -693,7 +754,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
               <div className="space-y-2 text-slate-300">
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <span className="font-bold text-slate-100 font-mono">US500</span>
-                  <span className="text-slate-400 text-[11px]">S&P 500 Index</span>
+                  <span className="text-slate-400 text-[11px]">Indeks S&P 500</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <span className="font-bold text-slate-100 font-mono">NAS100</span>
@@ -705,7 +766,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <span className="font-bold text-slate-100 font-mono">GER40</span>
-                  <span className="text-slate-400 text-[11px]">German DAX</span>
+                  <span className="text-slate-400 text-[11px]">DAX Jerman</span>
                 </div>
               </div>
             </div>
@@ -714,7 +775,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
             <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
               <div className="text-emerald-400 font-bold uppercase tracking-wider text-[11px] pb-2 border-b border-slate-800 flex items-center justify-between">
                 <span>Yield & Aset Digital</span>
-                <span className="text-slate-400 text-[10px]">Macro Bench</span>
+                <span className="text-slate-400 text-[10px]">Benchmark Makro</span>
               </div>
               <div className="space-y-2 text-slate-300">
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
@@ -722,7 +783,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
                     <img src={getCurrencyFlagUrl('USD')} alt="USD" className="w-3.5 h-2.5 object-cover rounded-xs" />
                     <span className="font-bold text-slate-100 font-mono">DXY</span>
                   </div>
-                  <span className="text-slate-400 text-[11px]">Dollar Index</span>
+                  <span className="text-slate-400 text-[11px]">Indeks Dolar</span>
                 </div>
                 <div className="flex items-center justify-between p-1.5 rounded bg-slate-950/70 border border-slate-850">
                   <span className="font-bold text-slate-100 font-mono">US10Y</span>
@@ -788,7 +849,7 @@ export const PublicLandingPage: React.FC<PublicLandingPageProps> = ({
               Fitur
             </button>
             <button onClick={() => onNavigate('/dashboard')} className="hover:text-cyan-400 transition cursor-pointer font-semibold">
-              Live Terminal
+              Terminal Live
             </button>
             <button onClick={() => onNavigate('/login')} className="hover:text-slate-200 transition cursor-pointer">
               Masuk

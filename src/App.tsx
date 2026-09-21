@@ -12,6 +12,7 @@ import {
   ArahMarketTodayData,
 } from './types';
 import { api, setAuthToken, getAuthToken } from './lib/api';
+import { translateCategory } from './lib/statusLabels';
 import { useSSE } from './lib/useSSE';
 
 import { Sidebar, NavTabId } from './components/Sidebar';
@@ -642,7 +643,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <span>FILTERED BY INSTRUMENT:</span>
               <strong className="text-white font-bold bg-cyan-900 px-2 py-0.5 rounded">{selectedSymbol}</strong>
-              <span className="text-slate-400 hidden sm:inline">Highlighting events and macro correlations</span>
+              <span className="text-slate-400 hidden sm:inline">Menyoroti agenda dan korelasi makro</span>
             </div>
             <button
               onClick={() => setSelectedSymbol(null)}
@@ -727,7 +728,7 @@ export default function App() {
             />
           )}
 
-          {/* VIEW 2: DEDICATED INTRADAY MARKET MAP (13 ASSETS) */}
+          {/* VIEW 2: DEDICATED INTRADAY MARKET MAP (14 ASET) */}
           {activeTab === 'intraday_map' && (
             <IntradayMarketMapView
               data={intradayMap}
@@ -743,7 +744,7 @@ export default function App() {
             />
           )}
 
-          {/* VIEW 3: TODAY'S KEY CATALYSTS */}
+          {/* VIEW 3: KATALIS UTAMA HARI INIS */}
           {activeTab === 'today_catalysts' && (
             <TodayCatalystsView
               catalysts={todayCatalysts}
@@ -759,7 +760,7 @@ export default function App() {
             />
           )}
 
-          {/* VIEW 4: LIVE MARKET SURVEILLANCE GRID */}
+          {/* VIEW 4: PENGAWASAN PASAR LIVE GRID */}
           {activeTab === 'markets' && (
             <div className="space-y-4">
               <MarketDataGrid
@@ -856,10 +857,10 @@ export default function App() {
                   <div>
                     <h1 className="text-sm font-mono font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
                       <Layers className="w-4 h-4 text-cyan-400" />
-                      <span>DEDUPLICATED EVENT ENGINE WIRE</span>
+                      <span>ARUS ENGINE AGENDA TERDEDUPLIKASI</span>
                     </h1>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      ONE EVENT → ONE EVENT ID → MULTIPLE SOURCES → MULTIPLE ASSETS → ONE ANALYSIS
+                      ONE EVENT → ONE EVENT ID → MULTIPLE SOURCES → MULTIPLE ASET → ONE ANALYSIS
                     </p>
                   </div>
 
@@ -873,7 +874,7 @@ export default function App() {
                       }}
                       disabled={isSyncing}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono font-medium transition cursor-pointer disabled:opacity-50"
-                      title="Sync wire with latest source releases"
+                      title="Sinkronkan arus berita dengan rilis sumber terbaru"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-cyan-400' : ''}`} />
                       <span>Sync Wire</span>
@@ -908,7 +909,7 @@ export default function App() {
                       title="Tampilkan hanya berita High & Critical impact agar korelasi pair akurat"
                     >
                       <Flame className="w-3.5 h-3.5 text-rose-400" />
-                      <span>🔥 High Impact (Default)</span>
+                      <span>🔥 Dampak Tinggi (Default)</span>
                       <span className="text-[9px] px-1 py-0.2 rounded bg-rose-900/60 text-rose-200">
                         {events.filter(e => e.impact_level === 'CRITICAL' || e.impact_level === 'HIGH').length}
                       </span>
@@ -954,7 +955,7 @@ export default function App() {
                             : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-300'
                         }`}
                       >
-                        {cat}
+                        {translateCategory(cat)}
                       </button>
                     ))}
                   </div>
@@ -1039,7 +1040,7 @@ export default function App() {
                   const res = await api.addToWatchlist(symbol, assetType);
                   if (res.item) setWatchlist(prev => [...prev, res.item]);
                 } catch (err: any) {
-                  alert(err.message || 'Failed to add to watchlist');
+                  alert(err.message || 'Gagal menambahkan ke daftar pantau');
                 }
               }}
               onSelectSymbol={(sym) => {
@@ -1058,7 +1059,7 @@ export default function App() {
                 <div className="w-12 h-12 mx-auto rounded-full bg-red-950/80 border border-red-500/40 flex items-center justify-center text-red-400 mb-4">
                   <ShieldAlert className="w-6 h-6" />
                 </div>
-                <h2 className="text-base font-bold text-slate-100 uppercase tracking-wider">Access Restricted</h2>
+                <h2 className="text-base font-bold text-slate-100 uppercase tracking-wider">Akses Dibatasi</h2>
                 <p className="text-xs text-slate-400 mt-2">
                   Administrative Telemetry & Feed Orchestration is restricted to system administrators with verified authority.
                 </p>

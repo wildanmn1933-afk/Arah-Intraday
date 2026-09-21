@@ -1,3 +1,4 @@
+import { translateStatus, translateTiming, translateFilter } from '../lib/statusLabels';
 import React, { useState, useMemo } from 'react';
 import {
   Zap,
@@ -110,7 +111,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
               <Zap className="w-4 h-4" />
             </span>
             <h2 className="text-base font-bold text-slate-100 tracking-wide">
-              TODAY'S KEY CATALYSTS
+              KATALIS UTAMA HARI INIS
             </h2>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-800/60">
               CURRENT SESSION
@@ -123,10 +124,10 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
 
         <div className="flex items-center gap-2 text-xs font-mono">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-slate-950/80 border border-slate-800">
-            <span className="text-slate-400">TODAY:</span>
-            <span className="text-cyan-400 font-bold">{stats.upcoming} Upcoming</span>
+            <span className="text-slate-400">HARI INI:</span>
+            <span className="text-cyan-400 font-bold">{stats.upcoming} Akan Datang</span>
             <span className="text-slate-600">|</span>
-            <span className="text-emerald-400 font-bold">{stats.released} Released</span>
+            <span className="text-emerald-400 font-bold">{stats.released} Telah Rilis</span>
           </div>
 
           <button
@@ -136,7 +137,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
             id="refresh-today-catalysts-btn"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
-            <span>Sync</span>
+            <span>Sinkron</span>
           </button>
         </div>
       </div>
@@ -155,13 +156,13 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                   : 'bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-800'
               }`}
             >
-              {st}
+              {translateTiming(st)}
             </button>
           ))}
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-400 text-[11px] font-mono mr-1">SEVERITY:</span>
+          <span className="text-slate-400 text-[11px] font-mono mr-1">TINGKAT DAMPAK:</span>
           {(['ALL', 'CRITICAL', 'HIGH'] as const).map(imp => (
             <button
               key={imp}
@@ -172,7 +173,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                   : 'bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-800'
               }`}
             >
-              {imp}
+              {translateFilter(imp)}
             </button>
           ))}
         </div>
@@ -182,7 +183,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="bg-slate-900/60 border border-slate-800 rounded-lg p-8 text-center text-slate-400 text-xs">
-            No catalysts match the current filters.
+            Tidak ada katalis yang cocok dengan filter saat ini.
           </div>
         ) : (
           filtered.map(item => {
@@ -246,7 +247,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                         ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60'
                         : 'bg-amber-950/80 text-amber-400 border border-amber-800/60'
                     }`}>
-                      {item.status}
+                      {translateStatus(item.status)}
                     </span>
 
                     {item.surprise && formatSurpriseBadge(item.surprise)}
@@ -256,36 +257,36 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                 {/* Macro Release Metrics: Actual / Forecast / Previous / Surprise / Change */}
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-950/80 rounded-md p-2.5 border border-slate-800/80 text-center font-mono text-xs">
                   <div>
-                    <div className="text-[10px] text-slate-400">ACTUAL</div>
+                    <div className="text-[10px] text-slate-400">AKTUAL</div>
                     <div className={`font-bold text-sm ${item.actual ? 'text-slate-100' : 'text-slate-500'}`}>
                       {item.actual ?? '—'}
                     </div>
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-slate-400">FORECAST</div>
+                    <div className="text-[10px] text-slate-400">PROYEKSI</div>
                     <div className="text-slate-300 text-sm font-medium">{item.forecast ?? '—'}</div>
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-slate-400">PREVIOUS</div>
+                    <div className="text-[10px] text-slate-400">SEBELUMNYA</div>
                     <div className="text-slate-400 text-sm">{item.previous ?? '—'}</div>
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-slate-400">SURPRISE</div>
+                    <div className="text-[10px] text-slate-400">KEJUTAN</div>
                     <div className="font-semibold">{item.surprise ?? '—'}</div>
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-slate-400">CHANGE</div>
+                    <div className="text-[10px] text-slate-400">PERUBAHAN</div>
                     <div className="text-slate-300 font-medium">{item.change ?? '—'}</div>
                   </div>
                 </div>
 
                 {/* Related Assets (Clickable) */}
                 <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono">
-                  <span className="text-slate-400 text-[11px]">AFFECTED ASSETS:</span>
+                  <span className="text-slate-400 text-[11px]">AFFECTED ASET:</span>
                   {item.related_assets.map(asset => (
                     <button
                       key={asset}
@@ -294,7 +295,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                         onOpenChart?.(asset);
                       }}
                       className="px-2 py-0.5 rounded bg-slate-800/80 hover:bg-cyan-950 hover:text-cyan-300 text-slate-300 border border-slate-700/80 text-[11px] transition cursor-pointer flex items-center gap-1"
-                      title={`Inspect ${asset}`}
+                      title={`Periksa ${asset}`}
                     >
                       <span>{asset}</span>
                       <BarChart2 className="w-2.5 h-2.5 text-slate-500" />
@@ -306,7 +307,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                 <div className="bg-slate-950/40 rounded p-2.5 border border-slate-800/60 space-y-1.5 text-xs">
                   <div>
                     <span className="text-[10px] font-mono text-cyan-400 font-semibold uppercase block mb-0.5">
-                      {item.status === 'RELEASED' ? 'ACTUAL MARKET REACTION:' : 'TRANSMISSION MECHANISM:'}
+                      {item.status === 'RELEASED' ? 'REAKSI PASAR AKTUAL:' : 'MEKANISME TRANSMISI:'}
                     </span>
                     <p className="text-slate-200 leading-relaxed font-sans">
                       {item.actual_market_reaction}
@@ -322,7 +323,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                         {item.fundamental_implication}
                       </p>
                       <div className="text-[10px] font-mono text-slate-500 pt-1 flex items-center justify-between">
-                        <span>Source: {item.source}</span>
+                        <span>Sumber: {item.source}</span>
                         <span>
                           Updated:{' '}
                           {new Date(item.last_updated).toLocaleTimeString('id-ID', {
@@ -345,7 +346,7 @@ export const TodayCatalystsView: React.FC<TodayCatalystsViewProps> = ({
                     onClick={() => setExpandedId(isExpanded ? null : item.id)}
                     className="text-slate-400 hover:text-cyan-400 transition cursor-pointer flex items-center gap-1 text-[11px]"
                   >
-                    <span>{isExpanded ? 'Hide Implication' : 'Deep Dive Implication'}</span>
+                    <span>{isExpanded ? 'Sembunyikan Implikasi' : 'Deep Dive Implication'}</span>
                     <ChevronRight className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                   </button>
                 </div>

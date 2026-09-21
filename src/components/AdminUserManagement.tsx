@@ -319,7 +319,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
               <Users className="w-3.5 h-3.5 text-cyan-400" />
               <span>TOTAL PENGGUNA</span>
             </span>
-            <span className="text-[10px] text-slate-500">Database</span>
+            <span className="text-[10px] text-slate-500">Basis Data</span>
           </div>
           <div className="text-xl font-bold text-slate-100">{metrics.total}</div>
           <div className="text-[11px] text-slate-400 flex items-center gap-1">
@@ -348,7 +348,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-              <span>PRO & INSTITUTIONAL</span>
+              <span>PRO & INSTITUSIONAL</span>
             </span>
             <span className="text-[10px] px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 border border-purple-800/60">
               Premium
@@ -412,7 +412,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
           >
             <option value="ALL">Semua Role</option>
             <option value="ADMIN">ADMIN</option>
-            <option value="USER">USER</option>
+            <option value="USER">PENGGUNA</option>
           </select>
 
           {/* Plan Filter */}
@@ -422,7 +422,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
             className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-600"
           >
             <option value="ALL">Semua Tier</option>
-            <option value="FREE">FREE</option>
+            <option value="FREE">GRATIS</option>
             <option value="PRO">PRO</option>
             <option value="INSTITUTIONAL">INSTITUTIONAL</option>
           </select>
@@ -434,8 +434,8 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
             className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-600"
           >
             <option value="ALL">Semua Verifikasi</option>
-            <option value="true">Verified Saja</option>
-            <option value="false">Unverified Saja</option>
+            <option value="true">Terverifikasi Saja</option>
+            <option value="false">Belum Verifikasi Saja</option>
           </select>
 
           {/* Refresh button */}
@@ -477,8 +477,8 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
             <thead className="bg-slate-900/90 text-slate-400 border-b border-slate-800">
               <tr>
                 <th className="p-3 font-semibold">User & Identitas</th>
-                <th className="p-3 font-semibold">Role Authority</th>
-                <th className="p-3 font-semibold">Subscription Tier</th>
+                <th className="p-3 font-semibold">Otoritas Role</th>
+                <th className="p-3 font-semibold">Tier Langganan</th>
                 <th className="p-3 font-semibold">Status Akun</th>
                 <th className="p-3 font-semibold">Email Verifikasi</th>
                 <th className="p-3 font-semibold text-right">Kelola Akses</th>
@@ -580,7 +580,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                           {u.is_verified ? (
                             <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold">
                               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                              <span>Verified</span>
+                              <span>Terverifikasi</span>
                             </span>
                           ) : (
                             <button
@@ -605,7 +605,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                               setResetPasswordInput('');
                               setGeneratedTempPass(null);
                             }}
-                            title="Reset Password User"
+                            title="Reset Kata Sandi Pengguna"
                             className="p-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded border border-slate-700 transition cursor-pointer"
                           >
                             <Key className="w-3.5 h-3.5" />
@@ -706,32 +706,32 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                     onClick={() => setCreateForm({ ...createForm, password: `Trader_${Math.random().toString(36).slice(-6)}!26` })}
                     className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px]"
                   >
-                    Generate
+                    Buat
                   </button>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-400 mb-1">Role Authority</label>
+                  <label className="block text-slate-400 mb-1">Otoritas Role</label>
                   <select
                     value={createForm.role}
                     onChange={e => setCreateForm({ ...createForm, role: e.target.value as any })}
                     className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-2 text-slate-200 outline-none focus:border-cyan-500"
                   >
-                    <option value="USER">USER</option>
+                    <option value="USER">PENGGUNA</option>
                     <option value="ADMIN">ADMIN</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Subscription Tier</label>
+                  <label className="block text-slate-400 mb-1">Tier Langganan</label>
                   <select
                     value={createForm.plan}
                     onChange={e => setCreateForm({ ...createForm, plan: e.target.value as any })}
                     className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-2 text-slate-200 outline-none focus:border-cyan-500"
                   >
-                    <option value="FREE">FREE</option>
+                    <option value="FREE">GRATIS</option>
                     <option value="PRO">PRO</option>
                     <option value="INSTITUTIONAL">INSTITUTIONAL</option>
                   </select>
@@ -818,25 +818,25 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-400 mb-1">Role Authority</label>
+                  <label className="block text-slate-400 mb-1">Otoritas Role</label>
                   <select
                     value={editForm.role}
                     onChange={e => setEditForm({ ...editForm, role: e.target.value as any })}
                     className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-2 text-slate-200 outline-none focus:border-cyan-500"
                   >
-                    <option value="USER">USER</option>
+                    <option value="USER">PENGGUNA</option>
                     <option value="ADMIN">ADMIN</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Subscription Tier</label>
+                  <label className="block text-slate-400 mb-1">Tier Langganan</label>
                   <select
                     value={editForm.plan}
                     onChange={e => setEditForm({ ...editForm, plan: e.target.value as any })}
                     className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-2 text-slate-200 outline-none focus:border-cyan-500"
                   >
-                    <option value="FREE">FREE</option>
+                    <option value="FREE">GRATIS</option>
                     <option value="PRO">PRO</option>
                     <option value="INSTITUTIONAL">INSTITUTIONAL</option>
                   </select>
@@ -850,10 +850,10 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                   onChange={e => setEditForm({ ...editForm, subscription_status: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-2 text-slate-200 outline-none focus:border-cyan-500"
                 >
-                  <option value="active">Active</option>
-                  <option value="trialing">Trialing</option>
-                  <option value="canceled">Canceled</option>
-                  <option value="expired">Expired</option>
+                  <option value="active">Aktif</option>
+                  <option value="trialing">Uji Coba</option>
+                  <option value="canceled">Dibatalkan</option>
+                  <option value="expired">Kedaluwarsa</option>
                 </select>
               </div>
 

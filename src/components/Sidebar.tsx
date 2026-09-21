@@ -22,21 +22,9 @@ import {
   Target,
 } from 'lucide-react';
 import { User } from '../types';
+import { NAV_LABELS, NavTabId } from '../lib/navLabels';
 
-export type NavTabId =
-  | 'terminal'
-  | 'arah_market'
-  | 'intraday_map'
-  | 'today_catalysts'
-  | 'markets'
-  | 'intermarket'
-  | 'currency'
-  | 'history'
-  | 'macro'
-  | 'events'
-  | 'intelligence'
-  | 'watchlist'
-  | 'admin';
+export type { NavTabId };
 
 interface SidebarProps {
   activeTab: NavTabId;
@@ -67,26 +55,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navGroups = [
     {
-      label: 'SURVEILLANCE & BIAS',
+      label: 'PENGAWASAN & BIAS',
       items: [
         {
           id: 'terminal' as NavTabId,
-          label: 'Overview Dashboard',
+          label: NAV_LABELS.terminal,
           shortLabel: 'Overview',
           icon: LayoutDashboard,
           badge: null,
         },
         {
           id: 'arah_market' as NavTabId,
-          label: 'Arah Market Hari Ini',
+          label: NAV_LABELS.arah_market,
           shortLabel: 'Arah Market',
           icon: Target,
-          badge: 'INTRADAY',
+          badge: 'INTRAHARI',
           badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
         },
         {
           id: 'intraday_map' as NavTabId,
-          label: "Today's Market Map",
+          label: NAV_LABELS.intraday_map,
           shortLabel: 'Market Map',
           icon: Compass,
           badge: `${marketMapCount}`,
@@ -94,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         },
         {
           id: 'today_catalysts' as NavTabId,
-          label: "Today's Catalysts",
+          label: NAV_LABELS.today_catalysts,
           shortLabel: 'Catalysts',
           icon: Zap,
           badge: catalystsCount !== undefined ? `${catalystsCount}` : null,
@@ -103,26 +91,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
       ],
     },
     {
-      label: 'MARKETS & FLOWS',
+      label: 'PASAR & ALIRAN',
       items: [
         {
           id: 'markets' as NavTabId,
-          label: 'Market Surveillance',
+          label: NAV_LABELS.markets,
           shortLabel: 'Markets',
           icon: Activity,
           badge: null,
         },
         {
           id: 'intermarket' as NavTabId,
-          label: 'Intermarket Matrix',
+          label: NAV_LABELS.intermarket,
           shortLabel: 'Intermarket',
           icon: GitMerge,
-          badge: 'FLOWS',
+          badge: 'ALIRAN',
           badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
         },
         {
           id: 'currency' as NavTabId,
-          label: 'Currency Strength (G8)',
+          label: NAV_LABELS.currency,
           shortLabel: 'Currency',
           icon: TrendingUp,
           badge: 'G8',
@@ -131,53 +119,53 @@ export const Sidebar: React.FC<SidebarProps> = ({
       ],
     },
     {
-      label: 'INTELLIGENCE & WIRE',
+      label: 'INTELIJEN & BERITA',
       items: [
         {
           id: 'macro' as NavTabId,
-          label: 'Macro Calendar',
+          label: NAV_LABELS.macro,
           shortLabel: 'Macro',
           icon: Calendar,
           badge: null,
         },
         {
           id: 'events' as NavTabId,
-          label: 'Canonical Wire',
+          label: NAV_LABELS.events,
           shortLabel: 'News Wire',
           icon: Radio,
-          badge: 'LIVE',
+          badge: 'LANGSUNG',
           badgeColor: 'bg-emerald-950/80 text-emerald-400 border-emerald-800/60',
         },
         {
           id: 'intelligence' as NavTabId,
-          label: 'AI Market Intelligence',
+          label: NAV_LABELS.intelligence,
           shortLabel: 'AI Intel',
           icon: Brain,
           badge: null,
         },
         {
           id: 'history' as NavTabId,
-          label: 'Market History & Memory',
+          label: NAV_LABELS.history,
           shortLabel: 'History',
           icon: History,
-          badge: 'Dossier',
+          badge: 'ARSIP',
           badgeColor: 'bg-indigo-950/80 text-indigo-300 border-indigo-800/80',
         },
       ],
     },
     {
-      label: 'ACCOUNT & SYSTEM',
+      label: 'AKUN & SISTEM',
       items: [
         {
           id: 'watchlist' as NavTabId,
-          label: 'My Watchlist',
+          label: NAV_LABELS.watchlist,
           shortLabel: 'Watchlist',
           icon: Star,
           badge: null,
         },
         ...(user?.role === 'ADMIN' ? [{
           id: 'admin' as NavTabId,
-          label: 'Feeds & System Health',
+          label: NAV_LABELS.admin,
           shortLabel: 'Admin',
           icon: Settings,
           badge: 'ADMIN',
@@ -226,7 +214,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
                 <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>MACRO ENGINE</span>
+                  <span>MESIN MAKRO</span>
                 </div>
               </div>
             )}
@@ -237,7 +225,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               onClick={onClose}
               className="p-1 rounded text-slate-400 hover:text-slate-200 lg:hidden cursor-pointer"
-              title="Close Menu"
+              title="Tutup Menu"
             >
               <X className="w-5 h-5" />
             </button>
@@ -322,7 +310,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                   </span>
-                  <span className="text-slate-300 font-semibold text-[10px] tracking-wider">FEED: LIVE</span>
+                  <span className="text-slate-300 font-semibold text-[10px] tracking-wider">FEED: LANGSUNG</span>
                 </div>
                 <span className="text-[9px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">PORT 3000</span>
               </div>
@@ -343,7 +331,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           {user.role || 'TRADER'}
                         </span>
                         <span className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded border bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
-                          FULL ACCESS
+                          AKSES PENUH
                         </span>
                       </div>
                     </div>
@@ -353,7 +341,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <button
                       onClick={onLogout}
                       className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition cursor-pointer shrink-0"
-                      title="Sign out"
+                      title="Keluar"
                       id="sidebar-logout-btn"
                     >
                       <LogOut className="w-3.5 h-3.5" />
@@ -367,14 +355,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   id="sidebar-login-btn"
                 >
                   <UserIcon className="w-3.5 h-3.5" />
-                  <span>Trader Login</span>
+                  <span>Login Trader</span>
                 </button>
               )}
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2.5">
               {/* Collapsed Feed Dot */}
-              <div className="flex justify-center pb-2 border-b border-slate-850 w-full" title="Feed: LIVE (Port 3000)">
+              <div className="flex justify-center pb-2 border-b border-slate-850 w-full" title="Feed: LANGSUNG (Port 3000)">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
               </div>
 
@@ -391,7 +379,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <button
                       onClick={onLogout}
                       className="p-1 rounded text-slate-500 hover:text-rose-400 transition cursor-pointer"
-                      title="Sign out"
+                      title="Keluar"
                     >
                       <LogOut className="w-3 h-3" />
                     </button>
@@ -401,7 +389,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button
                   onClick={onOpenAuth}
                   className="p-1.5 rounded-md bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-800/60 transition cursor-pointer"
-                  title="Trader Login"
+                  title="Login Trader"
                 >
                   <UserIcon className="w-3.5 h-3.5" />
                 </button>

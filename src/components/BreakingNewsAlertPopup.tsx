@@ -1,3 +1,4 @@
+import { translateCategory } from '../lib/statusLabels';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Zap,
@@ -136,7 +137,7 @@ export const BreakingNewsAlertPopup: React.FC<BreakingNewsAlertPopupProps> = ({
           {/* Category & Source Metadata */}
           <div className="flex items-center justify-between text-[10px] text-slate-400">
             <span className="text-cyan-400 font-bold bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/50">
-              {event.primary_category || 'MACRO'}
+              {translateCategory(event.primary_category || 'MACRO')}
             </span>
             <div className="flex items-center gap-1.5 truncate max-w-[210px]">
               {(sourceName?.toLowerCase().includes('telegram') || sourceName?.toLowerCase().includes('wire')) ? (
@@ -246,7 +247,7 @@ export const BreakingNewsAlertPopup: React.FC<BreakingNewsAlertPopupProps> = ({
                 id="alert-view-chart-btn"
               >
                 <BarChart2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="hidden sm:inline">Chart</span>
+                <span className="hidden sm:inline">Grafik</span>
               </button>
             )}
 

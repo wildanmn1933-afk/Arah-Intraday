@@ -1,3 +1,4 @@
+import { translateFilter, translateStatus, translateBias } from '../lib/statusLabels';
 import React, { useState, useMemo } from 'react';
 import { MarketPrice, IntradayAssetBias } from '../types';
 import {
@@ -74,13 +75,13 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
         <div className="flex items-center gap-2 flex-wrap">
           <Activity className="w-4 h-4 text-cyan-400" />
           <h2 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-            LIVE MARKET SURVEILLANCE
+            PENGAWASAN PASAR LIVE
           </h2>
           <MetricInfoIcon term="CHANGE_24H" position="bottom" />
-          <span className="text-[10px] font-mono text-slate-500">({prices.length} ASSETS)</span>
+          <span className="text-[10px] font-mono text-slate-500">({prices.length} ASET)</span>
           <Tooltip
-            title="Multi-Feed Synchronization"
-            badge="LIVE SYNC"
+            title="Sinkronisasi Multi-Feed"
+            badge="SINKRON LIVE"
             badgeColor="text-emerald-400 bg-emerald-950/80 border-emerald-800"
             content="Harga kuotasi teragregasi langsung dari bursa primer (CME, ICE, FX Interbank) dengan frekuensi pembaruan real-time."
             whyItMatters="Menjamin tidak ada latency arbitrase saat Anda menganalisis reaksi pasca berita."
@@ -89,7 +90,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             <div className="flex items-center gap-1.5 ml-1 cursor-help">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border bg-emerald-950/80 text-emerald-300 border-emerald-800/60">
-                SYNCHRONIZED
+                TERSINKRON
               </span>
             </div>
           </Tooltip>
@@ -98,7 +99,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
         <div className="flex items-center gap-2 flex-wrap">
           {onOpenChart && (
             <Tooltip
-              title="TradingView Interactive Modal"
+              title="Modal Interaktif TradingView"
               badge="CHARTING"
               content="Membuka chart candlestick interaktif TradingView multi-timeframe dengan indikator teknikal lengkap."
               position="bottom"
@@ -108,7 +109,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                 className="px-2.5 py-1 rounded bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-800/80 flex items-center gap-1.5 text-xs font-mono font-semibold transition cursor-pointer"
               >
                 <LineChart className="w-3.5 h-3.5" />
-                <span>TV Interactive Chart</span>
+                <span>Grafik Interaktif TV</span>
               </button>
             </Tooltip>
           )}
@@ -124,7 +125,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                {f}
+                {translateFilter(f)}
               </button>
             ))}
           </div>
@@ -132,7 +133,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            title="Refresh real market prices"
+            title="Segarkan harga pasar riil"
             className="p-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition cursor-pointer disabled:opacity-50 flex items-center gap-1 text-xs font-mono"
             id="refresh-surveillance-btn"
           >
@@ -142,7 +143,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
       </div>
 
       {/* Grid of Market Instrument Cards with Exact Hierarchy:
-          Asset → Price → Change → Intraday Bias → Confidence → Mini Chart → Main Drivers → Live Status */}
+          Asset → Price → Change → Intraday Bias → Confidence → Mini Chart → Main Drivers → Status Live */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2.5">
         {filteredPrices.map(item => {
           const isUnavailable = item.status === 'UNAVAILABLE';
@@ -230,7 +231,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                     {/* 2. PRICE */}
                     <div className="text-base font-bold text-slate-100 font-mono tabular-nums leading-tight truncate">
                       {isUnavailable ? (
-                        <span className="text-rose-400 text-xs">UNAVAILABLE</span>
+                        <span className="text-rose-400 text-xs">TIDAK TERSEDIA</span>
                       ) : item.symbol === 'US10Y' ? (
                         `${item.price.toFixed(3)}%`
                       ) : (
@@ -281,14 +282,14 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                       <div className="flex items-center gap-1 cursor-help whitespace-nowrap">
                         <span className="text-slate-500">BIAS:</span>
                         <span className={`px-1.5 py-0.2 rounded font-bold border ${getBiasBadge(biasData.overall_bias)}`}>
-                          {biasData.overall_bias}
+                          {translateBias(biasData.overall_bias)}
                         </span>
                       </div>
                     </MetricTooltip>
 
                     <MetricTooltip term="CONFIDENCE" underline={false}>
                       <div className="text-slate-400 cursor-help whitespace-nowrap">
-                        CONF: <span className="text-cyan-300 font-semibold">{biasData.confidence}%</span>
+                        KONF: <span className="text-cyan-300 font-semibold">{biasData.confidence}%</span>
                       </div>
                     </MetricTooltip>
                   </div>
@@ -304,7 +305,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                     className="w-full block min-w-0"
                   >
                     <div className="w-full min-w-0 text-[11px] text-slate-300 bg-slate-950/40 rounded p-1.5 border border-slate-800/50 mb-2 leading-tight cursor-help hover:border-slate-700 transition">
-                      <span className="text-[9px] font-mono text-cyan-400 block mb-0.5 font-semibold">MAIN DRIVER:</span>
+                      <span className="text-[9px] font-mono text-cyan-400 block mb-0.5 font-semibold">PENDORONG UTAMA:</span>
                       <p className="truncate block w-full text-[10px] text-slate-300" title={biasData.top_drivers[0]}>
                         {biasData.top_drivers[0]}
                       </p>
@@ -329,7 +330,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                           ? 'text-emerald-400 bg-emerald-950/70 border-emerald-800/60'
                           : 'text-amber-400 bg-amber-950/70 border-amber-800/60'
                       }`}>
-                        {item.status}
+                        {translateStatus(item.status)}
                       </span>
                     </MetricTooltip>
                   </div>

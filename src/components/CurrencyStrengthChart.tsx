@@ -293,13 +293,13 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
           <div className="flex items-center gap-1.5">
             <TrendingUp className="w-4 h-4 text-amber-400" />
             <span className="font-bold text-slate-100 uppercase tracking-wider text-[11px]">
-              CURRENCY STRENGTH CHART
+              GRAFIK KEKUATAN MATA UANG
             </span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1 text-[10px] text-slate-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Open Parity 04:00 WIB</span>
+            <span>Paritas Buka 04:00 WIB</span>
           </div>
         </div>
 
@@ -313,9 +313,9 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
                   ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 shadow-xs'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
-              title="View past 48 hours (yesterday + today)"
+              title="Lihat 48 jam terakhir (kemarin + hari ini)"
             >
-              yesterday (2D)
+              kemarin (2D)
             </button>
             <button
               onClick={() => setRange('1d')}
@@ -326,14 +326,14 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
               }`}
               title="View current trading session from 04:00 WIB open"
             >
-              today (1D)
+              hari ini (1D)
             </button>
           </div>
 
           <button
             onClick={handleManualRefresh}
             disabled={isLoading || externalRefreshing}
-            title="Refresh Live Chart Data"
+            title="Segarkan Data Grafik Live"
             className="p-1.5 rounded bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-slate-200 transition disabled:opacity-50 cursor-pointer"
           >
             <RefreshCw className={`w-3 h-3 ${isLoading || externalRefreshing ? 'animate-spin text-amber-400' : ''}`} />
@@ -387,7 +387,7 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
           onClick={selectAll}
           className="text-[9px] text-amber-400 hover:text-amber-300 hover:underline cursor-pointer px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800"
         >
-          All (8)
+          Semua (8)
         </button>
       </div>
 
@@ -478,7 +478,7 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
                       fontWeight="bold"
                       fontFamily="monospace"
                     >
-                      0.0 (OPEN)
+                      0.0 (BUKA)
                     </text>
                   )}
                 </g>
@@ -621,7 +621,7 @@ export const CurrencyStrengthChart: React.FC<CurrencyStrengthChartProps> = ({
           <div className="mt-2 pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[10px]">
             <div className="flex items-center gap-1.5 text-slate-400">
               <Calendar className="w-3 h-3 text-amber-400" />
-              <span>TIME:</span>
+              <span>WAKTU:</span>
               <span className="text-amber-300 font-bold">
                 {new Date(activeTimestamp).toLocaleDateString('id-ID', {
                   timeZone: 'Asia/Jakarta',

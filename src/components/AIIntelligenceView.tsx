@@ -1,3 +1,4 @@
+import { translateBias, translateStatus, translateTone } from '../lib/statusLabels';
 import React, { useState, useEffect } from 'react';
 import {
   Brain,
@@ -84,7 +85,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
       const res = await api.refreshAIOverview();
       if (res.market_overview) {
         setOverview(res.market_overview);
-        setNotification({ type: 'success', message: 'Macro market regime re-synthesized successfully.' });
+        setNotification({ type: 'success', message: 'Rezim pasar makro berhasil disintesis ulang.' });
         setTimeout(() => setNotification(null), 4000);
       }
       // Re-fetch speeches and contexts
@@ -97,7 +98,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
       if (contextRes.status === 'fulfilled') setMacroContexts(contextRes.value.contexts);
       if (uniRes.status === 'fulfilled') setUnifiedContext(uniRes.value.context);
     } catch (err: any) {
-      setNotification({ type: 'error', message: `Synthesis refresh: ${err.message || 'Temporary service capacity limit. Grounded fallback active.'}` });
+      setNotification({ type: 'error', message: `Synthesis refresh: ${err.message || 'Batas kapasitas layanan sementara. Fallback berbasis data aktif.'}` });
     } finally {
       setRefreshing(false);
     }
@@ -140,7 +141,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
           }`}
         >
           <Brain className="w-3.5 h-3.5 text-cyan-400" />
-          <span>MARKET REGIME & THEMES</span>
+          <span>REZIM PASAR & TEMA</span>
         </button>
 
         <button
@@ -152,7 +153,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
           }`}
         >
           <Landmark className="w-3.5 h-3.5 text-amber-400" />
-          <span>CENTRAL BANK SPEECHES</span>
+          <span>PIDATO BANK SENTRAL</span>
           <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300">
             {speeches.length}
           </span>
@@ -182,7 +183,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
           }`}
         >
           <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-          <span>UNIFIED MARKET CONTEXT</span>
+          <span>KONTEKS PASAR TERPADU</span>
         </button>
       </div>
 
@@ -226,10 +227,10 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 <Brain className="w-5 h-5 text-cyan-400" />
                 <div>
                   <h2 className="text-sm font-mono font-bold text-slate-100 uppercase tracking-wider">
-                    EXECUTIVE MACRO MARKET REGIME SYNTHESIS
+                    SINTESIS REZIM PASAR MAKRO EKSEKUTIF
                   </h2>
                   <p className="text-[10px] font-mono text-slate-500">
-                    Ground-Truth Multimodal Intelligence (News + Prices + Currency Strength + Macro)
+                    Intelijen Multimodal Berbasis Data Valid (Berita + Harga + Kekuatan Mata Uang + Makro)
                   </p>
                 </div>
               </div>
@@ -237,7 +238,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
               <div className="flex items-center gap-2">
                 {overview && (
                   <span className="text-[11px] font-mono text-slate-400">
-                    Confidence: <strong className="text-cyan-400">{((overview.confidence || 0.9) * 100).toFixed(0)}%</strong>
+                    Keyakinan: <strong className="text-cyan-400">{((overview.confidence || 0.9) * 100).toFixed(0)}%</strong>
                   </span>
                 )}
                 <button
@@ -246,7 +247,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                   className="flex items-center gap-1.5 px-3 py-1 rounded bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800/80 text-cyan-300 text-xs font-mono transition cursor-pointer disabled:opacity-50"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-cyan-400' : ''}`} />
-                  <span>{refreshing ? 'Synthesizing...' : 'Re-Synthesize'}</span>
+                  <span>{refreshing ? 'Menyintesis...' : 'Sintesis Ulang'}</span>
                 </button>
               </div>
             </div>
@@ -254,7 +255,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
             {loading ? (
               <div className="py-8 flex items-center justify-center gap-2 text-xs font-mono text-slate-400">
                 <RefreshCw className="w-4 h-4 text-cyan-400 animate-spin" />
-                <span>Analyzing consolidated market feeds with Gemini...</span>
+                <span>Menganalisis arus data pasar terkonsolidasi dengan Gemini...</span>
               </div>
             ) : overview ? (
               <div>
@@ -265,7 +266,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 {/* Key Macro Implications */}
                 <div className="mb-5">
                   <h3 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-                    Key Strategic Takeaways:
+                    Poin Strategis Utama:
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
                     {overview.key_implications.map((imp, idx) => (
@@ -280,7 +281,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 {/* Asset Sensitivity Matrix */}
                 <div>
                   <h3 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-                    Asset Directional Outlook:
+                    Prospek Arah Aset:
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
                     {overview.affected_assets_outlook.map((out, idx) => {
@@ -295,7 +296,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                               isBear ? 'bg-rose-950 text-rose-400 border-rose-800' :
                               'bg-slate-900 text-slate-400 border-slate-800'
                             }`}>
-                              {out.bias}
+                              {translateBias(out.bias)}
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-400 leading-snug">{out.rationale}</p>
@@ -315,7 +316,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
               <div className="flex items-center gap-2 pb-2.5 border-b border-slate-800/80 mb-3 font-mono">
                 <Layers className="w-4 h-4 text-cyan-400" />
                 <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
-                  ACTIVE INSTITUTIONAL THEMES ({themes.length})
+                  TEMA INSTITUSIONAL AKTIF ({themes.length})
                 </h3>
               </div>
 
@@ -327,14 +328,14 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       <span className={`text-[10px] px-1.5 rounded font-bold ${
                         t.sentiment === 'BULLISH' ? 'text-emerald-400' : 'text-slate-400'
                       }`}>
-                        {t.sentiment}
+                        {translateStatus(t.sentiment)}
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed mb-2">{t.description}</p>
                     <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                      <span>DRIVER: {t.driver || 'Macro Catalyst'}</span>
+                      <span>PENDORONG: {t.driver || 'Katalis Makro'}</span>
                       <span>•</span>
-                      <span>ASSETS: {(t.affected_assets || t.primary_assets || []).join(', ') || 'Global'}</span>
+                      <span>ASET: {(t.affected_assets || t.primary_assets || []).join(', ') || 'Global'}</span>
                     </div>
                   </div>
                 ))}
@@ -346,7 +347,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
               <div className="flex items-center gap-2 pb-2.5 border-b border-slate-800/80 mb-3 font-mono">
                 <TrendingUp className="w-4 h-4 text-cyan-400" />
                 <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
-                  MACRO TRANSMISSION MECHANISM MATRIX
+                  MATRIKS MEKANISME TRANSMISI MAKRO
                 </h3>
               </div>
 
@@ -363,7 +364,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       {rel.transmission_mechanism}
                     </p>
                     <div className="text-[10px] font-mono text-amber-400/90">
-                      Primary Assets: {(rel.primary_assets || []).join(', ')}
+                      Aset Utama: {(rel.primary_assets || []).join(', ')}
                     </div>
                   </div>
                 ))}
@@ -373,7 +374,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
         </div>
       )}
 
-      {/* TAB 2: CENTRAL BANK SPEECHES */}
+      {/* TAB 2: PIDATO BANK SENTRAL */}
       {activeTab === 'CENTRAL_BANK' && (
         <div className="space-y-4">
           <div className="bg-slate-950 border border-slate-800 rounded-xl p-5">
@@ -407,7 +408,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       <span className="font-bold text-sm text-slate-100">{sp.speaker}</span>
                       <span className="text-xs text-slate-400 font-mono">({sp.title})</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded font-bold border uppercase font-mono ${getToneBadge(sp.tone)}`}>
-                        {sp.tone} STANCE
+                        SIKAP {translateTone(sp.tone)}
                       </span>
                     </div>
 
@@ -423,7 +424,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                   {/* Prior Guidance Comparison */}
                   <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 font-mono text-xs">
                     <div className="text-[10px] text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                      <span>PERBANDINGAN STATEMENT SEBELUMNYA / PRIOR STANCE</span>
+                      <span>PERBANDINGAN STATEMENT SEBELUMNYA</span>
                     </div>
                     <p className="text-slate-300 leading-snug font-sans text-xs">{sp.previous_stance}</p>
                   </div>
@@ -432,32 +433,32 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                   <div className="space-y-2 pt-1 font-mono">
                     <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
                       <Activity className="w-3.5 h-3.5" />
-                      <span>5-STEP CAUSAL PIPELINE (WHAT WAS SAID → WHAT CHANGED → WHY IT MATTERS → CURRENCY IMPACT → ASSET RELEVANCE)</span>
+                      <span>PIPELINE KAUSAL 5 TAHAP (APA YANG DIKATAKAN → APA YANG BERUBAH → MENGAPA PENTING → DAMPAK VALAS → RELEVANSI ASET)</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                       <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/90">
-                        <div className="text-[9px] uppercase font-bold text-amber-400 mb-1">1. WHAT WAS SAID</div>
+                        <div className="text-[9px] uppercase font-bold text-amber-400 mb-1">1. APA YANG DIKATAKAN</div>
                         <p className="text-[11px] text-slate-300 leading-snug font-sans">{sp.what_was_said}</p>
                       </div>
 
                       <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/90">
-                        <div className="text-[9px] uppercase font-bold text-cyan-400 mb-1">2. WHAT CHANGED</div>
+                        <div className="text-[9px] uppercase font-bold text-cyan-400 mb-1">2. APA YANG BERUBAH</div>
                         <p className="text-[11px] text-slate-300 leading-snug font-sans">{sp.what_changed}</p>
                       </div>
 
                       <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/90">
-                        <div className="text-[9px] uppercase font-bold text-indigo-400 mb-1">3. WHY IT MATTERS</div>
+                        <div className="text-[9px] uppercase font-bold text-indigo-400 mb-1">3. MENGAPA PENTING</div>
                         <p className="text-[11px] text-slate-300 leading-snug font-sans">{sp.why_it_matters}</p>
                       </div>
 
                       <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/90">
-                        <div className="text-[9px] uppercase font-bold text-emerald-400 mb-1">4. CURRENCY IMPACT</div>
+                        <div className="text-[9px] uppercase font-bold text-emerald-400 mb-1">4. DAMPAK VALAS</div>
                         <p className="text-[11px] text-slate-300 leading-snug font-sans">{sp.currency_impact}</p>
                       </div>
 
                       <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/90">
-                        <div className="text-[9px] uppercase font-bold text-purple-400 mb-1">5. ASSET RELEVANCE</div>
+                        <div className="text-[9px] uppercase font-bold text-purple-400 mb-1">5. RELEVANSI ASET</div>
                         <p className="text-[11px] text-slate-300 leading-snug font-sans">{sp.asset_relevance}</p>
                       </div>
                     </div>
@@ -466,18 +467,18 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                   {/* AI Explanation Provenance: SOURCE + TIMESTAMP + EVIDENCE + CONFIDENCE */}
                   <div className="p-2.5 rounded-lg bg-slate-950/90 border border-cyan-900/40 font-mono text-[11px] text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-cyan-400 font-bold">SOURCE:</span>
+                      <span className="text-cyan-400 font-bold">SUMBER:</span>
                       <span className="text-slate-200">{sp.source}</span>
                       <span>•</span>
                       <span className="text-cyan-400 font-bold">TIMESTAMP:</span>
                       <span className="text-slate-200">{new Date(sp.timestamp || sp.date_time_utc).toISOString()}</span>
                       <span>•</span>
-                      <span className="text-cyan-400 font-bold">CONFIDENCE:</span>
+                      <span className="text-cyan-400 font-bold">KEYAKINAN:</span>
                       <span className="text-emerald-400 font-bold">{sp.confidence}%</span>
                     </div>
                     <div className="text-slate-400 truncate max-w-sm">
                       <span className="text-cyan-400 font-bold mr-1">STATUS:</span>
-                      <span className="text-emerald-400">Strictly Grounded</span>
+                      <span className="text-emerald-400">Berbasis Data Penuh</span>
                     </div>
                   </div>
                 </div>
@@ -499,12 +500,12 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                     G8 CURRENCY MACRO ECONOMIC CONTEXT
                   </h2>
                   <p className="text-[10px] font-mono text-slate-500">
-                    Live Status: STRONG / WEAK / MIXED • Grounded by Inflation + Employment + Growth + PMI + Central Bank Tone
+                    Status Live: STRONG / WEAK / MIXED • Grounded by Inflation + Employment + Growth + PMI + Central Bank Tone
                   </p>
                 </div>
               </div>
               <div className="text-xs font-mono text-slate-400">
-                Data Verification: <strong className="text-emerald-400">Grounded Macro Engine</strong>
+                Data Verification: <strong className="text-emerald-400">Engine Makro Berbasis Data</strong>
               </div>
             </div>
 
@@ -518,7 +519,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                     </span>
 
                     <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border uppercase ${getConditionBadge(c.status)}`}>
-                      {c.status}
+                      {translateStatus(c.status)}
                     </span>
                   </div>
 
@@ -541,17 +542,17 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       <span className="text-slate-200 font-semibold">{c.pmi.value}</span>
                     </div>
                     <div className="flex items-center justify-between text-slate-400">
-                      <span>Policy Rate:</span>
+                      <span>Suku Bunga Kebijakan:</span>
                       <span className="text-slate-200 font-semibold">{c.interest_rate.value}</span>
                     </div>
                     <div className="flex items-center justify-between text-slate-400">
                       <span>Central Bank Tone:</span>
                       <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold border uppercase ${getToneBadge(c.central_bank_tone.value)}`}>
-                        {c.central_bank_tone.value}
+                        {translateTone(c.central_bank_tone.value)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-slate-400 pt-1 border-t border-slate-800/50">
-                      <span>Strength Score:</span>
+                      <span>Skor Kekuatan:</span>
                       <span className="text-cyan-400 font-bold">{c.score.toFixed(1)} / 10</span>
                     </div>
                   </div>
@@ -563,7 +564,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                   </div>
 
                   <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1">
-                    <span>Source: {c.source}</span>
+                    <span>Sumber: {c.source}</span>
                     <span className="text-emerald-400">Conf: {c.confidence}%</span>
                   </div>
                 </div>
@@ -573,7 +574,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
         </div>
       )}
 
-      {/* TAB 4: UNIFIED MARKET CONTEXT */}
+      {/* TAB 4: KONTEKS PASAR TERPADU */}
       {activeTab === 'UNIFIED_CONTEXT' && (
         <div className="space-y-4">
           <div className="bg-slate-950 border border-slate-800 rounded-xl p-5">
@@ -582,7 +583,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 <Cpu className="w-5 h-5 text-cyan-400" />
                 <div>
                   <h2 className="text-sm font-mono font-bold text-slate-100 uppercase tracking-wider">
-                    UNIFIED MULTIMODAL MARKET CONTEXT
+                    KONTEKS PASAR MULTIMODAL TERPADU
                   </h2>
                   <p className="text-[10px] font-mono text-slate-500">
                     Harmonized Synthesis: News Wire + Macro Calendar + Central Bank Speeches + Currency Dispersion + Live Prices
@@ -591,7 +592,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
               </div>
               <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
                 <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Confidence: <strong className="text-cyan-400">{unifiedContext?.confidence || 93}%</strong></span>
+                <span>Keyakinan: <strong className="text-cyan-400">{unifiedContext?.confidence || 93}%</strong></span>
               </div>
             </div>
 
@@ -628,7 +629,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       <span>{unifiedContext.pillars.macro_data_summary}</span>
                     </div>
                     <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-800/70 text-xs text-slate-300 font-sans">
-                      <span className="text-indigo-400 font-bold block mb-1 font-mono">3. CENTRAL BANK SPEECHES</span>
+                      <span className="text-indigo-400 font-bold block mb-1 font-mono">3. PIDATO BANK SENTRAL</span>
                       <span>{unifiedContext.pillars.central_bank_summary}</span>
                     </div>
                     <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-800/70 text-xs text-slate-300 font-sans">
@@ -636,7 +637,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                       <span>{unifiedContext.pillars.currency_strength_summary}</span>
                     </div>
                     <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-800/70 text-xs text-slate-300 font-sans">
-                      <span className="text-purple-400 font-bold block mb-1 font-mono">5. LIVE MARKET EXECUTION</span>
+                      <span className="text-purple-400 font-bold block mb-1 font-mono">5. EKSEKUSI PASAR LIVE</span>
                       <span>{unifiedContext.pillars.market_data_summary}</span>
                     </div>
                   </div>
@@ -645,7 +646,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 {/* Cross-Asset Directional Matrix */}
                 <div>
                   <h3 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-                    Asset Directional Outlook & Implication vs Reaction:
+                    Prospek Arah Aset & Implikasi vs Reaksi:
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 font-mono">
                     {unifiedContext.asset_outlook.map((ca, idx) => {
@@ -668,7 +669,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                             {ca.fundamental_implication}
                           </div>
                           <div className="text-[11px] font-sans text-slate-400">
-                            <strong className="text-cyan-400 font-mono text-[10px] block">ACTUAL REACTION:</strong>
+                            <strong className="text-cyan-400 font-mono text-[10px] block">REAKSI AKTUAL:</strong>
                             {ca.actual_market_reaction}
                           </div>
                         </div>
@@ -681,9 +682,9 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
                 <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 font-mono text-xs">
                   <div className="flex items-center justify-between text-slate-400 border-b border-slate-800/60 pb-1.5">
                     <span className="font-bold text-cyan-400 uppercase tracking-wider">
-                      RIGOROUS CAUSAL EXPLANATION & DATA PROVENANCE
+                      PENJELASAN KAUSAL RIGOROUS & PROVENANS DATA
                     </span>
-                    <span className="text-emerald-400 font-bold">CONFIDENCE: {unifiedContext.confidence}%</span>
+                    <span className="text-emerald-400 font-bold">KEYAKINAN: {unifiedContext.confidence}%</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
@@ -706,7 +707,7 @@ export const AIIntelligenceView: React.FC<AIIntelligenceViewProps> = ({ initialO
             ) : (
               <div className="py-8 text-center text-xs font-mono text-slate-400">
                 <RefreshCw className="w-4 h-4 text-cyan-400 animate-spin mx-auto mb-2" />
-                <span>Aggregating News, Macro, Speeches, Currency Strength, and Price Feeds...</span>
+                <span>Mengagregasi Berita, Makro, Pidato, Kekuatan Mata Uang, dan Feed Harga...</span>
               </div>
             )}
           </div>

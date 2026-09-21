@@ -85,7 +85,7 @@ export class TelegramIngestionService {
    */
   public static async scrapeChannel(channel: TelegramChannel): Promise<{ count: number; error: string | null }> {
     if (!channel.is_enabled) {
-      return { count: 0, error: 'Channel is disabled' };
+      return { count: 0, error: 'Channel dinonaktifkan' };
     }
 
     const cleanHandle = channel.handle.replace('@', '').trim();
@@ -388,7 +388,7 @@ export class TelegramIngestionService {
       {
         id: 'chan_tg_cointelegraph',
         handle: '@cointelegraph',
-        title: 'Cointelegraph Market Intelligence',
+        title: 'Intelijen Pasar Cointelegraph',
         language: 'en',
         source_id: 'src_tg_cointelegraph',
         is_enabled: true,

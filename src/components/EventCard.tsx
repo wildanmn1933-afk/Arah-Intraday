@@ -1,3 +1,4 @@
+import { translateCategory } from '../lib/statusLabels';
 import React from 'react';
 import { MarketEvent } from '../types';
 import { Layers, Clock, ArrowRight, Flame, Zap, Newspaper } from 'lucide-react';
@@ -49,18 +50,18 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 uppercase font-medium flex items-center gap-1">
               <Newspaper className="w-2.5 h-2.5 text-cyan-400" />
-              <span>{event.primary_category}</span>
+              <span>{translateCategory(event.primary_category)}</span>
             </span>
             <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold border uppercase tracking-wider flex items-center gap-1 ${getImpactBadge(event.impact_level)}`}>
               {event.impact_level === 'CRITICAL' ? (
                 <>
                   <Zap className="w-3 h-3 text-red-400" />
-                  <span>CRITICAL</span>
+                  <span>KRITIS</span>
                 </>
               ) : event.impact_level === 'HIGH' ? (
                 <>
                   <Flame className="w-3 h-3 text-amber-400" />
-                  <span>HIGH IMPACT</span>
+                  <span>DAMPAK TINGGI</span>
                 </>
               ) : (
                 <span>{event.impact_level}</span>
@@ -69,7 +70,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
             {event.source_count > 1 && (
               <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-indigo-950/80 text-indigo-300 border border-indigo-800/60 font-mono font-medium">
                 <Layers className="w-2.5 h-2.5 text-indigo-400" />
-                <span>{event.source_count} SOURCES</span>
+                <span>{event.source_count} SUMBER</span>
               </span>
             )}
           </div>
@@ -95,9 +96,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
           <div className="mb-2.5 p-2 rounded-lg bg-slate-950/80 border border-slate-800/70">
             <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1.5">
               <span className="font-bold text-slate-300 uppercase tracking-wider">
-                PAIR CORRELATION & BIAS:
+                KORELASI PAIR & BIAS:
               </span>
-              <span className="text-[9px] text-cyan-400 font-medium">Directional Impact</span>
+              <span className="text-[9px] text-cyan-400 font-medium">Dampak Arah</span>
             </div>
             <div className="flex items-center gap-1.5 flex-wrap">
               {event.pair_impacts!.slice(0, 4).map((pi) => {
@@ -137,7 +138,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
                     <span className={`text-[9px] px-1 py-0.1 rounded font-black ${
                       isBull ? 'bg-emerald-900/80 text-emerald-200' : isBear ? 'bg-rose-900/80 text-rose-200' : 'bg-slate-700 text-slate-200'
                     }`}>
-                      {isBull ? '▲ BULLISH' : isBear ? '▼ BEARISH' : '● NEUTRAL'}
+                      {isBull ? '▲ NAIK' : isBear ? '▼ TURUN' : '● NETRAL'}
                     </span>
                   </div>
                 );
@@ -172,7 +173,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onClick, isSelected
             )}
             {(event.affected_assets || []).length > 0 && (
               <div className="flex items-center gap-1">
-                <span className="text-slate-500 text-[10px]">ASSETS:</span>
+                <span className="text-slate-500 text-[10px]">ASET:</span>
                 {event.affected_assets.slice(0, 3).map(a => (
                   <span key={a} className="text-amber-400 font-semibold text-[10px] bg-slate-950 px-1.5 py-0.2 rounded border border-slate-800">{a}</span>
                 ))}

@@ -1,3 +1,4 @@
+import { translateAssetType, translateBias, translateStatus } from '../lib/statusLabels';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -274,19 +275,19 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
               TODAY'S INTRADAY MARKET MAP
             </h2>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700">
-              13 CORE ASSETS
+              14 ASET UTAMA
             </span>
             <span className="inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/60">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              SYNCHRONIZED
+              TERSINKRON
             </span>
-            <span className="inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/60 hidden sm:inline-flex" title="Visual pulse highlights active on real-time price updates">
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/60 hidden sm:inline-flex" title="Sorotan pulsa visual aktif saat pembaruan harga real-time">
               <Radio className="w-3 h-3 text-cyan-400 animate-pulse" />
-              LIVE TICK PULSES
+              PULSA TICK LANGSUNG
             </span>
           </div>
           <p className="text-xs text-slate-400 max-w-3xl leading-relaxed">
-            Multi-factor synthesis connecting <strong>Macro Data + Central Bank Speeches + Currency Strength + Yields + Real-time Price Action</strong> into continuous intraday directional bias.
+            Sintesis multifaktor yang menghubungkan <strong>Data Makro + Pidato Bank Sentral + Kekuatan Mata Uang + Yield + Aksi Harga Real-Time</strong> menjadi bias arah intraday yang berkelanjutan.
           </p>
         </div>
 
@@ -306,22 +307,22 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
           <button
             onClick={handleSimulateTick}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 text-xs font-medium transition cursor-pointer"
-            title="Simulate random live market price updates to observe real-time pulse animations"
+            title="Simulasikan pembaruan harga pasar live acak untuk melihat animasi pulsa real-time"
             id="simulate-price-tick-btn"
           >
             <Activity className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">Simulate Tick</span>
+            <span className="hidden sm:inline">Simulasikan Tick</span>
           </button>
 
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-50"
-            title="Recalculate Intraday Biases"
+            title="Hitung Ulang Bias Intraday"
             id="refresh-intraday-map-btn"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
-            <span>Recalculate</span>
+            <span>Hitung Ulang</span>
           </button>
         </div>
       </div>
@@ -330,14 +331,14 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
       <div className="bg-slate-900/80 border border-slate-800/80 rounded-lg p-3 flex flex-wrap items-center justify-between gap-3">
         {/* Category Filters */}
         <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="text-slate-400 text-[11px] font-mono mr-1">CLASS:</span>
+          <span className="text-slate-400 text-[11px] font-mono mr-1">KELAS:</span>
           {[
-            { id: 'ALL', label: `All (${data.length})` },
-            { id: 'COMMODITY', label: `Commodity (${data.filter(d => d.asset_type === 'COMMODITY').length})` },
-            { id: 'CRYPTO', label: `Crypto (${data.filter(d => d.asset_type === 'CRYPTO').length})` },
-            { id: 'INDEX', label: `Indices (${data.filter(d => d.asset_type === 'INDEX').length})` },
-            { id: 'BOND', label: `Bonds (${data.filter(d => d.asset_type === 'BOND').length})` },
-            { id: 'FOREX', label: `Currencies (${data.filter(d => d.asset_type === 'FOREX').length})` },
+            { id: 'ALL', label: `Semua (${data.length})` },
+            { id: 'COMMODITY', label: `Komoditas (${data.filter(d => d.asset_type === 'COMMODITY').length})` },
+            { id: 'CRYPTO', label: `Kripto (${data.filter(d => d.asset_type === 'CRYPTO').length})` },
+            { id: 'INDEX', label: `Indeks (${data.filter(d => d.asset_type === 'INDEX').length})` },
+            { id: 'BOND', label: `Obligasi (${data.filter(d => d.asset_type === 'BOND').length})` },
+            { id: 'FOREX', label: `Mata Uang (${data.filter(d => d.asset_type === 'FOREX').length})` },
           ].map(cat => (
             <button
               key={cat.id}
@@ -358,10 +359,10 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
           <span className="text-slate-400 text-[11px] font-mono mr-1">BIAS:</span>
           {[
             { id: 'ALL', label: 'All' },
-            { id: 'BULLISH', label: 'Bullish' },
-            { id: 'BEARISH', label: 'Bearish' },
-            { id: 'NEUTRAL', label: 'Neutral' },
-            { id: 'MIXED', label: 'Mixed' },
+            { id: 'BULLISH', label: 'Naik' },
+            { id: 'BEARISH', label: 'Turun' },
+            { id: 'NEUTRAL', label: 'Netral' },
+            { id: 'MIXED', label: 'Campuran' },
           ].map(b => (
             <button
               key={b.id}
@@ -383,7 +384,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
             <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
             <input
               type="text"
-              placeholder="Search asset, catalyst..."
+              placeholder="Cari aset, katalis..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
@@ -418,7 +419,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-cyan-400 shrink-0" />
           <span>
-            <strong>DIRECTIONAL CONTEXT:</strong> Institutional macro bias only. NOT a buy/sell execution signal and NOT a guaranteed forecast.
+            <strong>KONTEKS ARAH:</strong> Hanya bias makro institusional. BUKAN sinyal eksekusi beli/jual dan BUKAN ramalan yang dijamin.
           </span>
         </div>
         <span className="text-[10px] text-slate-500 hidden sm:inline">
@@ -535,12 +536,12 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
 
                       <span className="font-mono font-bold text-base text-slate-100">{asset.symbol}</span>
                       <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                        {asset.asset_type}
+                        {translateAssetType(asset.asset_type)}
                       </span>
                       <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
                         asset.status === 'LIVE' ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50' : 'bg-amber-950/60 text-amber-400 border border-amber-800/50'
                       }`}>
-                        {asset.status}
+                        {translateStatus(asset.status)}
                       </span>
                     </div>
                     <div className="text-xs text-slate-400 truncate max-w-[200px] mt-0.5">
@@ -601,20 +602,20 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     </span>
                     <div>
                       <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                        OVERALL INTRADAY BIAS
+                        BIAS INTRADAY KESELURUHAN
                       </div>
                       <div className="font-mono font-bold text-sm tracking-wide">
-                        {asset.overall_bias}
+                        {translateBias(asset.overall_bias)}
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right font-mono">
                     <div className="text-xs font-bold text-slate-200">
-                      Score: <span className={colors.text}>{asset.direction_score > 0 ? '+' : ''}{asset.direction_score}</span>
+                      Skor: <span className={colors.text}>{asset.direction_score > 0 ? '+' : ''}{asset.direction_score}</span>
                     </div>
                     <div className="text-[10px] text-slate-400">
-                      Confidence: <span className="text-cyan-300 font-semibold">{asset.confidence}%</span>
+                      Keyakinan: <span className="text-cyan-300 font-semibold">{asset.confidence}%</span>
                     </div>
                   </div>
                 </div>
@@ -622,7 +623,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                 {/* Separated Biases: Fundamental vs Price Action */}
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                   <div className="bg-slate-950/60 rounded p-2 border border-slate-800/80">
-                    <div className="text-[10px] text-slate-400">FUNDAMENTAL BIAS</div>
+                    <div className="text-[10px] text-slate-400">BIAS FUNDAMENTAL</div>
                     <div className="flex items-center justify-between mt-1">
                       <span className={`font-bold ${getBiasColor(asset.fundamental_bias).text}`}>
                         {asset.fundamental_bias}
@@ -634,7 +635,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                   </div>
 
                   <div className="bg-slate-950/60 rounded p-2 border border-slate-800/80">
-                    <div className="text-[10px] text-slate-400">PRICE ACTION BIAS</div>
+                    <div className="text-[10px] text-slate-400">BIAS AKSI HARGA</div>
                     <div className="flex items-center justify-between mt-1">
                       <span className={`font-bold ${getBiasColor(asset.price_action_bias).text}`}>
                         {asset.price_action_bias}
@@ -650,7 +651,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                 <div className="bg-slate-950/40 rounded p-2.5 border border-slate-800/60 space-y-1">
                   <div className="text-[10px] font-mono font-semibold text-cyan-400 flex items-center gap-1.5">
                     <Zap className="w-3 h-3 text-cyan-400" />
-                    <span>TODAY'S KEY CATALYST</span>
+                    <span>KATALIS UTAMA HARI INI</span>
                   </div>
                   <div className="text-xs text-slate-300 leading-relaxed">
                     {asset.today_key_catalyst}
@@ -659,19 +660,19 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
 
                 {/* Current Market Reaction */}
                 <div className="text-xs text-slate-300 bg-slate-950/30 rounded p-2 border border-slate-800/50">
-                  <span className="text-[10px] font-mono text-slate-400 block mb-0.5">CURRENT MARKET REACTION:</span>
+                  <span className="text-[10px] font-mono text-slate-400 block mb-0.5">REAKSI PASAR SAAT INI:</span>
                   <p className="leading-snug text-slate-200">{asset.current_market_reaction}</p>
                 </div>
 
                 {/* Top Drivers (Bulleted) */}
                 <div className="space-y-1.5">
                   <div className="text-[10px] font-mono text-slate-400 flex items-center justify-between">
-                    <span>TOP MACRO & FLOW DRIVERS</span>
+                    <span>PENDORONG MAKRO & ALIRAN UTAMA</span>
                     <button
                       onClick={() => setExpandedSymbol(isExpanded ? null : asset.symbol)}
                       className="text-cyan-400 hover:text-cyan-300 cursor-pointer text-[10px]"
                     >
-                      {isExpanded ? 'Show Less' : `View All (${asset.top_drivers.length})`}
+                      {isExpanded ? 'Tampilkan Lebih Sedikit' : `Lihat Semua (${asset.top_drivers.length})`}
                     </button>
                   </div>
                   <ul className="space-y-1 text-xs text-slate-300">
@@ -691,7 +692,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                       <div className="bg-amber-950/20 rounded p-2 border border-amber-900/30 space-y-1">
                         <div className="text-[10px] font-mono text-amber-400 font-semibold flex items-center gap-1">
                           <AlertTriangle className="w-3 h-3" />
-                          <span>CONFLICTING / RISK FACTORS</span>
+                          <span>KONFLIK / FAKTOR RISIKO</span>
                         </div>
                         <ul className="space-y-0.5 text-slate-300 text-[11px]">
                           {asset.conflicting_factors.map((factor, idx) => (
@@ -706,7 +707,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
 
                     <div className="bg-slate-950/70 rounded p-2 border border-slate-800 space-y-1">
                       <div className="text-[10px] font-mono text-slate-400 font-semibold">
-                        CONDITIONS THAT COULD CHANGE BIAS:
+                        KONDISI YANG DAPAT MENGUBAH BIAS:
                       </div>
                       <p className="text-[11px] text-slate-300 leading-relaxed">
                         {asset.conditions_to_change_bias}
@@ -714,7 +715,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     </div>
 
                     <div className="text-[10px] font-mono text-slate-500 flex items-center justify-between">
-                      <span>Source: {asset.source}</span>
+                      <span>Sumber: {asset.source}</span>
                       <span>
                         Updated:{' '}
                         {new Date(asset.last_updated).toLocaleTimeString('id-ID', {
@@ -735,7 +736,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     onClick={() => setExpandedSymbol(isExpanded ? null : asset.symbol)}
                     className="text-slate-400 hover:text-slate-200 text-[11px] flex items-center gap-1 cursor-pointer"
                   >
-                    <span>{isExpanded ? 'Collapse' : 'Details & Invalidation'}</span>
+                    <span>{isExpanded ? 'Tutup' : 'Detail & Invalidasi'}</span>
                     <ChevronRight className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                   </button>
 
@@ -745,7 +746,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     id={`open-chart-${asset.symbol}`}
                   >
                     <BarChart2 className="w-3 h-3" />
-                    <span>Chart View</span>
+                    <span>Tampilan Grafik</span>
                   </button>
                 </div>
               </motion.div>
@@ -758,17 +759,17 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
           <table className="w-full text-left text-xs font-mono">
             <thead className="bg-slate-950 border-b border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
               <tr>
-                <th className="py-3 px-4">Asset</th>
-                <th className="py-3 px-3">Price</th>
+                <th className="py-3 px-4">Aset</th>
+                <th className="py-3 px-3">Harga</th>
                 <th className="py-3 px-3">24h Chg</th>
-                <th className="py-3 px-3">Intraday Bias</th>
-                <th className="py-3 px-3 text-center">Score</th>
-                <th className="py-3 px-3 text-center">Confidence</th>
+                <th className="py-3 px-3">Bias Intraday</th>
+                <th className="py-3 px-3 text-center">Skor</th>
+                <th className="py-3 px-3 text-center">Keyakinan</th>
                 <th className="py-3 px-3">Fundamental</th>
-                <th className="py-3 px-3">Price Action</th>
+                <th className="py-3 px-3">Aksi Harga</th>
                 <th className="py-3 px-4 min-w-[280px]">Today's Catalyst</th>
                 <th className="py-3 px-3 text-center">Status</th>
-                <th className="py-3 px-3 text-right">Actions</th>
+                <th className="py-3 px-3 text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
@@ -820,7 +821,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                       )}
                       <span>{asset.symbol}</span>
                       <span className="text-[9px] font-normal px-1 rounded bg-slate-800 text-slate-400">
-                        {asset.asset_type}
+                        {translateAssetType(asset.asset_type)}
                       </span>
                     </td>
                     <td className="py-2.5 px-3 font-mono">
@@ -850,7 +851,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     <td className="py-2.5 px-3">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border ${colors.badge}`}>
                         {getBiasIcon(asset.overall_bias)}
-                        {asset.overall_bias}
+                        {translateBias(asset.overall_bias)}
                       </span>
                     </td>
                     <td className={`py-2.5 px-3 text-center font-bold ${colors.text}`}>
@@ -874,14 +875,14 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
                     </td>
                     <td className="py-2.5 px-3 text-center">
                       <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
-                        {asset.status}
+                        {translateStatus(asset.status)}
                       </span>
                     </td>
                     <td className="py-2.5 px-3 text-right">
                       <button
                         onClick={() => onOpenChart(asset.symbol)}
                         className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-cyan-300 transition cursor-pointer"
-                        title="Open Interactive Chart"
+                        title="Buka Grafik Interaktif"
                       >
                         <BarChart2 className="w-3.5 h-3.5" />
                       </button>

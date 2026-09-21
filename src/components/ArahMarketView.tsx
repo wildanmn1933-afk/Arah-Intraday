@@ -95,26 +95,26 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
     switch (status) {
       case 'HIGH_CONVICTION':
         return {
-          label: '3/3 HIGH CONVICTION',
+          label: '3/3 KEYAKINAN TINGGI',
           bg: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80',
           dot: 'bg-emerald-400',
         };
       case 'MODERATE':
         return {
-          label: '2/3 MODERATE CONFLUENCE',
+          label: '2/3 KONFLUENSI SEDANG',
           bg: 'bg-cyan-950/90 text-cyan-300 border-cyan-700/80',
           dot: 'bg-cyan-400',
         };
       case 'CAUTION_TRAP':
         return {
-          label: '1/3 CAUTION / POTENTIAL TRAP',
+          label: '1/3 WASPADA / POTENSI JEBAKAN',
           bg: 'bg-rose-950/90 text-rose-300 border-rose-700/80',
           dot: 'bg-rose-400 animate-pulse',
         };
       case 'NEUTRAL_CHOP':
       default:
         return {
-          label: 'CHOPPY / MIXED FLOWS',
+          label: 'ARUS CAMPURAN / TANPA ARAH',
           bg: 'bg-slate-800/80 text-slate-300 border-slate-700/80',
           dot: 'bg-slate-400',
         };
@@ -130,11 +130,11 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
             <div className="flex items-center gap-2 flex-wrap mb-1.5">
               <span className="px-2 py-0.5 rounded-md bg-cyan-950 border border-cyan-700 text-cyan-300 text-[10px] font-mono font-bold tracking-wider uppercase flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                <span>INTRADAY TRIPLE-CONFLUENCE</span>
+                <span>KONFLUENSI TRIPEL INTRADAY</span>
               </span>
               <span className="px-2 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-slate-300 text-[10px] font-mono flex items-center gap-1">
                 <Clock className="w-3 h-3 text-cyan-400" />
-                <span className="font-bold text-white">{activeSession} SESSION</span>
+                <span className="font-bold text-white">{activeSession} SESI</span>
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
@@ -204,7 +204,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
             </div>
 
             <div className="mt-2 pt-2 border-t border-slate-900 flex items-center justify-between text-[10px] font-mono text-slate-400">
-              <span>Risk Appetite Score:</span>
+              <span>Skor Selera Risiko:</span>
               <span className={`font-bold ${globalRegime.riskScore > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {globalRegime.riskScore > 0 ? `+${globalRegime.riskScore}` : globalRegime.riskScore} / 100
               </span>
@@ -318,7 +318,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
                   : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
-              3/3 High Conviction
+              3/3 Keyakinan Tinggi
             </button>
             <button
               onClick={() => setSelectedPairFilter('MODERATE')}
@@ -328,7 +328,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
                   : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
-              2/3 Moderate
+              2/3 Sedang
             </button>
             <button
               onClick={() => setSelectedPairFilter('CAUTION')}
@@ -338,7 +338,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
                   : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
-              Waspada / Trap
+              Waspada / Jebakan
             </button>
           </div>
         </div>
@@ -438,7 +438,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
 
                     {/* Price Action */}
                     <div className="flex items-start justify-between gap-1 pt-1 border-t border-slate-800/60">
-                      <span className="text-slate-400 text-[10px] shrink-0">3. PRICE ACTION:</span>
+                      <span className="text-slate-400 text-[10px] shrink-0">3. AKSI HARGA:</span>
                       <span className={`text-[10px] font-bold text-right truncate ${
                         p.priceAction.bias === 'BULLISH' ? 'text-emerald-300' : p.priceAction.bias === 'BEARISH' ? 'text-rose-300' : 'text-slate-300'
                       }`}>
@@ -454,7 +454,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
                 {/* Bottom Gameplan & Actions */}
                 <div className="pt-2 border-t border-slate-850">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase">Intraday Plan:</span>
+                    <span className="text-[10px] font-mono text-slate-500 uppercase">Rencana Intraday:</span>
                     <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded ${
                       p.intradayPlan.recommendedAction === 'LOOK_FOR_BUY'
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'

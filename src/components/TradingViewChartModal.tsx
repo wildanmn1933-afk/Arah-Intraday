@@ -32,140 +32,140 @@ const PRIMARY_INSTRUMENTS: TVSymbolMeta[] = [
     symbolKey: 'AUDCAD',
     tvSymbol: 'FX:AUDCAD',
     label: 'AUD/CAD',
-    description: 'Australian Dollar / Canadian Dollar FX Live Stream',
+    description: 'Streaming Live FX Dolar Australia / Dolar Kanada',
     category: 'FOREX',
   },
   {
     symbolKey: 'EURUSD',
     tvSymbol: 'FX:EURUSD',
     label: 'EUR/USD',
-    description: 'Euro / US Dollar FX Live Stream',
+    description: 'Streaming Live FX Euro / Dolar AS',
     category: 'FOREX',
   },
   {
     symbolKey: 'GBPUSD',
     tvSymbol: 'FX:GBPUSD',
     label: 'GBP/USD',
-    description: 'British Pound / USD FX Live Stream',
+    description: 'Streaming Live FX Pound Inggris / USD',
     category: 'FOREX',
   },
   {
     symbolKey: 'USDJPY',
     tvSymbol: 'FX:USDJPY',
     label: 'USD/JPY',
-    description: 'USD / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX USD / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'AUDUSD',
     tvSymbol: 'FX:AUDUSD',
     label: 'AUD/USD',
-    description: 'Australian Dollar / US Dollar FX Live Stream',
+    description: 'Streaming Live FX Dolar Australia / Dolar AS',
     category: 'FOREX',
   },
   {
     symbolKey: 'USDCAD',
     tvSymbol: 'FX:USDCAD',
     label: 'USD/CAD',
-    description: 'US Dollar / Canadian Dollar FX Live Stream',
+    description: 'Streaming Live FX Dolar AS / Dolar Kanada',
     category: 'FOREX',
   },
   {
     symbolKey: 'USDCHF',
     tvSymbol: 'FX:USDCHF',
     label: 'USD/CHF',
-    description: 'US Dollar / Swiss Franc FX Live Stream',
+    description: 'Streaming Live FX Dolar AS / Franc Swiss',
     category: 'FOREX',
   },
   {
     symbolKey: 'NZDUSD',
     tvSymbol: 'FX:NZDUSD',
     label: 'NZD/USD',
-    description: 'New Zealand Dollar / USD FX Live Stream',
+    description: 'Streaming Live FX Dolar Selandia Baru / USD',
     category: 'FOREX',
   },
   {
     symbolKey: 'GBPJPY',
     tvSymbol: 'FX:GBPJPY',
     label: 'GBP/JPY',
-    description: 'British Pound / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX Pound Inggris / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'EURJPY',
     tvSymbol: 'FX:EURJPY',
     label: 'EUR/JPY',
-    description: 'Euro / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX Euro / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'AUDJPY',
     tvSymbol: 'FX:AUDJPY',
     label: 'AUD/JPY',
-    description: 'Australian Dollar / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX Dolar Australia / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'CADJPY',
     tvSymbol: 'FX:CADJPY',
     label: 'CAD/JPY',
-    description: 'Canadian Dollar / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX Dolar Kanada / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'CHFJPY',
     tvSymbol: 'FX:CHFJPY',
     label: 'CHF/JPY',
-    description: 'Swiss Franc / Japanese Yen FX Live Stream',
+    description: 'Streaming Live FX Franc Swiss / Yen Jepang',
     category: 'FOREX',
   },
   {
     symbolKey: 'EURGBP',
     tvSymbol: 'FX:EURGBP',
     label: 'EUR/GBP',
-    description: 'Euro / British Pound FX Live Stream',
+    description: 'Streaming Live FX Euro / Pound Inggris',
     category: 'FOREX',
   },
   {
     symbolKey: 'NZDCAD',
     tvSymbol: 'FX:NZDCAD',
     label: 'NZD/CAD',
-    description: 'New Zealand Dollar / Canadian Dollar FX Live Stream',
+    description: 'Streaming Live FX Dolar Selandia Baru / Dolar Kanada',
     category: 'FOREX',
   },
   {
     symbolKey: 'EURAUD',
     tvSymbol: 'FX:EURAUD',
     label: 'EUR/AUD',
-    description: 'Euro / Australian Dollar FX Live Stream',
+    description: 'Streaming Live FX Euro / Dolar Australia',
     category: 'FOREX',
   },
   {
     symbolKey: 'GBPAUD',
     tvSymbol: 'FX:GBPAUD',
     label: 'GBP/AUD',
-    description: 'British Pound / Australian Dollar FX Live Stream',
+    description: 'Streaming Live FX Pound Inggris / Dolar Australia',
     category: 'FOREX',
   },
   {
     symbolKey: 'AUDNZD',
     tvSymbol: 'FX:AUDNZD',
     label: 'AUD/NZD',
-    description: 'Australian Dollar / New Zealand Dollar FX Live Stream',
+    description: 'Streaming Live FX Dolar Australia / Dolar Selandia Baru',
     category: 'FOREX',
   },
   {
     symbolKey: 'AUDCHF',
     tvSymbol: 'FX:AUDCHF',
     label: 'AUD/CHF',
-    description: 'Australian Dollar / Swiss Franc FX Live Stream',
+    description: 'Streaming Live FX Dolar Australia / Franc Swiss',
     category: 'FOREX',
   },
   {
     symbolKey: 'CADCHF',
     tvSymbol: 'FX:CADCHF',
     label: 'CAD/CHF',
-    description: 'Canadian Dollar / Swiss Franc FX Live Stream',
+    description: 'Streaming Live FX Dolar Kanada / Franc Swiss',
     category: 'FOREX',
   },
   // Major Indices & Non-Delayed CFDs
@@ -173,7 +173,7 @@ const PRIMARY_INSTRUMENTS: TVSymbolMeta[] = [
     symbolKey: 'US30',
     tvSymbol: 'FOREXCOM:US30',
     label: 'US30 (Dow 30)',
-    description: 'Wall St 30 Non-Delayed CFD',
+    description: 'CFD Wall St 30 Tanpa Delay',
     snapshotUrl: 'https://www.tradingview.com/x/McUWwa6F/',
     category: 'INDICES',
   },
@@ -197,7 +197,7 @@ const PRIMARY_INSTRUMENTS: TVSymbolMeta[] = [
     symbolKey: 'US10Y',
     tvSymbol: 'TVC:US10Y',
     label: 'US10Y (10-Yr Yield)',
-    description: 'US 10-Year Treasury Benchmark Yield',
+    description: 'Yield Benchmark Treasury AS 10 Tahun',
     snapshotUrl: 'https://www.tradingview.com/symbols/TVC-US10Y/',
     category: 'INDICES',
   },
@@ -205,7 +205,7 @@ const PRIMARY_INSTRUMENTS: TVSymbolMeta[] = [
     symbolKey: 'USD',
     tvSymbol: 'TVC:DXY',
     label: 'DXY (Dollar Index)',
-    description: 'TradingView Real-Time Dollar Index',
+    description: 'Indeks Dolar Real-Time TradingView',
     snapshotUrl: 'https://www.tradingview.com/x/mxhFtDj9/',
     category: 'INDICES',
   },
@@ -214,28 +214,28 @@ const PRIMARY_INSTRUMENTS: TVSymbolMeta[] = [
     symbolKey: 'XAUUSD',
     tvSymbol: 'TVC:GOLD',
     label: 'XAUUSD (Gold)',
-    description: 'Spot Gold / US Dollar Real-Time',
+    description: 'Emas Spot / Dolar AS Real-Time',
     category: 'CRYPTO_COMMODITY',
   },
   {
     symbolKey: 'BTC',
     tvSymbol: 'BITSTAMP:BTCUSD',
     label: 'BTCUSD (Bitcoin)',
-    description: 'Bitcoin / USD 24/7 Live Stream',
+    description: 'Streaming Live Bitcoin / USD 24/7',
     snapshotUrl: 'https://www.tradingview.com/x/zRklu6Fj/',
     category: 'CRYPTO_COMMODITY',
   },
 ];
 
 const CURRENCY_FULL_NAMES: Record<string, string> = {
-  USD: 'US Dollar',
+  USD: 'Dolar AS',
   EUR: 'Euro',
-  GBP: 'British Pound',
-  JPY: 'Japanese Yen',
-  AUD: 'Australian Dollar',
-  NZD: 'New Zealand Dollar',
-  CAD: 'Canadian Dollar',
-  CHF: 'Swiss Franc',
+  GBP: 'Pound Inggris',
+  JPY: 'Yen Jepang',
+  AUD: 'Dolar Australia',
+  NZD: 'Dolar Selandia Baru',
+  CAD: 'Dolar Kanada',
+  CHF: 'Franc Swiss',
 };
 
 /**
@@ -286,7 +286,7 @@ function resolveSymbolToTVMeta(rawSymbol: string | undefined, prices: MarketPric
       symbolKey: ticker,
       tvSymbol: raw.toUpperCase(),
       label: ticker.length === 6 ? `${ticker.slice(0, 3)}/${ticker.slice(3)}` : ticker,
-      description: `${raw.toUpperCase()} Live Stream`,
+      description: `Streaming Live ${raw.toUpperCase()}`,
       category: 'FOREX',
     };
   }
@@ -439,7 +439,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
           {currentPrice && (
             <div className="flex items-center gap-3 font-mono text-xs">
               <div>
-                <span className="text-slate-400 mr-1.5">Last Price:</span>
+                <span className="text-slate-400 mr-1.5">Harga Terakhir:</span>
                 <span className="text-slate-100 font-bold text-sm">
                   {currentPrice.price.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
@@ -470,10 +470,10 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
                     ? 'bg-cyan-900/60 text-cyan-200 border-cyan-700'
                     : 'bg-slate-800/80 text-slate-300 hover:text-white border-slate-700 hover:bg-slate-800'
                 }`}
-                title="Toggle TradingView Chart Snapshot Image"
+                title="Alihkan Gambar Snapshot Grafik TradingView"
               >
                 <ImageIcon className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Snapshot</span>
+                <span className="hidden sm:inline">Tangkapan</span>
               </button>
             )}
 
@@ -483,7 +483,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
               target="_blank"
               rel="noreferrer"
               className="px-2.5 py-1 rounded text-xs font-mono bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 hover:text-cyan-100 border border-cyan-700/80 flex items-center gap-1.5 transition cursor-pointer shadow-sm"
-              title={`Open ${selectedMeta.label} (${selectedMeta.tvSymbol}) chart on TradingView`}
+              title={`Buka grafik ${selectedMeta.label} (${selectedMeta.tvSymbol}) di TradingView`}
             >
               <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
               <span className="font-medium">TradingView ↗</span>
@@ -522,7 +522,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
                 >
                   <span>{inst.label}</span>
                   {inst.snapshotUrl && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" title="TradingView Snapshot Verified" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" title="Snapshot TradingView Terverifikasi" />
                   )}
                 </button>
               );
@@ -557,10 +557,10 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="px-2 py-1 rounded-md text-xs font-mono bg-slate-900/60 text-slate-400 hover:text-cyan-300 hover:bg-slate-800 border border-slate-800 flex items-center gap-1 transition"
-                title="Search any ticker symbol"
+                title="Cari simbol ticker apa pun"
               >
                 <Search className="w-3 h-3" />
-                <span>Search</span>
+                <span>Cari</span>
               </button>
             )}
           </div>
@@ -599,7 +599,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
             <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-slate-950 overflow-auto">
               <div className="mb-2 text-xs font-mono text-cyan-300 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Verified TradingView Snapshot: {selectedMeta.snapshotUrl}</span>
+                <span>Tangkapan TradingView Terverifikasi: {selectedMeta.snapshotUrl}</span>
               </div>
               <img
                 src={snapshotImageUrl}
@@ -623,7 +623,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
         <div className="px-4 py-2 border-t border-slate-800/80 bg-slate-950/80 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400">
           <div className="flex items-center gap-2">
             <Activity className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Feed Source: TradingView Real-Time Non-Delayed WebSocket ({selectedMeta.tvSymbol})</span>
+            <span>Sumber Feed: WebSocket Real-Time TradingView Tanpa Delay ({selectedMeta.tvSymbol})</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -634,12 +634,12 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
                 rel="noreferrer"
                 className="text-cyan-400 hover:underline flex items-center gap-1"
               >
-                <span>Snapshot Link</span>
+                <span>Tautan Tangkapan</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             )}
             <span className="text-slate-600">•</span>
-            <span className="text-slate-500">Continuous 24/5 CFD / 24/7 Crypto Live Data</span>
+            <span className="text-slate-500">Data Live CFD 24/5 / Kripto 24/7 Tanpa Henti</span>
           </div>
         </div>
       </div>

@@ -120,7 +120,13 @@ async function callGeminiWithResilience(
   ai: GoogleGenAI,
   config: GeminiCallConfig
 ): Promise<string | null> {
-  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.1-flash-lite'];
+  const modelsToTry = [
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+  ];
   const maxRetriesPerModel = 1;
 
   return geminiQueue.run(async () => {
@@ -214,7 +220,7 @@ export async function analyzeMarketEventWithGemini(event: MarketEvent): Promise<
         currency_strength: strengthSnapshot,
         macro_releases: [],
       },
-      key_implications: ['Awaiting additional verified news wire releases before computing directional delta.'],
+      key_implications: ['Menunggu rilis arus berita terverifikasi tambahan sebelum menghitung delta arah.'],
       affected_assets_outlook: event.affected_assets.map(a => ({
         asset: a,
         bias: 'NEUTRAL',
@@ -257,6 +263,7 @@ ${macroReleases.slice(0, 5).map(m => `${m.country_code} ${m.event_name}: Actual 
 ${activeThemes.map(t => t.title).join(' | ')}
 
 STRICT RULES:
+0. Write every string value in formal Indonesian (Bahasa Indonesia). Keep tickers, asset symbols, and standard financial terms as-is.
 1. Explain the market context using ONLY the verified data provided above.
 2. NEVER invent prices, reactions, or sources.
 3. If there is insufficient data to judge an asset's direction, state "INSUFFICIENT CURRENT DATA".
@@ -385,7 +392,7 @@ export async function generateMacroMarketOverview(): Promise<AIAnalysis> {
 - Key Events: ${events.map(e => e.title).join(' | ')}
 - Economic Releases: ${macro.map(m => `${m.event_name}: ${m.actual || 'Pending'}`).join(' | ')}
 
-Strict rules: No fabricated numbers. Return JSON:
+Strict rules: No fabricated numbers. Write every string value in formal Indonesian (Bahasa Indonesia); keep tickers and asset symbols as-is. Return JSON:
 {
   "summary": "3-4 sentence comprehensive market regime assessment.",
   "key_implications": ["Key strategic takeaway 1", "Key strategic takeaway 2", "Key strategic takeaway 3"],
@@ -413,11 +420,11 @@ Strict rules: No fabricated numbers. Return JSON:
           },
           key_implications: Array.isArray(parsed.key_implications) && parsed.key_implications.length > 0 ? parsed.key_implications : [
             'Precious metals and safe-haven assets sustain resilient baseline support.',
-            'Cross-currency dispersion shows relative strength in high-beta G8 currencies.',
+            'Dispersi lintas mata uang menunjukkan kekuatan relatif pada mata uang G8 high-beta.',
             'Deduplicated event pipeline maintains single source of truth across news wires.'
           ],
           affected_assets_outlook: [
-            { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Central bank demand and real rate trajectory.' },
+            { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Permintaan bank sentral dan trajektori suku bunga riil.' },
             { asset: 'BTC', bias: 'BULLISH', rationale: 'Global liquidity momentum.' },
             { asset: 'US500', bias: 'NEUTRAL', rationale: 'Balanced growth vs valuation multiple.' },
             { asset: 'USD', bias: 'NEUTRAL', rationale: 'Range-bound yield differentials.' },
