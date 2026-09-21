@@ -16,6 +16,7 @@ Repo knowledge for ArahMarket 2.0 (market intelligence platform).
 ## Conventions
 - UI language is Indonesian. Keep terminology consistent: domain terms stay as-is (Intermarket, Makro, G8, DXY, AI), everything else Indonesian. Do not mix both languages in one label.
 - Nav labels come from `src/lib/navLabels.ts` (`NAV_LABELS` / `getNavLabel`) — Sidebar and Header both read from it. Never re-add a local label map.
+- Enum values (e.g. `LOOK_FOR_SELL`, `NEW_YORK`) are identifiers, not UI copy. Never render them directly — map via a local `Record<string,string>` (see `ACTION_LABELS` / `SESSION_LABELS` in `src/components/ArahMarketView.tsx`) and fall back to the raw value.
 - Asset lists come from `shared/canonicalAssets.ts` (`CANONICAL_ASSETS`, `findAsset`, `getAssetCategory`, `getAssetDisplayName`). Adding an instrument means editing only that file.
 - All financial numbers use `font-mono`; `src/index.css` applies `tabular-nums` to it globally.
 - Design tokens live in the `@theme` block of `src/index.css` (fonts, `--text-2xs`, `--shadow-panel`).
