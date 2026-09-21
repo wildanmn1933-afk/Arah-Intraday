@@ -90,7 +90,7 @@ export class ArahMarketEngine {
     const intermarketSpreads: IntermarketSpreadItem[] = [
       {
         id: 'spread-us10y-us02y',
-        name: 'US Yield Curve Slope',
+        name: 'Kemiringan Kurva Yield AS',
         formulaLabel: 'US10Y - US02Y',
         currentValue: us10yMinusUs02y,
         unit: '%',
@@ -104,7 +104,7 @@ export class ArahMarketEngine {
       },
       {
         id: 'spread-us-de',
-        name: 'Transatlantic Rate Differential',
+        name: 'Diferensial Suku Bunga Transatlantik',
         formulaLabel: 'US10Y - Bund 10Y',
         currentValue: usDeSpread,
         unit: '%',
@@ -118,7 +118,7 @@ export class ArahMarketEngine {
       },
       {
         id: 'spread-us-jp',
-        name: 'Carry Trade Yield Engine',
+        name: 'Mesin Yield Carry Trade',
         formulaLabel: 'US10Y - JGB 10Y',
         currentValue: usJpSpread,
         unit: '%',
@@ -132,7 +132,7 @@ export class ArahMarketEngine {
       },
       {
         id: 'spread-real-yield',
-        name: 'US 10Y Real Yield (TIPS)',
+        name: 'Yield Riil AS 10Y (TIPS)',
         formulaLabel: 'Nominal 10Y - Inflation Exp',
         currentValue: realYield10y,
         unit: '%',
@@ -147,32 +147,32 @@ export class ArahMarketEngine {
     ];
 
     // 3. Klasifikasi Rezim Pasar Global
-    let regimeTitle = 'BALANCED ROTATIONAL REGIME';
+    let regimeTitle = 'REZIM ROTASI SEIMBANG';
     let regimeBadgeColor = 'bg-cyan-950 text-cyan-300 border-cyan-800';
     let riskScore = 15;
     let summaryNarrative =
       'Aliran modal intraday berputar seimbang antar kelas aset. Tidak ada dominasi kepanikan atau euforia berlebih menjelang rilis data utama sesi berikutnya.';
 
     if (us10yChange > 0.4 && dxyChange > 0.2) {
-      regimeTitle = 'HAWKISH YIELD PRESSURE';
+      regimeTitle = 'TEKANAN YIELD HAWKISH';
       regimeBadgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
       riskScore = -45;
       summaryNarrative =
         'Kenaikan imbal hasil obligasi AS dan penguatan DXY di atas harga buka sesi mendominasi arah pasar. Pasangan valuta non-USD dan aset berimbal hasil rendah tertekan.';
     } else if (sp500Change > 0.4 && dxyChange < -0.15) {
-      regimeTitle = 'RISK-ON EXPANSION';
+      regimeTitle = 'EKSPANSI SELERA RISIKO';
       regimeBadgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
       riskScore = +65;
       summaryNarrative =
         'Sentimen selera risiko tinggi. Dolar melemah seiring masuknya modal global ke pasar saham dan mata uang komoditas (AUD, CAD, NZD).';
     } else if (sp500Change < -0.5 && goldChange > 0.3) {
-      regimeTitle = 'GLOBAL FLIGHT TO SAFETY';
+      regimeTitle = 'ARUS ASET AMAN GLOBAL';
       regimeBadgeColor = 'bg-rose-950 text-rose-300 border-rose-800';
       riskScore = -75;
       summaryNarrative =
-        'Kekhawatiran geopolitik atau perlambatan makro memicu aksi jual saham dan perburuan aset safe-haven (Emas & Swiss Franc).';
+        'Kekhawatiran geopolitik atau perlambatan makro memicu aksi jual saham dan perburuan aset aman (Emas & Franc Swiss).';
     } else if (dxyChange < -0.3 && us10yChange < -0.5) {
-      regimeTitle = 'DOVISH LIQUIDITY EASING';
+      regimeTitle = 'PELONGGARAN LIKUIDITAS DOVISH';
       regimeBadgeColor = 'bg-indigo-950 text-indigo-300 border-indigo-800';
       riskScore = +35;
       summaryNarrative =

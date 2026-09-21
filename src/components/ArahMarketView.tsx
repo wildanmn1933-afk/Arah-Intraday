@@ -244,7 +244,7 @@ export const ArahMarketView: React.FC<ArahMarketViewProps> = ({
             ))}
           </div>
           <div className="text-[10px] font-mono text-slate-500 pt-1">
-            *Deteksi anomali memfilter jebakan likuiditas (*fakeouts*).
+            *Deteksi anomali memfilter jebakan likuiditas (fakeout).
           </div>
         </div>
 

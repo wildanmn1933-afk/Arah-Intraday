@@ -268,7 +268,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               {pairOpportunities[1].catalyst}
             </p>
             <div className="mt-2 text-[10px] text-cyan-400 font-mono">
-              Action: {pairOpportunities[1].tradeStyle}
+              Aksi: {pairOpportunities[1].tradeStyle}
             </div>
           </div>
         )}
