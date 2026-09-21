@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { translateCategory, translateFilter, translateStatus } from '../lib/statusLabels';
 import {
   Zap,
   ArrowRight,
@@ -108,7 +109,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
     let regimeColor = 'text-amber-300';
     let regimeBadge = 'bg-amber-950/80 text-amber-300 border-amber-800/80';
     if (bullishCount >= 7) {
-      overallRegime = 'RISK-ON DOMINANT';
+      overallRegime = 'RISK-ON DOMINAN';
       regimeColor = 'text-emerald-400';
       regimeBadge = 'bg-emerald-950/80 text-emerald-300 border-emerald-800/80';
     } else if (bearishCount >= 7) {
@@ -139,15 +140,19 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       {/* 0. PROFESSIONAL WELCOME & MACRO SURVEILLANCE HERO BANNER */}
       {/* ======================================================== */}
       <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-xl">
-        {/* Background Curated Financial Photography with Gradient Overlay */}
+        {/* Latar grid teknikal + glow, konsisten dengan halaman publik */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={CATEGORY_HERO_IMAGES.OVERVIEW}
-            alt="Trading Desk"
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover object-center opacity-25 scale-105"
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, rgba(148,163,184,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.07) 1px, transparent 1px)',
+              backgroundSize: '26px 26px',
+            }}
           />
-          <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-950/90 to-slate-900/80" />
+          <div className="absolute -top-20 -right-10 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="absolute -bottom-24 left-1/4 w-80 h-80 rounded-full bg-blue-600/10 blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-950/85 to-slate-900/70" />
           <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
         </div>
 
@@ -158,11 +163,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <div className="flex items-center gap-2 flex-wrap">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-800/80 text-cyan-300 text-[11px] font-medium font-sans">
                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                Live Market Surveillance
+                Pengawasan Pasar Live
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-300 text-[11px] font-medium font-sans">
                 <Sparkles className="w-3 h-3 text-emerald-400" />
-                Macro Telemetry Active
+                Telemetri Makro Aktif
               </span>
             </div>
 
@@ -171,7 +176,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-              Pantau disparitas mata uang G8, arah bias 13 instrumen utama hari ini, dan transmisi intermarket obligasi, emas, saham, serta minyak secara real-time.
+              Pantau disparitas mata uang G8, arah bias 14 instrumen utama hari ini, dan transmisi intermarket obligasi, emas, saham, serta minyak secara real-time.
             </p>
 
             {/* Quick Navigation Action Pills */}
@@ -188,7 +193,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 onClick={() => onNavigateTab('terminal')}
                 className="px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-750 text-slate-200 border border-slate-700/80 hover:border-slate-600 transition flex items-center gap-1.5 cursor-pointer"
               >
-                <span>Market Map 13 Aset</span>
+                <span>Peta Pasar 14 Aset</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <button
@@ -203,7 +208,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 className="px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-750 text-slate-200 border border-slate-700/80 hover:border-slate-600 transition flex items-center gap-1.5 cursor-pointer"
               >
                 <Zap className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Intermarket Flow</span>
+                <span>Aliran Intermarket</span>
               </button>
             </div>
           </div>
@@ -215,7 +220,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 <Activity className="w-3.5 h-3.5 text-cyan-400" />
                 Disparitas Sesi Ini
               </span>
-              <span className="text-[10px] text-emerald-400 font-mono font-bold">LIVE UPDATE</span>
+              <span className="text-[10px] text-emerald-400 font-mono font-bold">PEMBARUAN LIVE</span>
             </div>
 
             <div className="space-y-2">
@@ -272,7 +277,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           <div className="space-y-0.5">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
               <Flame className="w-3 h-3 text-cyan-400" />
-              <span>MARKET REGIME</span>
+              <span>REZIM PASAR</span>
             </span>
             <div className={`text-xs font-mono font-bold ${kpiStats.regimeColor}`}>
               {kpiStats.overallRegime}
@@ -308,7 +313,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             onClick={() => onNavigateTab('currency')}
             className="text-[10px] font-mono text-cyan-400 hover:text-cyan-300 font-semibold px-2 py-1 rounded bg-slate-950 border border-slate-800 transition cursor-pointer"
           >
-            Matrix →
+            Matriks →
           </button>
         </div>
 
@@ -317,7 +322,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           <div className="space-y-0.5 truncate pr-2">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
               <Clock className="w-3 h-3 text-amber-400" />
-              <span>IMMINENT CATALYST</span>
+              <span>KATALIS TERDEKAT</span>
             </span>
             <div className="text-xs font-mono font-bold text-slate-200 truncate">
               {kpiStats.upcomingHigh ? (
@@ -328,7 +333,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <span className="truncate">{kpiStats.upcomingHigh.event_name}</span>
                 </span>
               ) : (
-                <span className="text-slate-400">No imminent release</span>
+                <span className="text-slate-400">Tidak ada rilis terdekat</span>
               )}
             </div>
           </div>
@@ -350,7 +355,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           <div className="space-y-0.5">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
               <Zap className="w-3 h-3 text-indigo-400" />
-              <span>CROSS-ASSET TRANSMISSION</span>
+              <span>TRANSMISI LINTAS ASET</span>
             </span>
             <div className="text-xs font-mono font-bold text-slate-100 flex items-center gap-1.5">
               <span className="text-indigo-400 font-mono">DXY • XAU • US10Y • SPX</span>
@@ -379,7 +384,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 SEGMEN BARU: ARAH MARKET HARI INI
               </span>
               <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-cyan-500 text-slate-950">
-                TRIPLE-CONFLUENCE
+                KONFLUENSI TRIPEL
               </span>
             </div>
             <p className="text-[11px] text-slate-400 mt-0.5">
@@ -411,7 +416,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       />
 
       {/* ======================================================== */}
-      {/* 3. TOP SECTION: BREAKING NEWS WIRE & MACRO RADAR         */}
+      {/* 3. TOP SECTION: KABAR TERKINI & MACRO RADAR         */}
       {/* ======================================================== */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
         {/* LEFT COLUMN: LIVE FLASH NEWS WIRE (8 COLS) */}
@@ -430,7 +435,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     }`}
                   >
                     <Radio className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>BREAKING NEWS WIRE</span>
+                    <span>KABAR TERKINI</span>
                     <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-950 text-cyan-400">
                       {events.length}
                     </span>
@@ -445,7 +450,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     }`}
                   >
                     <Activity className="w-3.5 h-3.5 text-amber-400" />
-                    <span>ECONOMIC CALENDAR</span>
+                    <span>KALENDER EKONOMI</span>
                     <span className="text-[9px] px-1 py-0.2 rounded bg-amber-950 text-amber-400">
                       {calendar.length}
                     </span>
@@ -465,7 +470,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                       title="Saring hanya berita berdampak tinggi (High & Critical) agar korelasi pair akurat"
                     >
                       <Flame className="w-3 h-3 text-rose-400" />
-                      <span>HIGH IMPACT ONLY</span>
+                      <span>HANYA DAMPAK TINGGI</span>
                       <span className="text-[8.5px] px-1 rounded bg-rose-900/60 text-rose-200 font-extrabold">
                         {highImpactEvents.length}
                       </span>
@@ -494,16 +499,16 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                       onClick={onSyncWire}
                       disabled={isSyncingWire}
                       className="flex items-center gap-1 text-[11px] font-mono text-slate-300 hover:text-cyan-300 px-2 py-1 rounded bg-slate-950 border border-slate-800 transition disabled:opacity-50 cursor-pointer"
-                      title="Sync Wire Feeds"
+                      title="Sinkronkan Arus Berita"
                     >
                       <RefreshCw className={`w-3 h-3 ${isSyncingWire ? 'animate-spin text-cyan-400' : ''}`} />
-                      <span className="hidden sm:inline">Sync</span>
+                      <span className="hidden sm:inline">Sinkron</span>
                     </button>
                     <button
                       onClick={() => onNavigateTab('events')}
                       className="flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 font-semibold px-2.5 py-1 rounded bg-slate-950 border border-slate-800 transition cursor-pointer"
                     >
-                      <span>Full News Wire</span>
+                      <span>Kabar Penuh</span>
                       <ArrowRight className="w-3 h-3" />
                     </button>
                   </>
@@ -512,7 +517,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     onClick={() => onNavigateTab('macro')}
                     className="flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 font-semibold px-2.5 py-1 rounded bg-slate-950 border border-slate-800 transition cursor-pointer"
                   >
-                    <span>Full Calendar</span>
+                    <span>Kalender Penuh</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 )}
@@ -602,7 +607,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
                            {/* Category */}
                            <span className="text-[8.5px] px-1.5 py-0.2 rounded font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                             {event.primary_category}
+                             {translateCategory(event.primary_category)}
                            </span>
 
                            {/* Impact Level Badge */}
@@ -616,7 +621,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                              }`}
                            >
                              {isCritical && <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping" />}
-                             {isCritical ? '⚡ CRITICAL' : isHigh ? '🔥 HIGH' : event.impact_level}
+                             {isCritical ? '⚡ KRITIS' : isHigh ? '🔥 TINGGI' : translateFilter(event.impact_level)}
                            </span>
 
                            <button
@@ -626,7 +631,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                              }}
                              className="text-[10px] text-cyan-400 hover:text-cyan-300 underline underline-offset-2 ml-1 cursor-pointer"
                            >
-                             Inspect
+                             Periksa
                            </button>
                          </div>
                        </div>
@@ -666,7 +671,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                             : 'bg-slate-800 text-slate-400 border-slate-700'
                         }`}
                       >
-                        {item.impact}
+                        {translateFilter(item.impact)}
                       </span>
                     </div>
                   </div>
@@ -676,7 +681,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           </div>
         </div>
 
-        {/* RIGHT COLUMN: TODAY'S MACRO RADAR & AI SYNTHESIS (4 COLS) */}
+        {/* RIGHT COLUMN: RADAR MAKRO HARI INI & AI SYNTHESIS (4 COLS) */}
         <div className="lg:col-span-4 space-y-3.5">
           {/* Today's Key Catalysts (Compact 3 items) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 shadow-sm space-y-2.5">
@@ -684,7 +689,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <div className="flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-400" />
                 <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
-                  TODAY'S MACRO RADAR
+                  RADAR MAKRO HARI INI
                 </h3>
               </div>
               <button
@@ -719,7 +724,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                           : 'bg-amber-950/80 text-amber-400 border border-amber-800/60'
                       }`}
                     >
-                      {cat.status}
+                      {translateStatus(cat.status)}
                     </span>
                   </div>
 
@@ -738,7 +743,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-1.5">
                 <span className="text-[11px] font-mono font-bold text-cyan-400 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>AI MACRO SYNTHESIS</span>
+                  <span>SINTESIS MAKRO AI</span>
                 </span>
                 <button
                   type="button"
@@ -760,7 +765,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       {/* 3. LOWER SECTION: MARKET SURVEILLANCE & G8 CURRENCY FLOW */}
       {/* ======================================================== */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
-        {/* LEFT COLUMN: LIVE MARKET SURVEILLANCE (8 COLS) */}
+        {/* LEFT COLUMN: PENGAWASAN PASAR LIVE (8 COLS) */}
         <div className="lg:col-span-8">
           <MarketDataGrid
             prices={prices}

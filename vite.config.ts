@@ -12,6 +12,11 @@ export default defineConfig(() => {
       },
     },
     server: {
+      // Host kerja (mis. work-1-*.prod-runtime.all-hands.dev) ditolak Vite secara
+      // default dengan 403 "Blocked request". Izinkan host publik dari env.
+      allowedHosts: process.env.ALLOWED_HOSTS
+        ? process.env.ALLOWED_HOSTS.split(',').map(h => h.trim())
+        : true as const,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',

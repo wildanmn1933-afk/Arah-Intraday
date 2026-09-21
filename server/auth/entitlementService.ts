@@ -220,7 +220,7 @@ export function requirePermission(permission: FeaturePermission) {
       const user = req.user!;
       if (!EntitlementService.canAccessFeature(user, permission)) {
         res.status(403).json({
-          error: `Upgrade Required: This action requires a subscription with '${permission}' permission.`,
+          error: `Perlu Peningkatan Paket: aksi ini memerlukan langganan dengan izin '${permission}'.`,
           required_permission: permission,
           current_plan: user.plan || 'FREE',
         });

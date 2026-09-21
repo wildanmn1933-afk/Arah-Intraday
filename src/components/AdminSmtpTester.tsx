@@ -128,7 +128,7 @@ export const AdminSmtpTester: React.FC<AdminSmtpTesterProps> = ({
                       : 'bg-amber-950/80 text-amber-300 border-amber-700/60'
                   }`}
                 >
-                  {config.configured ? '● LIVE SMTP READY' : '○ SIMULATION MODE'}
+                  {config.configured ? '● SMTP LIVE SIAP' : '○ MODE SIMULASI'}
                 </span>
               )}
             </div>
@@ -185,7 +185,7 @@ export const AdminSmtpTester: React.FC<AdminSmtpTesterProps> = ({
               </a>
             </li>
             <li>
-              Buat nama aplikasi baru (misal: <em>ArahMarket Terminal</em>), lalu klik <strong>Generate</strong>.
+              Buat nama aplikasi baru (misal: <em>Terminal ArahMarket</em>), lalu klik <strong>Buat</strong>.
             </li>
             <li>
               Salin kode 16-karakter yang muncul (misal: <code className="bg-slate-950 px-1.5 py-0.5 rounded text-cyan-300 font-mono">abcd efgh ijkl mnop</code>).
@@ -282,7 +282,7 @@ export const AdminSmtpTester: React.FC<AdminSmtpTesterProps> = ({
             {config?.configured ? (
               <span className="text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Live Delivery Siap</span>
+                <span>Pengiriman Live Siap</span>
               </span>
             ) : (
               <span className="text-amber-400 flex items-center gap-1">
@@ -419,7 +419,7 @@ export const AdminSmtpTester: React.FC<AdminSmtpTesterProps> = ({
                 Server: {testResult.config.host}:{testResult.config.port}
               </span>
               <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
-                Pengirim: {testResult.config.userMasked || 'None'}
+                Pengirim: {testResult.config.userMasked || '—'}
               </span>
               <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
                 Email Terkirim: {testResult.testEmailSent ? 'Ya (Sukses)' : 'Tidak'}

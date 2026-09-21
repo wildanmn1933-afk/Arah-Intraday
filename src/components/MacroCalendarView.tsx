@@ -1,3 +1,4 @@
+import { translateFilter, translateStatus } from '../lib/statusLabels';
 import React, { useState, useMemo, useEffect } from 'react';
 import { EconomicEvent } from '../types';
 import {
@@ -28,12 +29,12 @@ interface MacroCalendarViewProps {
 
 const TIMEZONES = [
   { value: 'Asia/Jakarta', label: 'WIB (Jakarta UTC+7) [Waktu Default]' },
-  { value: 'UTC', label: 'UTC (Universal Coordinated Time)' },
-  { value: 'LOCAL', label: 'Local (Waktu Perangkat Anda)' },
-  { value: 'America/New_York', label: 'New York (EDT/EST)' },
-  { value: 'Europe/London', label: 'London (BST/GMT)' },
-  { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
-  { value: 'Asia/Singapore', label: 'Singapore (SGT)' },
+  { value: 'UTC', label: 'UTC (Waktu Universal Terkoordinasi)' },
+  { value: 'LOCAL', label: 'Lokal (Waktu Perangkat Anda)' },
+  { value: 'America/New_York', label: 'New York (Waktu AS Timur)' },
+  { value: 'Europe/London', label: 'London (Waktu Inggris)' },
+  { value: 'Asia/Tokyo', label: 'Tokyo (Waktu Jepang)' },
+  { value: 'Asia/Singapore', label: 'Singapura (Waktu SGT)' },
 ];
 
 export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
@@ -299,7 +300,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                   liveStatus === 'DELAYED' ? 'bg-amber-950/80 text-amber-300 border-amber-800/60' :
                   'bg-rose-950/80 text-rose-300 border-rose-800/60'
                 }`}>
-                  {liveStatus}
+                  {translateStatus(liveStatus)}
                 </span>
               </MetricTooltip>
               <span className="text-[10px] font-mono text-cyan-400 font-semibold bg-cyan-950/50 px-1.5 py-0.5 rounded border border-cyan-900/50">
@@ -310,7 +311,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
           <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 mt-1 flex-wrap">
             <span>Sumber: TradingView Real Institutional Feed</span>
             <span>•</span>
-            <span>Sinkronisasi Terakhir: {latestUpdated ? `${latestUpdated} WIB` : 'Live'}</span>
+            <span>Sinkronisasi Terakhir: {latestUpdated ? `${latestUpdated} WIB` : 'LANGSUNG'}</span>
           </div>
         </div>
 
@@ -370,7 +371,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                {f}
+                {translateFilter(f)}
               </button>
             ))}
           </div>
@@ -382,7 +383,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
             className="p-1.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition cursor-pointer disabled:opacity-50 flex items-center gap-1 text-xs font-mono"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
-            <span className="hidden sm:inline">Sync</span>
+            <span className="hidden sm:inline">Sinkron</span>
           </button>
         </div>
       </div>
@@ -397,7 +398,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">
-                  RILIS BERIKUTNYA / NEXT UPCOMING
+                  RILIS BERIKUTNYA
                 </span>
                 <span className="px-1.5 py-0.2 rounded font-bold text-[10px] bg-slate-800 text-cyan-300 border border-slate-700">
                   {nextEvent.currency}
@@ -444,7 +445,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
             }`}
           >
             <Clock className="w-3.5 h-3.5 text-cyan-400" />
-            <span>AKAN DATANG (UPCOMING)</span>
+            <span>AKAN DATANG</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               timingFilter === 'UPCOMING' ? 'bg-cyan-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300'
             }`}>
@@ -460,7 +461,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                 : 'text-slate-400 hover:text-slate-200 bg-slate-900/60 border border-slate-800/60'
             }`}
           >
-            <span>HARI INI (TODAY - WIB)</span>
+            <span>HARI INI (WIB)</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               timingFilter === 'TODAY' ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300'
             }`}>
@@ -476,7 +477,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                 : 'text-slate-400 hover:text-slate-200 bg-slate-900/60 border border-slate-800/60'
             }`}
           >
-            <span>BESOK (TOMORROW)</span>
+            <span>BESOK</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               timingFilter === 'TOMORROW' ? 'bg-indigo-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300'
             }`}>
@@ -492,7 +493,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                 : 'text-slate-400 hover:text-slate-200 bg-slate-900/60 border border-slate-800/60'
             }`}
           >
-            <span>SUDAH RILIS (RELEASED)</span>
+            <span>SUDAH RILIS</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               timingFilter === 'RELEASED' ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300'
             }`}>
@@ -547,38 +548,38 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
               </th>
               <th className="py-2.5 px-2.5">
                 <MetricTooltip term="IMPACT" underline={false}>
-                  <span>Impact</span>
+                  <span>Dampak</span>
                 </MetricTooltip>
               </th>
-              <th className="py-2.5 px-2.5">Indikator Acara / Event</th>
+              <th className="py-2.5 px-2.5">Indikator Agenda</th>
               <th className="py-2.5 px-2.5 text-right">
                 <MetricTooltip term="ACTUAL" underline={false}>
-                  <span>Actual</span>
+                  <span>Aktual</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-right">
                 <MetricTooltip term="FORECAST" underline={false}>
-                  <span>Forecast</span>
+                  <span>Proyeksi</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-right">
                 <MetricTooltip term="PREVIOUS" underline={false}>
-                  <span>Previous</span>
+                  <span>Sebelumnya</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-right">
                 <MetricTooltip term="SURPRISE" underline={false}>
-                  <span>Surprise</span>
+                  <span>Kejutan</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-right">
                 <MetricTooltip term="CHANGE" underline={false}>
-                  <span>Change</span>
+                  <span>Perubahan</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-center">
                 <MetricTooltip term="REACTION" underline={false}>
-                  <span>Reaction</span>
+                  <span>Reaksi</span>
                 </MetricTooltip>
               </th>
               <th className="py-2.5 px-2.5 text-right">
@@ -588,7 +589,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
               </th>
               <th className="py-2.5 px-2.5 text-center">
                 <Tooltip
-                  title="Macro & Fundamental Intel"
+                  title="Intel Makro & Fundamental"
                   content="Buka drawer detail untuk melihat skenario pasar, implikasi suku bunga, dan korelasi antar-aset."
                   position="top"
                 >
@@ -736,7 +737,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                             {item.surprise}
                           </span>
                         ) : (
-                          <span className="text-[10px] text-slate-600">Pending</span>
+                          <span className="text-[10px] text-slate-600">Menunggu</span>
                         )}
                       </td>
 
@@ -758,7 +759,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                             {item.market_reaction.primary_asset} {item.market_reaction.r5m}
                           </span>
                         ) : (
-                          <span className="text-[10px] text-slate-600 font-mono">Standby</span>
+                          <span className="text-[10px] text-slate-600 font-mono">Siaga</span>
                         )}
                       </td>
 
@@ -801,10 +802,10 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                                 </span>
                                 <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
                                   <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                                  Confidence: <strong className="text-emerald-400 font-bold">{item.confidence || 95}%</strong>
+                                  Keyakinan: <strong className="text-emerald-400 font-bold">{item.confidence || 95}%</strong>
                                 </span>
                                 <span className="text-[10px] font-mono text-slate-400">
-                                  Freshness: <strong className="text-slate-200">{item.freshness || 'Verified Live'}</strong>
+                                  Kesegaran: <strong className="text-slate-200">{item.freshness || 'Terverifikasi Live'}</strong>
                                 </span>
                               </div>
 
@@ -816,25 +817,25 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                             {/* Quantitative Metrics Bar */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">
-                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Actual vs Forecast</div>
+                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Aktual vs Proyeksi</div>
                                 <div className="text-xs font-bold text-slate-100 mt-0.5">
-                                  {item.actual || 'Pending'} <span className="text-slate-500 font-normal">vs</span> {item.forecast || '—'}
+                                  {item.actual || 'Menunggu'} <span className="text-slate-500 font-normal">vs</span> {item.forecast || '—'}
                                 </div>
                               </div>
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">
-                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Macro Surprise</div>
+                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Kejutan Makro</div>
                                 <div className={`text-xs font-bold mt-0.5 ${isBeat ? 'text-emerald-400' : isMiss ? 'text-rose-400' : 'text-slate-300'}`}>
                                   {item.surprise || 'N/A (Pending)'}
                                 </div>
                               </div>
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">
-                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Change (vs Previous)</div>
+                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Perubahan (vs Sebelumnya)</div>
                                 <div className="text-xs font-bold text-slate-200 mt-0.5">
                                   {item.change || '—'} <span className="text-slate-500 font-normal">from {item.previous || '—'}</span>
                                 </div>
                               </div>
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">
-                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Data Status & Evidence</div>
+                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Status Data & Bukti</div>
                                 <div className="text-xs font-bold text-emerald-400 mt-0.5 flex items-center gap-1.5">
                                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                                   <span>{item.data_status} Verified</span>
@@ -850,7 +851,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                                     <Activity className="w-3.5 h-3.5" />
                                     Actual Market Reaction Across Horizons ({item.market_reaction.primary_asset})
                                   </span>
-                                  <span className="text-[10px] font-mono text-slate-500">Real Execution Data</span>
+                                  <span className="text-[10px] font-mono text-slate-500">Data Eksekusi Nyata</span>
                                 </div>
                                 <div className="grid grid-cols-5 gap-2 text-center font-mono">
                                   <div className="p-2 rounded bg-slate-900 border border-slate-800">
@@ -906,8 +907,8 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                               {/* 2. Actual Market Reaction */}
                               <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/90">
                                 <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-400 mb-1.5">
-                                  <span>2. ACTUAL MARKET REACTION</span>
-                                  <span className="text-[9px] text-slate-500 font-normal">(Observed Liquidity & Order Flow)</span>
+                                  <span>2. REAKSI PASAR AKTUAL</span>
+                                  <span className="text-[9px] text-slate-500 font-normal">(Observed Likuiditas & Aliran Order)</span>
                                 </div>
                                 <p className="text-xs text-slate-300 leading-relaxed font-sans">
                                   {item.actual_market_reaction ||
@@ -920,7 +921,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
 
                             <div className="text-[10px] font-mono text-slate-500 flex items-center justify-between pt-1 border-t border-slate-800/50">
                               <span>Perbedaan: Fundamental Implication adalah analisis teoritis jangka menengah, sedangkan Actual Market Reaction merefleksikan likuiditas riil saat ini.</span>
-                              <span className="text-cyan-400">Strict Data Grounding</span>
+                              <span className="text-cyan-400">Basis Data Ketat</span>
                             </div>
                           </div>
                         </td>

@@ -120,7 +120,13 @@ async function callGeminiWithResilience(
   ai: GoogleGenAI,
   config: GeminiCallConfig
 ): Promise<string | null> {
-  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.1-flash-lite'];
+  const modelsToTry = [
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+  ];
   const maxRetriesPerModel = 1;
 
   return geminiQueue.run(async () => {
@@ -214,7 +220,7 @@ export async function analyzeMarketEventWithGemini(event: MarketEvent): Promise<
         currency_strength: strengthSnapshot,
         macro_releases: [],
       },
-      key_implications: ['Awaiting additional verified news wire releases before computing directional delta.'],
+      key_implications: ['Menunggu rilis arus berita terverifikasi tambahan sebelum menghitung delta arah.'],
       affected_assets_outlook: event.affected_assets.map(a => ({
         asset: a,
         bias: 'NEUTRAL',
@@ -257,6 +263,7 @@ ${macroReleases.slice(0, 5).map(m => `${m.country_code} ${m.event_name}: Actual 
 ${activeThemes.map(t => t.title).join(' | ')}
 
 STRICT RULES:
+0. Write every string value in formal Indonesian (Bahasa Indonesia). Keep tickers, asset symbols, and standard financial terms as-is.
 1. Explain the market context using ONLY the verified data provided above.
 2. NEVER invent prices, reactions, or sources.
 3. If there is insufficient data to judge an asset's direction, state "INSUFFICIENT CURRENT DATA".
@@ -289,19 +296,19 @@ STRICT RULES:
             news_titles: eventSources.map(s => s.original_title),
             market_prices: priceSnapshot,
             currency_strength: strengthSnapshot,
-            macro_releases: macroReleases.slice(0, 3).map(m => `${m.event_name}: ${m.actual || 'pending'}`),
+            macro_releases: macroReleases.slice(0, 3).map(m => `${m.event_name}: ${m.actual || 'menunggu'}`),
           },
           key_implications: Array.isArray(parsed.key_implications) && parsed.key_implications.length > 0 ? parsed.key_implications : [
-            `Event impact concentrated on ${event.affected_currencies.join(', ')} liquidity.`,
-            `Secondary pass-through observed in correlated commodities and indices.`
+            `Dampak agenda terkonsentrasi pada likuiditas ${event.affected_currencies.join(', ')}.`,
+            `Efek turunan terlihat pada komoditas dan indeks yang berkorelasi.`
           ],
           affected_assets_outlook: Array.isArray(parsed.affected_assets_outlook) && parsed.affected_assets_outlook.length > 0 ? parsed.affected_assets_outlook : event.affected_assets.map(a => ({
             asset: a,
             bias: 'NEUTRAL',
-            rationale: 'Derived from asset sensitivity parameters.',
+            rationale: 'Diturunkan dari parameter sensitivitas aset.',
           })),
           confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.86,
-          disclaimer: 'Ground-truth verified AI intelligence strictly derived from normalized data feeds.',
+          disclaimer: 'Intelijen AI terverifikasi yang sepenuhnya diturunkan dari feed data ternormalisasi.',
           created_at: new Date().toISOString(),
           is_insufficient_data: false,
         };
@@ -321,32 +328,32 @@ STRICT RULES:
     id: `ai_evt_${event.id}`,
     event_id: event.id,
     analysis_type: 'EVENT_ANALYSIS',
-    title: `Macro Context Synthesis: ${event.title}`,
-    summary: `Verified event consolidated across ${event.source_count} source feeds (${event.source_names.join(', ')}). Underlying print aligns with current macro themes regarding ${event.primary_category.toLowerCase()} positioning.`,
+    title: `Sintesis Konteks Makro: ${event.title}`,
+    summary: `Agenda terverifikasi yang terkonsolidasi dari ${event.source_count} feed sumber (${event.source_names.join(', ')}). Angka dasar sejalan dengan tema makro terkini terkait posisi ${event.primary_category.toLowerCase()}.`,
     context_data_used: {
       news_titles: eventSources.map(s => s.original_title),
       market_prices: priceSnapshot,
       currency_strength: strengthSnapshot,
-      macro_releases: macroReleases.slice(0, 3).map(m => `${m.event_name}: ${m.actual || 'pending'}`),
+      macro_releases: macroReleases.slice(0, 3).map(m => `${m.event_name}: ${m.actual || 'menunggu'}`),
     },
     key_implications: [
-      `Immediate impact channeled through ${event.affected_currencies.join(' & ')} cross-rates.`,
-      `Correlated risk-premia repricing across ${event.affected_assets.join(', ')}.`,
-      `Event deduplication merged ${eventSources.length} cross-lingual records into single canonical thread.`,
+      `Dampak langsung disalurkan melalui kurs silang ${event.affected_currencies.join(' & ')}.`,
+      `Repricing premi risiko berkorelasi pada ${event.affected_assets.join(', ')}.`,
+      `Deduplikasi agenda menggabungkan ${eventSources.length} catatan lintas bahasa ke dalam satu rangkaian kanonik.`,
     ],
     affected_assets_outlook: event.affected_assets.map(a => {
       let bias: 'BULLISH' | 'BEARISH' | 'NEUTRAL' = 'NEUTRAL';
-      let rationale = 'Consolidated correlation to underlying print.';
+      let rationale = 'Korelasi terkonsolidasi terhadap angka dasar.';
 
       if (a === 'XAUUSD') {
         bias = event.primary_category === 'GEOPOLITICS' || event.title.toLowerCase().includes('cut') ? 'BULLISH' : 'NEUTRAL';
-        rationale = 'Gold benefits from real yield compression or safe-haven allocation.';
+        rationale = 'Emas diuntungkan kompresi yield riil atau alokasi safe-haven.';
       } else if (a === 'BTC') {
         bias = event.primary_category === 'CENTRAL_BANK' ? 'BULLISH' : 'NEUTRAL';
-        rationale = 'Crypto reacts to broad systemic liquidity expectations.';
+        rationale = 'Kripto bereaksi terhadap ekspektasi likuiditas sistemik secara luas.';
       } else if (a.startsWith('US')) {
         bias = event.title.toLowerCase().includes('cpi') && !event.title.toLowerCase().includes('surge') ? 'BULLISH' : 'NEUTRAL';
-        rationale = 'Equity valuation multiples supported by stable policy expectations.';
+        rationale = 'Kelipatan valuasi ekuitas ditopang ekspektasi kebijakan yang stabil.';
       }
 
       return { asset: a, bias, rationale };
@@ -385,7 +392,7 @@ export async function generateMacroMarketOverview(): Promise<AIAnalysis> {
 - Key Events: ${events.map(e => e.title).join(' | ')}
 - Economic Releases: ${macro.map(m => `${m.event_name}: ${m.actual || 'Pending'}`).join(' | ')}
 
-Strict rules: No fabricated numbers. Return JSON:
+Strict rules: No fabricated numbers. Write every string value in formal Indonesian (Bahasa Indonesia); keep tickers and asset symbols as-is. Return JSON:
 {
   "summary": "3-4 sentence comprehensive market regime assessment.",
   "key_implications": ["Key strategic takeaway 1", "Key strategic takeaway 2", "Key strategic takeaway 3"],
@@ -403,7 +410,7 @@ Strict rules: No fabricated numbers. Return JSON:
         const analysis: AIAnalysis = {
           id: `ai_overview_${Date.now()}`,
           analysis_type: 'MARKET_OVERVIEW',
-          title: 'Real-Time Global Market Context & Macro Regime',
+          title: 'Konteks Pasar Global Real-Time & Rezim Makro',
           summary: parsed.summary || 'Global asset classes reflect balanced liquidity conditions with steady policy pacing across central banks.',
           context_data_used: {
             news_titles: events.map(e => e.title),
@@ -413,17 +420,17 @@ Strict rules: No fabricated numbers. Return JSON:
           },
           key_implications: Array.isArray(parsed.key_implications) && parsed.key_implications.length > 0 ? parsed.key_implications : [
             'Precious metals and safe-haven assets sustain resilient baseline support.',
-            'Cross-currency dispersion shows relative strength in high-beta G8 currencies.',
+            'Dispersi lintas mata uang menunjukkan kekuatan relatif pada mata uang G8 high-beta.',
             'Deduplicated event pipeline maintains single source of truth across news wires.'
           ],
           affected_assets_outlook: [
-            { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Central bank demand and real rate trajectory.' },
-            { asset: 'BTC', bias: 'BULLISH', rationale: 'Global liquidity momentum.' },
-            { asset: 'US500', bias: 'NEUTRAL', rationale: 'Balanced growth vs valuation multiple.' },
-            { asset: 'USD', bias: 'NEUTRAL', rationale: 'Range-bound yield differentials.' },
+            { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Permintaan bank sentral dan trajektori suku bunga riil.' },
+            { asset: 'BTC', bias: 'BULLISH', rationale: 'Momentum likuiditas global.' },
+            { asset: 'US500', bias: 'NEUTRAL', rationale: 'Pertumbuhan berimbang vs kelipatan valuasi.' },
+            { asset: 'USD', bias: 'NEUTRAL', rationale: 'Diferensial yield yang bergerak terbatas.' },
           ],
           confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.9,
-          disclaimer: 'Synthesized directly from live market feeds and multi-source event deduplication.',
+          disclaimer: 'Disintesis langsung dari feed pasar live dan deduplikasi agenda multi-sumber.',
           created_at: new Date().toISOString(),
           is_insufficient_data: false,
         };
@@ -440,8 +447,8 @@ Strict rules: No fabricated numbers. Return JSON:
   const fallback: AIAnalysis = {
     id: `ai_overview_${Date.now()}`,
     analysis_type: 'MARKET_OVERVIEW',
-    title: 'Real-Time Global Market Context & Macro Regime',
-    summary: `Global markets are navigating active rate cycle adjustments with Gold (XAUUSD at $${priceMap['XAUUSD'] || '2718'}) and Bitcoin (BTC at $${priceMap['BTC'] || '64200'}) demonstrating sustained institutional engagement. Currency strength rankings highlight leadership in ${strength[0]?.currency || 'GBP'} (Score ${strength[0]?.strength_score || 8.2}) against relative weakness in ${strength[strength.length - 1]?.currency || 'JPY'}.`,
+    title: 'Konteks Pasar Global Real-Time & Rezim Makro',
+    summary: `Pasar global sedang melalui penyesuaian siklus suku bunga aktif dengan Emas (XAUUSD di $${priceMap['XAUUSD'] || '2718'}) dan Bitcoin (BTC di $${priceMap['BTC'] || '64200'}) yang menunjukkan keterlibatan institusional berkelanjutan. Peringkat kekuatan mata uang menyoroti kepemimpinan ${strength[0]?.currency || 'GBP'} (Skor ${strength[0]?.strength_score || 8.2}) dibanding pelemahan relatif pada ${strength[strength.length - 1]?.currency || 'JPY'}.`,
     context_data_used: {
       news_titles: events.map(e => e.title),
       market_prices: priceMap,
@@ -449,18 +456,18 @@ Strict rules: No fabricated numbers. Return JSON:
       macro_releases: macro.map(m => m.event_name),
     },
     key_implications: [
-      'Multi-source event normalization prevents duplicate news noise from distorting sentiment indicators.',
-      'Currency strength dispersion indicates selective risk-taking in specific currency cross-pairs.',
-      'Macroeconomic calendar prints continue to serve as the primary catalyst for intraday volatility.',
+      'Normalisasi agenda multi-sumber mencegah derau berita duplikat mendistorsi indikator sentimen.',
+      'Dispersi kekuatan mata uang menunjukkan pengambilan risiko selektif pada pasangan kurs silang tertentu.',
+      'Rilis kalender makroekonomi tetap menjadi katalis utama volatilitas intraday.',
     ],
     affected_assets_outlook: [
-      { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Firm support from macro hedging.' },
-      { asset: 'BTC', bias: 'BULLISH', rationale: 'Bullish liquidity expansion.' },
-      { asset: 'US100', bias: 'BULLISH', rationale: 'Tech capital expenditure momentum.' },
-      { asset: 'USD', bias: 'NEUTRAL', rationale: 'Range-bound against major counterparts.' },
+      { asset: 'XAUUSD', bias: 'BULLISH', rationale: 'Dukungan kuat dari lindung nilai makro.' },
+      { asset: 'BTC', bias: 'BULLISH', rationale: 'Ekspansi likuiditas yang bullish.' },
+      { asset: 'US100', bias: 'BULLISH', rationale: 'Momentum belanja modal teknologi.' },
+      { asset: 'USD', bias: 'NEUTRAL', rationale: 'Bergerak terbatas terhadap mata uang utama.' },
     ],
     confidence: 0.89,
-    disclaimer: 'Synthesized directly from live market feeds and multi-source event deduplication.',
+    disclaimer: 'Disintesis langsung dari feed pasar live dan deduplikasi agenda multi-sumber.',
     created_at: new Date().toISOString(),
     is_insufficient_data: false,
   };

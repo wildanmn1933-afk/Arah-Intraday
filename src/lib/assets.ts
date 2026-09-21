@@ -51,7 +51,7 @@ export function getCurrencyFlagUrl(currency: string): string {
 export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   EURUSD: {
     symbol: 'EURUSD',
-    name: 'Euro / US Dollar',
+    name: 'Euro / Dolar AS',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/eu.png', 'https://flagcdn.com/w40/us.png'],
     iconType: 'flag',
@@ -60,7 +60,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   GBPUSD: {
     symbol: 'GBPUSD',
-    name: 'British Pound / US Dollar',
+    name: 'Pound Inggris / Dolar AS',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/gb.png', 'https://flagcdn.com/w40/us.png'],
     iconType: 'flag',
@@ -69,7 +69,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   USDJPY: {
     symbol: 'USDJPY',
-    name: 'US Dollar / Japanese Yen',
+    name: 'Dolar AS / Yen Jepang',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/us.png', 'https://flagcdn.com/w40/jp.png'],
     iconType: 'flag',
@@ -78,7 +78,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   AUDUSD: {
     symbol: 'AUDUSD',
-    name: 'Australian Dollar / US Dollar',
+    name: 'Dolar Australia / Dolar AS',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/au.png', 'https://flagcdn.com/w40/us.png'],
     iconType: 'flag',
@@ -87,7 +87,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   USDCHF: {
     symbol: 'USDCHF',
-    name: 'US Dollar / Swiss Franc',
+    name: 'Dolar AS / Franc Swiss',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/us.png', 'https://flagcdn.com/w40/ch.png'],
     iconType: 'flag',
@@ -96,7 +96,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   USDCAD: {
     symbol: 'USDCAD',
-    name: 'US Dollar / Canadian Dollar',
+    name: 'Dolar AS / Dolar Kanada',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/us.png', 'https://flagcdn.com/w40/ca.png'],
     iconType: 'flag',
@@ -105,7 +105,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   NZDUSD: {
     symbol: 'NZDUSD',
-    name: 'New Zealand Dollar / US Dollar',
+    name: 'Dolar Selandia Baru / Dolar AS',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/nz.png', 'https://flagcdn.com/w40/us.png'],
     iconType: 'flag',
@@ -114,7 +114,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   GBPJPY: {
     symbol: 'GBPJPY',
-    name: 'British Pound / Japanese Yen',
+    name: 'Pound Inggris / Yen Jepang',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/gb.png', 'https://flagcdn.com/w40/jp.png'],
     iconType: 'flag',
@@ -123,7 +123,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   EURGBP: {
     symbol: 'EURGBP',
-    name: 'Euro / British Pound',
+    name: 'Euro / Pound Inggris',
     category: 'FOREX',
     flagUrls: ['https://flagcdn.com/w40/eu.png', 'https://flagcdn.com/w40/gb.png'],
     iconType: 'flag',
@@ -132,7 +132,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   DXY: {
     symbol: 'DXY',
-    name: 'US Dollar Index',
+    name: 'Indeks Dolar AS',
     category: 'BOND',
     flagUrls: ['https://flagcdn.com/w40/us.png'],
     iconType: 'flag',
@@ -141,7 +141,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   XAUUSD: {
     symbol: 'XAUUSD',
-    name: 'Spot Gold / US Dollar',
+    name: 'Emas Spot / Dolar AS',
     category: 'COMMODITY',
     iconType: 'gold',
     badgeColor: 'text-amber-300 bg-amber-950/60 border-amber-800/60',
@@ -181,7 +181,7 @@ export const ASSET_VISUAL_MAP: Record<string, AssetVisualMeta> = {
   },
   BTCUSD: {
     symbol: 'BTCUSD',
-    name: 'Bitcoin / US Dollar',
+    name: 'Bitcoin / Dolar AS',
     category: 'CRYPTO',
     iconType: 'crypto',
     badgeColor: 'text-yellow-400 bg-yellow-950/60 border-yellow-800/60',

@@ -134,11 +134,11 @@ export class AuthService {
         err.email = existing.email;
         throw err;
       }
-      throw new Error('User already exists with this email address.');
+      throw new Error('Pengguna dengan alamat email ini sudah terdaftar.');
     }
 
     if (password.length < 6) {
-      throw new Error('Password must be at least 6 characters.');
+      throw new Error('Kata sandi minimal 6 karakter.');
     }
 
     const { hash, salt } = this.hashPassword(password);
@@ -456,19 +456,19 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
   const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : queryToken;
 
   if (!token) {
-    res.status(401).json({ error: 'Unauthorized: Missing authentication token' });
+    res.status(401).json({ error: 'Tidak terautentikasi: token autentikasi tidak ditemukan.' });
     return;
   }
 
   const payload = AuthService.verifyToken(token);
   if (!payload) {
-    res.status(401).json({ error: 'Unauthorized: Invalid or expired token' });
+    res.status(401).json({ error: 'Tidak terautentikasi: token tidak valid atau sudah kedaluwarsa.' });
     return;
   }
 
   const user = db.getUserById(payload.userId);
   if (!user) {
-    res.status(401).json({ error: 'Unauthorized: User not found' });
+    res.status(401).json({ error: 'Tidak terautentikasi: pengguna tidak ditemukan.' });
     return;
   }
 
@@ -491,7 +491,7 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
 export function requireAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   requireAuth(req, res, () => {
     if (req.user?.role !== 'ADMIN') {
-      res.status(403).json({ error: 'Forbidden: Admin access required' });
+      res.status(403).json({ error: 'Akses ditolak: diperlukan hak akses administrator.' });
       return;
     }
     next();

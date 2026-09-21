@@ -50,7 +50,7 @@ interface AutoTriggerNewsModalProps {
 const PRESET_TRIGGER_OPTIONS = [
   {
     id: 'live_telegram',
-    title: 'Telegram Live Wire (Berita Asli Terkini)',
+    title: 'Arus Live Telegram (Berita Asli Terkini)',
     desc: 'Tarik langsung pesan breaking real-time dari @financialjuice, @WatcherGuru, @SM_News_24h, @fxstreetforexindonesia',
     icon: Send,
     color: 'text-sky-400 border-sky-500/30 bg-sky-500/10 hover:bg-sky-500/20',
@@ -58,14 +58,14 @@ const PRESET_TRIGGER_OPTIONS = [
   {
     id: 'central_bank',
     title: 'Kebijakan Bank Sentral (Fed / RBA / BoJ)',
-    desc: 'Keputusan suku bunga, stance hawkish/dovish, intervensi valas',
+    desc: 'Keputusan suku bunga, sikap hawkish/dovish, intervensi valas',
     category: 'CENTRAL_BANK',
     icon: Building2,
     color: 'text-purple-400 border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20',
   },
   {
     id: 'audcad',
-    title: 'AUD/CAD & Komoditas Cross Impact',
+    title: 'Dampak Silang AUD/CAD & Komoditas',
     desc: 'Divergensi RBA vs BoC dan momentum ekspor bahan mentah',
     category: 'CENTRAL_BANK',
     customTitle: 'RBA Pertahankan Sikap Hawkish di Tengah Moderasi Global; AUD/CAD Melonjak Signifikan',
@@ -77,10 +77,10 @@ const PRESET_TRIGGER_OPTIONS = [
   },
   {
     id: 'us_macro',
-    title: 'US Macro Flash (CPI / NFP / Imbal Hasil)',
+    title: 'Kilat Makro AS (CPI / NFP / Imbal Hasil)',
     desc: 'Kejutan inflasi US Core CPI dan pergerakan yield obligasi US10Y',
     category: 'MACRO',
-    customTitle: 'US Core CPI Rilis di Bawah Konsensus; US Dollar Index (DXY) Melemah dan Emas Naik Tajam',
+    customTitle: 'US Core CPI Rilis di Bawah Konsensus; Indeks Dolar AS (DXY) Melemah dan Emas Naik Tajam',
     customContent: 'Data inflasi inti bulanan AS yang melambat memicu lonjakan probabilitas pemangkasan suku bunga Fed. Imbal hasil obligasi AS terkoreksi di seluruh kurva.',
     affected_assets: ['XAUUSD', 'EURUSD', 'USDJPY', 'US30'],
     affected_currencies: ['USD', 'EUR', 'JPY'],
@@ -183,7 +183,7 @@ export const AutoTriggerNewsModal: React.FC<AutoTriggerNewsModalProps> = ({
                     ? 'bg-emerald-950/80 text-emerald-400 border-emerald-700/80'
                     : 'bg-slate-800 text-slate-400 border-slate-700'
                 }`}>
-                  {config.enabled ? 'ACTIVE AUTO-STREAM' : 'STANDBY'}
+                  {config.enabled ? 'AUTO-STREAM AKTIF' : 'SIAGA'}
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
@@ -213,7 +213,7 @@ export const AutoTriggerNewsModal: React.FC<AutoTriggerNewsModalProps> = ({
                 {config.enabled && (
                   <span className="flex items-center gap-1 text-[11px] text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/60">
                     <Clock className="w-3 h-3 animate-spin" />
-                    Triger berikutnya: <strong className="text-white">{secondsRemaining}s</strong>
+                    Trigger berikutnya: <strong className="text-white">{secondsRemaining}s</strong>
                   </span>
                 )}
               </div>
@@ -350,7 +350,7 @@ export const AutoTriggerNewsModal: React.FC<AutoTriggerNewsModalProps> = ({
                 PILIH & TRIGER BERITA SEKARANG (INSTANT ACTION)
               </h3>
               <span className="text-[11px] text-slate-400">
-                Total Ter-Triger: <strong className="text-cyan-400">{totalTriggeredCount}</strong>
+                Total Ter-Trigger: <strong className="text-cyan-400">{totalTriggeredCount}</strong>
               </span>
             </div>
 
@@ -452,7 +452,7 @@ export const AutoTriggerNewsModal: React.FC<AutoTriggerNewsModalProps> = ({
                       className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white rounded font-bold text-xs cursor-pointer shadow-md"
                     >
                       <Send className="w-3.5 h-3.5" />
-                      <span>Kirim & Triger Popup</span>
+                      <span>Kirim & Trigger Popup</span>
                     </button>
                   </div>
                 </motion.form>

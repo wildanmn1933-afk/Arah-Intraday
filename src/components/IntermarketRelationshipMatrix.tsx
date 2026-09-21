@@ -1,3 +1,4 @@
+import { translateFilter } from '../lib/statusLabels';
 import React, { useState, useMemo } from 'react';
 import { MarketPrice, CurrencyStrength } from '../types';
 import {
@@ -62,101 +63,101 @@ const CANONICAL_RELATIONSHIPS: IntermarketRelationship[] = [
   {
     source: 'DXY',
     target: 'XAUUSD',
-    sourceLabel: 'US Dollar (DXY)',
-    targetLabel: 'Gold (XAU/USD)',
+    sourceLabel: 'Dolar AS (DXY)',
+    targetLabel: 'Emas (XAU/USD)',
     sourceCategory: 'CURRENCY',
     targetCategory: 'COMMODITY',
     historicalCorrelation: -0.78,
     correlationNature: 'STRONG_INVERSE',
-    primaryDriver: 'Global FX Liquidity & Real Pricing Unit',
+    primaryDriver: 'Likuiditas Valas Global & Unit Penetapan Harga Riil',
     transmissionMechanism:
-      'Gold is globally invoiced in USD. A strengthening Dollar mechanically raises acquisition costs for non-US sovereigns, depressing spot bullion demand unless geopolitical risk premiums override.',
+      'Emas diinvois secara global dalam USD. Penguatan Dolar secara mekanis menaikkan biaya akuisisi bagi negara non-AS, menekan permintaan bullion spot kecuali premi risiko geopolitik mengalahkannya.',
     divergenceAlertRule:
-      'ANOMALY: Both DXY and Gold are gaining simultaneously (> +0.3%). Indicates acute systemic fear or sovereign reserve diversification.',
+      'ANOMALI: DXY dan Emas menguat bersamaan (> +0.3%). Menandakan ketakutan sistemik akut atau diversifikasi cadangan negara.',
   },
   {
     source: 'US10Y',
     target: 'XAUUSD',
-    sourceLabel: 'US 10Y Yield Proxy',
-    targetLabel: 'Gold (XAU/USD)',
+    sourceLabel: 'Proksi Yield US 10Y',
+    targetLabel: 'Emas (XAU/USD)',
     sourceCategory: 'YIELD',
     targetCategory: 'COMMODITY',
     historicalCorrelation: -0.82,
     correlationNature: 'STRONG_INVERSE',
-    primaryDriver: 'Opportunity Cost & Real Yields',
+    primaryDriver: 'Biaya Peluang & Yield Riil',
     transmissionMechanism:
-      'Gold carries no cash flow or nominal yield. When sovereign benchmark bond yields rise without matching inflation acceleration, the opportunity cost of holding non-yielding bullion increases.',
+      'Emas tidak menghasilkan arus kas atau yield nominal. Saat yield obligasi benchmark negara naik tanpa diimbangi percepatan inflasi, biaya peluang memegang bullion tanpa yield meningkat.',
     divergenceAlertRule:
-      'BULLISH DIVERGENCE: Gold holding resilient despite surging 10-year yields signals structural central bank accumulation or stagflation pricing.',
+      'DIVERGENSI BULLISH: Emas tetap tangguh meski yield 10 tahun melonjak, menandakan akumulasi struktural bank sentral atau penetapan harga stagflasi.',
   },
   {
     source: 'DXY',
     target: 'US500',
-    sourceLabel: 'US Dollar (DXY)',
+    sourceLabel: 'Dolar AS (DXY)',
     targetLabel: 'S&P 500 (US500)',
     sourceCategory: 'CURRENCY',
     targetCategory: 'EQUITY',
     historicalCorrelation: -0.55,
     correlationNature: 'MODERATE_INVERSE',
-    primaryDriver: 'Financial Conditions & Multinationals EPS',
+    primaryDriver: 'Kondisi Finansial & EPS Perusahaan Multinasional',
     transmissionMechanism:
-      'A rapidly rising dollar tightens global dollar credit conditions and devalues overseas revenues for S&P 500 multinationals converting offshore sales back into USD.',
+      'Dolar yang naik cepat memperketat kondisi kredit dolar global dan menurunkan nilai pendapatan luar negeri perusahaan multinasional S&P 500 yang mengonversi penjualan luar negeri kembali ke USD.',
   },
   {
     source: 'US10Y',
     target: 'US100',
-    sourceLabel: 'US 10Y Yield Proxy',
+    sourceLabel: 'Proksi Yield US 10Y',
     targetLabel: 'Nasdaq 100 (US100)',
     sourceCategory: 'YIELD',
     targetCategory: 'EQUITY',
     historicalCorrelation: -0.68,
     correlationNature: 'STRONG_INVERSE',
-    primaryDriver: 'Discount Rate on Long-Duration Earnings',
+    primaryDriver: 'Suku Diskonto atas Laba Berdurasi Panjang',
     transmissionMechanism:
-      'High-multiple growth and tech companies have cash flows skewed far into the future. Rising discount rates (10Y Yield) disproportionately compress forward price-to-earnings multiples.',
+      'Perusahaan pertumbuhan dan teknologi berkelipatan tinggi memiliki arus kas yang jauh di masa depan. Kenaikan suku diskonto (Yield 10Y) menekan kelipatan harga terhadap laba ke depan secara tidak proporsional.',
     divergenceAlertRule:
-      'Tech outperforming while yields march higher indicates earnings momentum or AI capital expenditure themes overriding macro discount rates.',
+      'Teknologi yang unggul saat yield terus naik menandakan momentum laba atau tema belanja modal AI mengalahkan suku diskonto makro.',
   },
   {
     source: 'CAD',
     target: 'XAUUSD',
-    sourceLabel: 'Canadian Dollar (CAD)',
-    targetLabel: 'Gold & Energy Beta',
+    sourceLabel: 'Dolar Kanada (CAD)',
+    targetLabel: 'Beta Emas & Energi',
     sourceCategory: 'CURRENCY',
     targetCategory: 'COMMODITY',
     historicalCorrelation: 0.62,
     correlationNature: 'MODERATE_POSITIVE',
-    primaryDriver: 'Terms of Trade & Resource Extraction',
+    primaryDriver: 'Term of Trade & Ekstraksi Sumber Daya',
     transmissionMechanism:
-      'Canada is a major net exporter of crude energy and mineral commodities. Commodity surges elevate national terms of trade, supporting CAD purchasing power against European pairs.',
+      'Kanada adalah eksportir neto utama energi mentah dan komoditas mineral. Lonjakan komoditas menaikkan term of trade nasional dan menopang daya beli CAD terhadap pair Eropa.',
   },
   {
     source: 'AUD',
     target: 'US500',
-    sourceLabel: 'Australian Dollar (AUD)',
-    targetLabel: 'S&P 500 Risk Stance',
+    sourceLabel: 'Dolar Australia (AUD)',
+    targetLabel: 'Sikap Risiko S&P 500',
     sourceCategory: 'CURRENCY',
     targetCategory: 'EQUITY',
     historicalCorrelation: 0.74,
     correlationNature: 'STRONG_POSITIVE',
-    primaryDriver: 'Global Growth Beta & Pro-Cyclical Appetite',
+    primaryDriver: 'Beta Pertumbuhan Global & Selera Pro-Siklikal',
     transmissionMechanism:
-      'AUD serves as the G8 FX proxy for global trade expansion and Chinese industrial demand. High equity risk appetite strongly correlates with AUD outperformance over defensive funding currencies.',
+      'AUD berperan sebagai proksi valas G8 untuk ekspansi perdagangan global dan permintaan industri Tiongkok. Selera risiko ekuitas yang tinggi berkorelasi kuat dengan keunggulan AUD atas mata uang pendanaan defensif.',
   },
   {
     source: 'JPY',
     target: 'US500',
-    sourceLabel: 'Japanese Yen (JPY)',
-    targetLabel: 'Global Risk / S&P 500',
+    sourceLabel: 'Yen Jepang (JPY)',
+    targetLabel: 'Risiko Global / S&P 500',
     sourceCategory: 'CURRENCY',
     targetCategory: 'EQUITY',
     historicalCorrelation: -0.65,
     correlationNature: 'STRONG_INVERSE',
-    primaryDriver: 'Global Carry-Trade Unwinding & Liquidity Flights',
+    primaryDriver: 'Pembongkaran Carry Trade Global & Pelarian Likuiditas',
     transmissionMechanism:
-      'Low Japanese interest rates make the Yen the premier global funding currency. In market panics or risk-off deleveraging, global carry trades are liquidated, prompting aggressive Yen repatriation.',
+      'Suku bunga Jepang yang rendah menjadikan Yen mata uang pendanaan global utama. Saat panik pasar atau deleveraging risk-off, carry trade global dilikuidasi dan memicu repatriasi Yen secara agresif.',
     divergenceAlertRule:
-      'YEN SURGE + EQUITIES SELLOFF: Classic systemic deleveraging signature. Expect volatility spike in high-beta FX.',
+      'LONJAKAN YEN + EKUITAS TERJUAL: Ciri khas deleveraging sistemik. Perkirakan lonjakan volatilitas pada valas beta tinggi.',
   },
   {
     source: 'BTC',
@@ -167,24 +168,32 @@ const CANONICAL_RELATIONSHIPS: IntermarketRelationship[] = [
     targetCategory: 'EQUITY',
     historicalCorrelation: 0.71,
     correlationNature: 'STRONG_POSITIVE',
-    primaryDriver: 'Global M2 Liquidity & Speculative High-Beta',
+    primaryDriver: 'Likuiditas M2 Global & Spekulatif Beta Tinggi',
     transmissionMechanism:
-      'Bitcoin trades as high-octane speculative tech liquidity. Shifts in Fed balance sheet liquidity and tech sector risk appetite transmit rapidly into crypto capital inflows.',
+      'Bitcoin diperdagangkan sebagai likuiditas teknologi spekulatif berdaya tinggi. Pergeseran likuiditas neraca Fed dan selera risiko sektor teknologi cepat menular ke arus masuk modal kripto.',
   },
   {
     source: 'EUR',
     target: 'DXY',
     sourceLabel: 'Euro (EUR)',
-    targetLabel: 'US Dollar (DXY)',
+    targetLabel: 'Dolar AS (DXY)',
     sourceCategory: 'CURRENCY',
     targetCategory: 'CURRENCY',
     historicalCorrelation: -0.96,
     correlationNature: 'STRONG_INVERSE',
-    primaryDriver: 'Weighting Dominance (EUR is 57.6% of DXY)',
+    primaryDriver: 'Dominasi Bobot (EUR 57,6% dari DXY)',
     transmissionMechanism:
-      'Because EUR represents 57.6% of the DXY currency basket, Eurozone economic surprises and ECB policy decisions mirror directly into DXY movement with near-perfect inverse transmission.',
+      'Karena EUR mewakili 57,6% dari keranjang mata uang DXY, kejutan ekonomi Zona Euro dan keputusan kebijakan ECB langsung tercermin pada pergerakan DXY dengan transmisi invers hampir sempurna.',
   },
 ];
+
+const CORRELATION_LABELS: Record<string, string> = {
+  STRONG_INVERSE: 'INVERS KUAT',
+  MODERATE_INVERSE: 'INVERS MODERAT',
+  STRONG_POSITIVE: 'POSITIF KUAT',
+  MODERATE_POSITIVE: 'POSITIF MODERAT',
+  NEUTRAL: 'NETRAL',
+};
 
 export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatrixProps> = ({
   prices,
@@ -299,36 +308,36 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
 
     if (riskBeta > 0.4 && dxyChg <= 0.1) {
       return {
-        regime: 'PRO-CYCLICAL RISK-ON',
-        description: 'Equity expansion & commodity carry demand dominating; safe-havens subdued.',
+        regime: 'PRO-SIKLIKAL RISK-ON',
+        description: 'Ekspansi ekuitas & permintaan carry komoditas mendominasi; aset safe-haven tertekan.',
         badgeColor: 'bg-emerald-950/80 text-emerald-400 border-emerald-700/60',
         sentiment: 'RISK_ON',
       };
     } else if (goldChg > 0.3 && dxyChg > 0.2) {
       return {
-        regime: 'SOVEREIGN SAFE-HAVEN ACCUMULATION',
-        description: 'Gold & US Dollar surging together; indicates acute geopolitical tension or systemic liquidity caution.',
+        regime: 'AKUMULASI SAFE-HAVEN NEGARA',
+        description: 'Emas & Dolar AS melonjak bersamaan; menandakan ketegangan geopolitik akut atau kehati-hatian likuiditas sistemik.',
         badgeColor: 'bg-amber-950/80 text-amber-400 border-amber-700/60',
         sentiment: 'DEFENSIVE_FLIGHT',
       };
     } else if (riskBeta < -0.3 || (jpyScore > 65 && spxChg < -0.2)) {
       return {
-        regime: 'DEFENSIVE RISK-OFF & DELEVERAGING',
-        description: 'Capital fleeing to JPY and treasuries; risk assets and carry currencies under pressure.',
+        regime: 'RISK-OFF DEFENSIF & DELEVERAGING',
+        description: 'Modal mengalir ke JPY dan obligasi negara; aset risiko dan mata uang carry tertekan.',
         badgeColor: 'bg-rose-950/80 text-rose-400 border-rose-700/60',
         sentiment: 'RISK_OFF',
       };
     } else if (dxyChg > 0.35 && goldChg < -0.3) {
       return {
-        regime: 'DOLLAR SUPREMACY TIGHTENING',
-        description: 'Higher yield and dollar demand suppressing global asset prices and emerging flows.',
+        regime: 'PENEKANAN DOMINASI DOLAR',
+        description: 'Yield lebih tinggi dan permintaan dolar menekan harga aset global dan arus pasar berkembang.',
         badgeColor: 'bg-cyan-950/80 text-cyan-400 border-cyan-700/60',
         sentiment: 'USD_DOMINANCE',
       };
     } else {
       return {
-        regime: 'CONSOLIDATION / BALANCED FLOWS',
-        description: 'Intermarket cross-currents neutral; awaiting catalyst from central bank speeches or upcoming macro tier-1 data.',
+        regime: 'KONSOLIDASI / ARUS SEIMBANG',
+        description: 'Arus silang intermarket netral; menunggu katalis pidato bank sentral atau data makro tier-1 mendatang.',
         badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
         sentiment: 'BALANCED',
       };
@@ -352,7 +361,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
 
   return (
     <div className="space-y-4">
-      {/* 1. HEADER & INTERMARKET REGIME BANNER */}
+      {/* 1. HEADER & INTERREZIM PASAR BANNER */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-1">
@@ -361,14 +370,14 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
                 <Compass className="w-4 h-4" />
               </span>
               <h1 className="text-base font-bold text-slate-100 uppercase tracking-wider font-mono">
-                Intermarket Relationship Matrix
+                Matriks Hubungan Intermarket
               </h1>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                MURPHY FRAMEWORK
+                KERANGKA MURPHY
               </span>
             </div>
             <p className="text-xs text-slate-400 max-w-2xl">
-              Real-time cross-asset interdependency mapping: Currencies (DXY, G8), Commodities (Gold, Oil), Benchmark Yields (US10Y), and Equities (S&P 500, Nasdaq).
+              Pemetaan saling ketergantungan lintas aset real-time: Mata Uang (DXY, G8), Komoditas (Emas, Minyak), Yield Benchmark (US10Y), dan Ekuitas (S&P 500, Nasdaq).
             </p>
           </div>
 
@@ -378,16 +387,16 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
                 onClick={onRefresh}
                 disabled={isRefreshing}
                 className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-300 bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-slate-600 transition-colors flex items-center gap-2"
-                title="Refresh Intermarket Live Feeds"
+                title="Sinkronkan Feed Live Intermarket"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
-                <span>Sync Cross-Asset</span>
+                <span>Sinkron Lintas Aset</span>
               </button>
             )}
 
             <div className="px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-right">
               <div className="text-[10px] uppercase font-mono text-slate-500 tracking-wider">
-                Current Intermarket Regime
+                Rezim Intermarket Saat Ini
               </div>
               <div className="flex items-center justify-end gap-1.5 mt-0.5">
                 <span className={`inline-block w-2 h-2 rounded-full ${macroRegime.sentiment === 'RISK_ON' ? 'bg-emerald-400' : macroRegime.sentiment === 'RISK_OFF' ? 'bg-rose-400' : 'bg-indigo-400'} animate-pulse`} />
@@ -404,7 +413,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
           {/* US Dollar (DXY) */}
           <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
             <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span>US Dollar (DXY)</span>
+              <span>Dolar AS (DXY)</span>
               <span className={`font-bold ${(dxyPrice?.change_24h_pct ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {(dxyPrice?.change_24h_pct ?? 0) >= 0 ? '+' : ''}
                 {(dxyPrice?.change_24h_pct ?? 0).toFixed(2)}%
@@ -414,7 +423,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               {dxyPrice?.price ? dxyPrice.price.toFixed(2) : (usdStrength?.strength_score ? `${usdStrength.strength_score} pts` : '103.80')}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>Primary Liquidity</span>
+              <span>Likuiditas Utama</span>
               <span className="text-indigo-400 font-mono">DXY</span>
             </div>
           </div>
@@ -422,7 +431,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
           {/* Gold (XAUUSD) */}
           <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
             <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span>Gold (XAU/USD)</span>
+              <span>Emas (XAU/USD)</span>
               <span className={`font-bold ${(goldPrice?.change_24h_pct ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {(goldPrice?.change_24h_pct ?? 0) >= 0 ? '+' : ''}
                 {(goldPrice?.change_24h_pct ?? 0).toFixed(2)}%
@@ -432,7 +441,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               ${goldPrice?.price ? goldPrice.price.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : '2,685.4'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>Safe-Haven Store</span>
+              <span>Penyimpan Safe-Haven</span>
               <span className="text-amber-400 font-mono">XAU</span>
             </div>
           </div>
@@ -450,7 +459,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               {sp500Price?.price ? sp500Price.price.toLocaleString(undefined, { maximumFractionDigits: 0 }) : '5,780'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>Broad Equity Risk</span>
+              <span>Risiko Ekuitas Luas</span>
               <span className="text-cyan-400 font-mono">SPX</span>
             </div>
           </div>
@@ -468,7 +477,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               {nasdaqPrice?.price ? nasdaqPrice.price.toLocaleString(undefined, { maximumFractionDigits: 0 }) : '20,410'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>High Duration Beta</span>
+              <span>Beta Durasi Tinggi</span>
               <span className="text-purple-400 font-mono">NDX</span>
             </div>
           </div>
@@ -476,17 +485,17 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
           {/* 10Y Yield Benchmark Proxy */}
           <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
             <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span>US 10Y Yield Implied</span>
+              <span>Yield US 10Y Tersirat</span>
               <span className={`font-bold ${yieldProxyChangePct >= 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
                 {yieldProxyChangePct >= 0 ? '+' : ''}
                 {yieldProxyChangePct.toFixed(2)}%
               </span>
             </div>
             <div className="text-sm font-bold font-mono text-slate-200 mt-1">
-              {yieldProxyChangePct >= 0 ? 'Surging' : 'Easing'} Rate
+              Suku Bunga {yieldProxyChangePct >= 0 ? 'Menguat' : 'Melunak'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>Discount Cost</span>
+              <span>Biaya Diskon</span>
               <span className="text-amber-300 font-mono">US10Y</span>
             </div>
           </div>
@@ -504,7 +513,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               ${btcPrice?.price ? btcPrice.price.toLocaleString(undefined, { maximumFractionDigits: 0 }) : '68,400'}
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
-              <span>Speculative Liquidity</span>
+              <span>Likuiditas Spekulatif</span>
               <span className="text-orange-400 font-mono">BTC</span>
             </div>
           </div>
@@ -520,7 +529,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4 text-indigo-400" />
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
-                  Canonical Transmission Matrix
+                  Matriks Transmisi Kanonik
                 </h2>
               </div>
 
@@ -536,7 +545,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                     }`}
                   >
-                    {cat}
+                    {translateFilter(cat)}
                   </button>
                 ))}
               </div>
@@ -579,16 +588,16 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
                         {item.alignment === 'ALIGNED' ? (
                           <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 flex items-center gap-1">
                             <CheckCircle2 className="w-2.5 h-2.5" />
-                            ALIGNED
+                            SELARAS
                           </span>
                         ) : item.alignment === 'DIVERGENT' ? (
                           <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-rose-950/80 text-rose-300 border border-rose-800/60 flex items-center gap-1 animate-pulse">
                             <AlertTriangle className="w-2.5 h-2.5" />
-                            DIVERGENT
+                            DIVERGEN
                           </span>
                         ) : (
                           <span className="px-2 py-0.5 rounded text-[9px] font-mono text-slate-400 bg-slate-800/60 border border-slate-700">
-                            QUIET
+                            SEPI
                           </span>
                         )}
 
@@ -644,11 +653,11 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-amber-400" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
-                  Macro Transmission Mechanics
+                  Mekanika Transmisi Makro
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-slate-500">
-                PAIR: {activeRel.source} / {activeRel.target}
+                PASANGAN: {activeRel.source} / {activeRel.target}
               </span>
             </div>
 
@@ -656,10 +665,10 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
             <div className="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] uppercase font-mono text-slate-500">
-                  Primary Economic Driver
+                  Pendorong Ekonomi Utama
                 </span>
                 <span className="text-[10px] font-mono font-bold text-indigo-400">
-                  {activeRel.correlationNature.replace('_', ' ')}
+                  {CORRELATION_LABELS[activeRel.correlationNature] ?? activeRel.correlationNature}
                 </span>
               </div>
               <div className="text-sm font-bold text-slate-100">
@@ -673,26 +682,26 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
             {/* Causal Step-by-Step Flow */}
             <div className="mt-3 space-y-2">
               <div className="text-[10px] uppercase font-mono font-bold text-slate-400 tracking-wider">
-                Causal Transmission Chain
+                Rantai Transmisi Kausal
               </div>
 
               <div className="space-y-1.5 text-xs font-mono">
                 <div className="p-2 rounded bg-slate-950/80 border border-slate-800/80 flex items-center justify-between">
-                  <span className="text-slate-400">1. Trigger Asset:</span>
+                  <span className="text-slate-400">1. Aset Pemicu:</span>
                   <span className="font-bold text-indigo-300">{activeRel.sourceLabel}</span>
                 </div>
                 <div className="flex justify-center">
                   <ArrowDownRight className="w-3.5 h-3.5 text-slate-600" />
                 </div>
                 <div className="p-2 rounded bg-slate-950/80 border border-slate-800/80 flex items-center justify-between">
-                  <span className="text-slate-400">2. Transmission Channel:</span>
+                  <span className="text-slate-400">2. Kanal Transmisi:</span>
                   <span className="font-bold text-amber-300">{activeRel.primaryDriver}</span>
                 </div>
                 <div className="flex justify-center">
                   <ArrowDownRight className="w-3.5 h-3.5 text-slate-600" />
                 </div>
                 <div className="p-2 rounded bg-slate-950/80 border border-slate-800/80 flex items-center justify-between">
-                  <span className="text-slate-400">3. Impact Asset:</span>
+                  <span className="text-slate-400">3. Aset Terdampak:</span>
                   <span className="font-bold text-cyan-300">{activeRel.targetLabel}</span>
                 </div>
               </div>
@@ -702,12 +711,12 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
             <div className="mt-4 p-3 rounded-lg bg-indigo-950/20 border border-indigo-900/40 space-y-1.5">
               <div className="flex items-center gap-1.5 text-[10px] uppercase font-mono font-bold text-indigo-300">
                 <Sparkles className="w-3 h-3 text-indigo-400" />
-                <span>Actionable Trading Implications</span>
+                <span>Implikasi Trading yang Dapat Ditindaklanjuti</span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 {activeRel.historicalCorrelation < 0
-                  ? `With a strong inverse relationship (r = ${activeRel.historicalCorrelation}), when ${activeRel.source} exhibits breakout momentum, look for mean-reverting rejection setups on ${activeRel.target}.`
-                  : `With a positive co-movement (r = +${activeRel.historicalCorrelation}), confirmations on ${activeRel.source} validate trend continuation setups on ${activeRel.target}.`}
+                  ? `Dengan hubungan invers (r = ${activeRel.historicalCorrelation}), saat ${activeRel.source} menunjukkan momentum breakout, cari setup penolakan yang kembali ke rata-rata pada ${activeRel.target}.`
+                  : `Dengan pergerakan searah (r = +${activeRel.historicalCorrelation}), konfirmasi pada ${activeRel.source} memvalidasi setup kelanjutan tren pada ${activeRel.target}.`}
               </p>
             </div>
 
@@ -721,7 +730,7 @@ export const IntermarketRelationshipMatrix: React.FC<IntermarketRelationshipMatr
                 className="w-full mt-3 py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-slate-600 text-xs font-mono font-bold text-slate-200 transition-colors flex items-center justify-center gap-2"
               >
                 <LineChart className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Open TradingView Chart for {activeRel.target}</span>
+                <span>Buka Grafik TradingView untuk {activeRel.target}</span>
               </button>
             )}
           </div>

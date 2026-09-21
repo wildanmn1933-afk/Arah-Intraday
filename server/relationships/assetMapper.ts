@@ -71,7 +71,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'XAUUSD',
-      displayName: 'Gold / US Dollar',
+      displayName: 'Gold/ Dolar AS',
       bias,
       strength,
       mechanism,
@@ -111,7 +111,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'EURUSD',
-      displayName: 'Euro / US Dollar',
+      displayName: 'Euro/ Dolar AS',
       bias,
       strength,
       mechanism,
@@ -146,7 +146,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'GBPUSD',
-      displayName: 'British Pound / US Dollar',
+      displayName: 'British Pound/ Dolar AS',
       bias,
       strength,
       mechanism,
@@ -186,7 +186,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'USDJPY',
-      displayName: 'US Dollar / Japanese Yen',
+      displayName: 'Dolar AS / Yen Jepang',
       bias,
       strength,
       mechanism,
@@ -200,7 +200,7 @@ export function calculatePairImpacts(
     const isChfBullish = isGeopolitical || isDovish;
     impacts.push({
       pair: 'USDCHF',
-      displayName: 'US Dollar / Swiss Franc',
+      displayName: 'Dolar AS / Franc Swiss',
       bias: isChfBullish ? 'BEARISH' : 'BULLISH',
       strength: isGeopolitical ? 'HIGH' : 'MODERATE',
       mechanism: isGeopolitical ? 'Swiss Safe-Haven Allocation' : 'Rate Differential',
@@ -250,7 +250,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'USDCAD',
-      displayName: 'US Dollar / Canadian Dollar',
+      displayName: 'Dolar AS / Dolar Kanada',
       bias: cadBias,
       strength: isOilShock ? 'HIGH' : 'MODERATE',
       mechanism: 'Crude Oil Terms-of-Trade',
@@ -334,7 +334,7 @@ export function calculatePairImpacts(
 
     impacts.push({
       pair: 'BTC',
-      displayName: 'Bitcoin / US Dollar',
+      displayName: 'Bitcoin / Dolar AS',
       bias: btcBias,
       strength: btcStrength,
       mechanism: btcMech,

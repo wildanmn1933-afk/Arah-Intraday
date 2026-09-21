@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Basis data runtime: ditulis ulang oleh server saat ingest (timestamp, baris berita baru).
+# Berisi hash kata sandi & data pengguna, jadi jangan di-commit. Seed membuat ulang skema + akun admin saat start.
+data/*.db.json

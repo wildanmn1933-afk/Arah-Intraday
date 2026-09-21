@@ -96,7 +96,7 @@ export interface EconomicEvent {
   surprise?: string | null; // Actual vs Forecast: e.g. "+0.2% (BEAT)", "-15K (MISS)", "IN-LINE"
   change?: string | null; // Actual vs Previous: e.g. "+0.1%", "-0.2%"
   confidence?: number; // 0 - 100
-  freshness?: string; // age of data: e.g. "12m ago", "2h ago", "Upcoming"
+  freshness?: string; // age of data: e.g. "12 mnt lalu", "2 jam lalu", "Menjelang Rilis"
   market_reaction?: {
     primary_asset: string;
     r1m?: string; // reaction after 1m e.g. "+14 pips" or "+0.18%"

@@ -68,13 +68,13 @@ export class MacroEnricher {
     const changeStr = this.calculateChange(event.actual, event.previous);
 
     // 2. Freshness
-    let freshness = 'Upcoming';
+    let freshness = 'Menjelang Rilis';
     if (isReleased) {
       const diffSec = Math.max(0, Math.floor((nowMs - eventMs) / 1000));
-      if (diffSec < 60) freshness = `${diffSec}s ago`;
-      else if (diffSec < 3600) freshness = `${Math.floor(diffSec / 60)}m ago`;
-      else if (diffSec < 86400) freshness = `${Math.floor(diffSec / 3600)}h ago`;
-      else freshness = `${Math.floor(diffSec / 86400)}d ago`;
+      if (diffSec < 60) freshness = `${diffSec} dtk lalu`;
+      else if (diffSec < 3600) freshness = `${Math.floor(diffSec / 60)} mnt lalu`;
+      else if (diffSec < 86400) freshness = `${Math.floor(diffSec / 3600)} jam lalu`;
+      else freshness = `${Math.floor(diffSec / 86400)} hr lalu`;
     }
 
     // 3. Confidence level (Official government / institutional sources = 96%, consensus = 90%)

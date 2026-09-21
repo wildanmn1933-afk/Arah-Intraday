@@ -42,7 +42,7 @@ historyRouter.get('/snapshot/:date', (req, res) => {
         score: item.direction_score,
         price: item.price,
         change_24h_pct: item.change_24h_pct,
-        strength_label: item.direction_score > 30 ? 'Strong' : item.direction_score < -30 ? 'Weak' : 'Moderate',
+        strength_label: item.direction_score > 30 ? 'Kuat' : item.direction_score < -30 ? 'Lemah' : 'Sedang',
         major_catalyst: item.today_key_catalyst,
         last_updated: item.last_updated,
       };
@@ -68,16 +68,16 @@ historyRouter.get('/snapshot/:date', (req, res) => {
           actual: e.actual,
           market_reaction: e.actual_market_reaction,
         })),
-        market_reaction_summary: 'On-demand compiled market telemetry for requested historical day.',
-        ai_summary: 'Grounded intelligence record derived from historical database points.',
+        market_reaction_summary: 'Telemetri pasar yang disusun sesuai permintaan untuk hari historis yang diminta.',
+        ai_summary: 'Catatan intelijen berbasis data yang diturunkan dari titik data historis basis data.',
         ai_why: [
-          'Derived from persistent event wire and currency strength telemetry.',
+          'Diturunkan dari wire agenda persisten dan telemetri kekuatan mata uang.',
         ],
         ai_risk: [
-          'Historical session volatility parameters apply.',
+          'Parameter volatilitas sesi historis berlaku.',
         ],
         ai_context: [
-          `Historical data slice for ${dateStr}.`,
+          `Potongan data historis untuk ${dateStr}.`,
         ],
         historical_insights: [
           `Record initialized from system memory store.`,
@@ -139,7 +139,7 @@ historyRouter.post('/generate-snapshot', (req, res) => {
       score: item.direction_score,
       price: item.price,
       change_24h_pct: item.change_24h_pct,
-      strength_label: item.direction_score > 30 ? 'Strong' : item.direction_score < -30 ? 'Weak' : 'Moderate',
+      strength_label: item.direction_score > 30 ? 'Kuat' : item.direction_score < -30 ? 'Lemah' : 'Sedang',
       major_catalyst: item.today_key_catalyst,
       last_updated: item.last_updated,
     };
@@ -149,7 +149,7 @@ historyRouter.post('/generate-snapshot', (req, res) => {
     id: `snapshot_${dateStr}`,
     date: dateStr,
     timestamp: new Date().toISOString(),
-    title: `Daily Market Snapshot: ${dateStr}`,
+    title: `Snapshot Pasar Harian: ${dateStr}`,
     market_biases: biases,
     currency_strength: strengths.map((s, idx) => {
       const comp = compMap.get(s.currency);
@@ -163,25 +163,25 @@ historyRouter.post('/generate-snapshot', (req, res) => {
       };
     }),
     major_catalysts: intradayMap.slice(0, 5).map(item => ({
-      event_name: item.today_key_catalyst || `${item.symbol} Session Driver`,
+      event_name: item.today_key_catalyst || `Pendorong Sesi ${item.symbol}`,
       currency: item.symbol === 'XAUUSD' ? 'USD' : item.symbol,
       impact: 'HIGH',
       actual: item.current_market_reaction,
       market_reaction: item.current_market_reaction,
     })),
-    market_reaction_summary: 'Automated daily snapshot synthesized from multimodal feeds: News + Macro + Currency Strength + Price Action.',
-    ai_summary: `Institutional bias consensus for ${dateStr}: Capital flows tracking interest rate differentials and sovereign safety allocations.`,
+    market_reaction_summary: 'Snapshot harian otomatis yang disintesis dari feed multimodal: Berita + Makro + Kekuatan Mata Uang + Aksi Harga.',
+    ai_summary: `Konsensus bias institusional untuk ${dateStr}: arus modal mengikuti diferensial suku bunga dan alokasi ke aman sovereign.`,
     ai_why: [
-      'Grounded in latest real-time currency strength matrix rankings.',
-      'Reflects verified Telegram breaking news wire deduplicated events.',
-      'Treasury yield discount curve dictating cross-asset valuations.',
+      'Berbasis peringkat matriks kekuatan mata uang real-time terbaru.',
+      'Mencerminkan agenda terverifikasi dari wire berita kilat Telegram yang telah dideduplikasi.',
+      'Kurva diskonto yield Treasury menentukan valuasi lintas aset.',
     ],
     ai_risk: [
-      'High-impact central bank speaker commentary.',
-      'Cross-asset liquidation cascades during illiquid session transitions.',
+      'Komentar pembicara bank sentral berdampak tinggi.',
+      'Kaskade likuidasi lintas aset saat transisi sesi yang tidak likuid.',
     ],
     ai_context: [
-      `System memory tracks historical persistence since platform launch date.`,
+      `Memori sistem melacak keberlanjutan historis sejak tanggal peluncuran platform.`,
     ],
     historical_insights: insights.map(i => i.description),
     created_at: new Date().toISOString(),

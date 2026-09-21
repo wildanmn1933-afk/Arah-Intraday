@@ -77,7 +77,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       if (dupRes.status === 'fulfilled') setDuplicates(dupRes.value.events);
       if (userRes.status === 'fulfilled') setUsersList(userRes.value.users);
     } catch (err: any) {
-      console.warn('Admin load error:', err.message);
+      console.warn('Gagal memuat data admin:', err.message);
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       await api.addTelegramChannel(newHandle, newTitle || newHandle, newLang);
       setNewHandle('');
       setNewTitle('');
-      setActionNotice(`Channel ${newHandle} added successfully.`);
+      setActionNotice(`Kanal ${newHandle} berhasil ditambahkan.`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -111,7 +111,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
   };
 
   const handleDeleteChannel = async (handle: string) => {
-    if (!confirm(`Delete channel ${handle}?`)) return;
+    if (!confirm(`Hapus kanal ${handle}?`)) return;
     try {
       await api.deleteTelegramChannel(handle);
       loadData();
@@ -122,9 +122,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
 
   const handleScrapeChannel = async (handle: string) => {
     try {
-      setActionNotice(`Scraping ${handle}...`);
+      setActionNotice(`Menyerap ${handle}...`);
       const res = await api.triggerTelegramScrape(handle);
-      setActionNotice(`Scraped ${res.result?.count || 0} posts from ${handle}.`);
+      setActionNotice(`Berhasil menyerap ${res.result?.count || 0} kiriman dari ${handle}.`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -142,7 +142,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
         source_name: testSource,
       });
       setTestResult(res.outcome);
-      setActionNotice(`Article processed. Duplicate detected: ${res.outcome?.isDuplicate ? 'YES' : 'NO'}`);
+      setActionNotice(`Artikel diproses. Duplikat terdeteksi: ${res.outcome?.isDuplicate ? 'YA' : 'TIDAK'}`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -189,7 +189,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-700 text-cyan-300 text-xs font-mono font-semibold transition cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>Run All Ingestion</span>
+            <span>Jalankan Semua Penyerapan</span>
           </button>
         </div>
       </div>
@@ -197,13 +197,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       {/* Admin Subtabs */}
       <div className="flex items-center gap-1 border-b border-slate-800 pb-2 text-xs font-mono overflow-x-auto">
         {[
-          { id: 'users', label: 'Users & Subscriptions', count: usersList.length },
-          { id: 'smtp', label: 'SMTP & Email Tester' },
-          { id: 'telegram', label: 'Telegram Channels', count: channels.length },
-          { id: 'sources', label: 'Data Sources Registry', count: sources.length },
-          { id: 'duplicates', label: 'Deduplicated Events', count: duplicates.length },
-          { id: 'test', label: 'Deduplication Live Tester' },
-          { id: 'health', label: 'System & Database Health' },
+          { id: 'users', label: 'Pengguna & Langganan', count: usersList.length },
+          { id: 'smtp', label: 'Penguji SMTP & Email' },
+          { id: 'telegram', label: 'Channel Telegram', count: channels.length },
+          { id: 'sources', label: 'Registri Sumber Data', count: sources.length },
+          { id: 'duplicates', label: 'Agenda Terdeduplikasi', count: duplicates.length },
+          { id: 'test', label: 'Penguji Deduplikasi Live' },
+          { id: 'health', label: 'Kesehatan Sistem & Basis Data' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -256,7 +256,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
           <form onSubmit={handleAddTelegram} className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800 space-y-3">
             <h3 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
               <Plus className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Register New Telegram Public Channel</span>
+              <span>Daftarkan Channel Publik Telegram Baru</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-mono">
@@ -270,7 +270,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
               />
               <input
                 type="text"
-                placeholder="Channel Display Title"
+                placeholder="Judul Tampilan Channel"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 className="bg-slate-950 border border-slate-800 px-3 py-1.5 rounded text-slate-200 placeholder:text-slate-600 outline-none focus:border-cyan-500"
@@ -299,12 +299,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
             <table className="w-full text-left text-xs font-mono">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-500 uppercase text-[10px]">
-                  <th className="py-2 px-2.5">Handle / Title</th>
-                  <th className="py-2 px-2.5">Language</th>
+                  <th className="py-2 px-2.5">Handle / Judul</th>
+                  <th className="py-2 px-2.5">Bahasa</th>
                   <th className="py-2 px-2.5">Status</th>
-                  <th className="py-2 px-2.5">Last Ingested</th>
-                  <th className="py-2 px-2.5">Errors</th>
-                  <th className="py-2 px-2.5 text-right">Actions</th>
+                  <th className="py-2 px-2.5">Terakhir Diserap</th>
+                  <th className="py-2 px-2.5">Error</th>
+                  <th className="py-2 px-2.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60">
@@ -330,7 +330,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     </td>
 
                     <td className="py-2.5 px-2.5 text-slate-400">
-                      {ch.last_ingested_at ? new Date(ch.last_ingested_at).toLocaleTimeString() : 'Pending'}
+                      {ch.last_ingested_at ? new Date(ch.last_ingested_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta' }) : 'Pending'}
                     </td>
 
                     <td className="py-2.5 px-2.5 text-slate-400">
@@ -340,10 +340,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     <td className="py-2.5 px-2.5 text-right space-x-1.5 whitespace-nowrap">
                       <button
                         onClick={() => handleScrapeChannel(ch.handle)}
-                        title="Trigger manual scrape"
+                        title="Picu scraping manual"
                         className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-300 hover:text-white"
                       >
-                        Scrape Now
+                        Serap Sekarang
                       </button>
 
                       <button
@@ -354,7 +354,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                             : 'bg-slate-900 text-slate-500 border-slate-800'
                         }`}
                       >
-                        {ch.is_enabled ? 'Enabled' : 'Disabled'}
+                        {ch.is_enabled ? 'Aktif' : 'Nonaktif'}
                       </button>
 
                       <button
@@ -378,12 +378,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
           <table className="w-full text-left text-xs font-mono">
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 uppercase text-[10px]">
-                <th className="py-2 px-2.5">Source Name</th>
-                <th className="py-2 px-2.5">Type</th>
+                <th className="py-2 px-2.5">Nama Sumber</th>
+                <th className="py-2 px-2.5">Tipe</th>
                 <th className="py-2 px-2.5">Status</th>
-                <th className="py-2 px-2.5">Interval</th>
-                <th className="py-2 px-2.5">Last Success</th>
-                <th className="py-2 px-2.5">Error Count</th>
+                <th className="py-2 px-2.5">Jeda Interval</th>
+                <th className="py-2 px-2.5">Terakhir Berhasil</th>
+                <th className="py-2 px-2.5">Jumlah Error</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
@@ -409,7 +409,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     {src.interval_seconds}s
                   </td>
                   <td className="py-2.5 px-2.5 text-slate-400">
-                    {src.last_success_at ? new Date(src.last_success_at).toLocaleTimeString() : 'N/A'}
+                    {src.last_success_at ? new Date(src.last_success_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta' }) : 'N/A'}
                   </td>
                   <td className="py-2.5 px-2.5 text-slate-400 font-bold">
                     {src.error_count}
@@ -465,7 +465,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
         <div className="space-y-4">
           <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-800">
             <h3 className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider mb-2">
-              Inject Test Headline to Verify Real-Time Deduplication
+              Suntikkan Judul Uji untuk Verifikasi Deduplikasi Real-Time
             </h3>
             <p className="text-xs text-slate-400 mb-4 leading-relaxed">
               Test with cross-lingual headlines (e.g. Try: "Inflasi AS naik 3,1% YoY" to see it merge into the existing "US CPI rises 3.1% YoY" event without creating a duplicate event!).
@@ -510,7 +510,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                 </div>
 
                 <div>
-                  <label className="text-slate-400 block mb-1">Source Name:</label>
+                  <label className="text-slate-400 block mb-1">Nama Sumber:</label>
                   <input
                     type="text"
                     value={testSource}
@@ -538,7 +538,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                     ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
                     : 'bg-cyan-950 text-cyan-400 border-cyan-800'
                 }`}>
-                  {testResult.isDuplicate ? 'DEDUPLICATED (LINKED TO EXISTING EVENT)' : 'NEW CANONICAL EVENT CREATED'}
+                  {testResult.isDuplicate ? 'TERDEDUPLIKASI (TERKAIT AGENDA YANG ADA)' : 'AGENDA KANONIK BARU DIBUAT'}
                 </span>
               </div>
               <p className="text-slate-300">
@@ -548,7 +548,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                 <strong>Event Title:</strong> {testResult.event.title}
               </p>
               <p className="text-slate-400">
-                <strong>Affected Assets:</strong> {(testResult.event.affected_assets || []).join(', ') || 'None'}
+                <strong>Affected Assets:</strong> {(testResult.event.affected_assets || []).join(', ') || '—'}
               </p>
             </div>
           )}
@@ -559,27 +559,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       {activeSubTab === 'health' && health && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-mono text-xs">
           <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800">
-            <span className="text-slate-500 block text-[10px]">DATABASE STATUS</span>
+            <span className="text-slate-500 block text-[10px]">STATUS BASIS DATA</span>
             <span className="text-lg font-bold text-emerald-400">{health.db_status}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">Single Source of Truth</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Sumber Kebenaran Tunggal</span>
           </div>
 
           <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800">
-            <span className="text-slate-500 block text-[10px]">TOTAL CANONICAL EVENTS</span>
+            <span className="text-slate-500 block text-[10px]">TOTAL AGENDA KANONIK</span>
             <span className="text-lg font-bold text-cyan-400">{health.database_stats.events_count}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">Deduplicated</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Terdeduplikasi</span>
           </div>
 
           <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800">
-            <span className="text-slate-500 block text-[10px]">TOTAL NEWS WIRES INGESTED</span>
+            <span className="text-slate-500 block text-[10px]">TOTAL ARUS BERITA DISERAP</span>
             <span className="text-lg font-bold text-indigo-400">{health.database_stats.news_count}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">Linked to Events</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Terkait Agenda</span>
           </div>
 
           <div className="p-3.5 rounded-lg bg-slate-900/60 border border-slate-800">
-            <span className="text-slate-500 block text-[10px]">ACTIVE SSE CONNECTIONS</span>
+            <span className="text-slate-500 block text-[10px]">KONEKSI SSE AKTIF</span>
             <span className="text-lg font-bold text-amber-400">{health.active_sse_connections}</span>
-            <span className="text-[10px] text-slate-500 block mt-1">Live Clients Streaming</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Klien Live Streaming</span>
           </div>
         </div>
       )}

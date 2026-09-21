@@ -130,7 +130,7 @@ newsRouter.post('/trigger', async (req, res) => {
 
       return res.json({
         success: true,
-        message: 'Custom news triggered successfully into real-time pipeline and broadcasted.',
+        message: 'Berita kustom berhasil dipicu masuk ke pipeline real-time dan disiarkan.',
         news: pipelineResult.newsItem,
         event: pipelineResult.event,
         isDuplicate: pipelineResult.isDuplicate,
@@ -210,7 +210,7 @@ newsRouter.get('/event/:id', (req, res) => {
 newsRouter.get('/:id', (req, res) => {
   const item = db.getNewsById(req.params.id);
   if (!item) {
-    res.status(404).json({ error: 'News item not found.' });
+    res.status(404).json({ error: 'Item berita tidak ditemukan.' });
     return;
   }
   const event = item.event_id ? db.getEventById(item.event_id) : null;

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { SSEConnectionState } from '../lib/useSSE';
 import { NavTabId } from './Sidebar';
+import { getNavLabel } from '../lib/navLabels';
 import { Tooltip, MetricTooltip } from './Tooltip';
 
 interface HeaderProps {
@@ -61,32 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const formatViewLabel = (tab: NavTabId) => {
-    switch (tab) {
-      case 'terminal':
-        return 'Overview Dashboard';
-      case 'intraday_map':
-        return 'Intraday Market Map';
-      case 'today_catalysts':
-        return "Today's Catalysts";
-      case 'markets':
-        return 'Market Surveillance';
-      case 'currency':
-        return 'Currency Strength';
-      case 'macro':
-        return 'Macro Calendar';
-      case 'events':
-        return 'Canonical News Wire';
-      case 'intelligence':
-        return 'AI Intelligence';
-      case 'watchlist':
-        return 'Watchlist';
-      case 'admin':
-        return 'System & Feeds';
-      default:
-        return tab;
-    }
-  };
+  const formatViewLabel = (tab: NavTabId) => getNavLabel(tab);
 
   // Only display currently active / open sessions to eliminate clutter
   const activeSessions = useMemo(() => {
@@ -101,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onToggleMobileMenu}
             className="p-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 lg:hidden cursor-pointer"
-            title="Open Menu"
+            title="Buka Menu"
             id="mobile-menu-toggle-btn"
           >
             <Menu className="w-5 h-5" />
@@ -147,14 +123,14 @@ export const Header: React.FC<HeaderProps> = ({
               type="text"
               value={searchQuery}
               onChange={e => onSearchChange(e.target.value)}
-              placeholder="Search assets, news, catalysts..."
+              placeholder="Cari aset, berita, katalis..."
               className="w-full bg-slate-900/80 border border-slate-800 focus:border-cyan-500/60 rounded-md pl-9 pr-7 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition font-mono shadow-xs"
             />
             {searchQuery && (
               <button
                 onClick={() => onSearchChange('')}
                 className="absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 cursor-pointer"
-                title="Clear search"
+                title="Bersihkan pencarian"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -176,14 +152,14 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900/70 border border-slate-800/80 text-[11px] cursor-help">
                 <Globe2 className="w-3 h-3 text-cyan-400" />
-                <span className="text-slate-400">SESSION:</span>
+                <span className="text-slate-400">SESI:</span>
                 <div className="flex items-center gap-1">
                   {activeSessions.map(s => (
                     <span
                       key={s.session_name}
                       className="px-1.5 py-0.2 rounded font-bold text-[9px] bg-emerald-950/80 text-emerald-400 border border-emerald-800/60"
                     >
-                      {s.session_name} OPEN
+                      {s.session_name.replace('_', ' ')} BUKA
                     </span>
                   ))}
                 </div>
@@ -199,7 +175,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </MetricTooltip>
 
-          {/* Auto-Trigger News Button & Live Status */}
+          {/* Auto-Trigger News Button & Status Live */}
           {onOpenAutoTriggerModal && (
             <button
               onClick={onOpenAutoTriggerModal}
@@ -208,12 +184,12 @@ export const Header: React.FC<HeaderProps> = ({
                   ? 'bg-amber-500/10 text-amber-300 border-amber-500/50 hover:bg-amber-500/20 shadow-xs shadow-amber-500/20'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-slate-100 border-slate-800 hover:border-slate-700'
               }`}
-              title="Pengaturan Popup & Triger Berita Otomatis"
+              title="Pengaturan Popup & Trigger Berita Otomatis"
               id="open-auto-trigger-modal-btn"
             >
               <Zap className={`w-3 h-3 ${isAutoTriggerActive ? 'text-amber-400 animate-pulse' : 'text-slate-400'}`} />
               <span className="hidden sm:inline text-[11px]">
-                {isAutoTriggerActive ? `Auto-News (${autoTriggerSecondsRemaining}s)` : 'Triger Berita'}
+                {isAutoTriggerActive ? `Auto-News (${autoTriggerSecondsRemaining}s)` : 'Trigger Berita'}
               </span>
             </button>
           )}
@@ -223,11 +199,11 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={onTriggerGlobalSync}
             disabled={isSyncing}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-slate-100 border border-slate-800 hover:border-slate-700 transition cursor-pointer disabled:opacity-50 text-xs font-mono"
-            title="Sync all live market data and news"
+            title="Sinkronkan semua data pasar live dan berita"
             id="global-sync-btn"
           >
             <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin text-cyan-400' : ''}`} />
-            <span className="hidden sm:inline text-[11px]">{isSyncing ? 'Syncing...' : 'Sync'}</span>
+            <span className="hidden sm:inline text-[11px]">{isSyncing ? 'Menyinkronkan...' : 'Sinkron'}</span>
           </button>
         </div>
       </div>

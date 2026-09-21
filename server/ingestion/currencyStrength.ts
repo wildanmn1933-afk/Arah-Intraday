@@ -62,7 +62,7 @@ export class CurrencyStrengthService {
         }
       }
     } catch (err: any) {
-      console.warn(`[CurrencyStrengthService] Could not reach currency-strength.com feed (${range}):`, err.message);
+      console.warn(`[CurrencyStrengthService] Tidak dapat menjangkau feed currency-strength.com (${range}):`, err.message);
     }
 
     // Return cached if available

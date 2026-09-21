@@ -1,3 +1,4 @@
+import { translateAction } from '../lib/statusLabels';
 import React, { useState, useMemo } from 'react';
 import { CurrencyStrength } from '../types';
 import {
@@ -44,20 +45,20 @@ const TRADABLE_PAIRS: Array<{
   catalyst: string;
   session: string;
 }> = [
-  { symbol: 'AUDCAD', base: 'AUD', quote: 'CAD', catalyst: 'RBA hawkish rate stance & iron ore/metals exports vs BoC easing cycle & crude price dynamics', session: 'Asian / New York Overlap' },
+  { symbol: 'AUDCAD', base: 'AUD', quote: 'CAD', catalyst: 'Sikap suku bunga hawkish RBA & ekspor bijih besi/logam vs siklus pelonggaran BoC & dinamika harga minyak mentah', session: 'Asian / New York Overlap' },
   { symbol: 'GBPJPY', base: 'GBP', quote: 'JPY', catalyst: 'BoE terminal rate resilience vs BoJ ultra-dovish yield suppression', session: 'London / Tokyo Overlap' },
   { symbol: 'AUDJPY', base: 'AUD', quote: 'JPY', catalyst: 'Commodity/Risk-on carry beta vs Yen funding liquidation', session: 'Asian / Early London' },
   { symbol: 'GBPUSD', base: 'GBP', quote: 'USD', catalyst: 'UK services inflation persistence vs softening US Treasury yields & Fed rate cut expectations', session: 'London / New York Overlap' },
   { symbol: 'EURJPY', base: 'EUR', quote: 'JPY', catalyst: 'ECB yield plateau vs negative real rate differential in Japan', session: 'London Session' },
   { symbol: 'EURUSD', base: 'EUR', quote: 'USD', catalyst: 'Eurozone industrial stabilization vs DXY dollar index consolidation', session: 'London / New York Overlap' },
-  { symbol: 'AUDUSD', base: 'AUD', quote: 'USD', catalyst: 'RBA hawkish hold & commodities demand vs cooling US labor market', session: 'Asian / New York' },
+  { symbol: 'AUDUSD', base: 'AUD', quote: 'USD', catalyst: 'RBA tahan hawkish & permintaan komoditas vs pasar tenaga kerja AS yang mendingin', session: 'Asian / New York' },
   { symbol: 'NZDUSD', base: 'NZD', quote: 'USD', catalyst: 'Dairy terms-of-trade vs Fed monetary easing trajectory', session: 'Asian Session' },
   { symbol: 'USDCAD', base: 'USD', quote: 'CAD', catalyst: 'Crude oil correlation vs BoC interest rate easing cycle', session: 'New York Session' },
-  { symbol: 'USDCHF', base: 'USD', quote: 'CHF', catalyst: 'SNB negative intervention bias vs US dollar safe-haven yields', session: 'European / US Session' },
-  { symbol: 'EURGBP', base: 'EUR', quote: 'GBP', catalyst: 'UK vs Eurozone gilt spread and economic momentum differential', session: 'London Session' },
-  { symbol: 'CADJPY', base: 'CAD', quote: 'JPY', catalyst: 'Energy export terms vs Japanese trade deficit flow', session: 'Tokyo / NY Session' },
-  { symbol: 'CHFJPY', base: 'CHF', quote: 'JPY', catalyst: 'Swiss Franc defensive appreciation vs weak Yen carry flows', session: 'European Session' },
-  { symbol: 'NZDCAD', base: 'NZD', quote: 'CAD', catalyst: 'Cross-commodity parity with minimal macro divergence', session: 'Pacific Session' },
+  { symbol: 'USDCHF', base: 'USD', quote: 'CHF', catalyst: 'Bias intervensi negatif SNB vs yield safe-haven dolar AS', session: 'European / US Session' },
+  { symbol: 'EURGBP', base: 'EUR', quote: 'GBP', catalyst: 'Spread gilt UK vs Zona Euro dan diferensial momentum ekonomi', session: 'London Session' },
+  { symbol: 'CADJPY', base: 'CAD', quote: 'JPY', catalyst: 'Terma ekspor energi vs aliran defisit dagang Jepang', session: 'Tokyo / NY Session' },
+  { symbol: 'CHFJPY', base: 'CHF', quote: 'JPY', catalyst: 'Apresiasi defensif Swiss Franc vs aliran carry Yen yang lemah', session: 'European Session' },
+  { symbol: 'NZDCAD', base: 'NZD', quote: 'CAD', catalyst: 'Paritas lintas komoditas dengan divergensi makro minimal', session: 'Pacific Session' },
   { symbol: 'EURAUD', base: 'EUR', quote: 'AUD', catalyst: 'Eurozone manufacturing drag vs Australian resource export terms', session: 'London / Asian' },
   { symbol: 'GBPAUD', base: 'GBP', quote: 'AUD', catalyst: 'BoE services CPI momentum vs Australian mining risk beta', session: 'London Session' },
   { symbol: 'AUDNZD', base: 'AUD', quote: 'NZD', catalyst: 'Trans-Tasman monetary divergence (RBA rate pause vs RBNZ easing)', session: 'Asian Session' },
@@ -91,28 +92,28 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
 
       let action: PairOpportunity['action'] = 'NEUTRAL_CHOP';
       let tier: PairOpportunity['tier'] = 'CHOP_AVOID';
-      let tradeStyle = 'Rangebound / Scalp Only';
+      let tradeStyle = 'Rangebound / Hanya Scalp';
 
       if (delta >= 4.0) {
         action = 'STRONG_BUY';
         tier = 'PRIME';
-        tradeStyle = 'Trend Follow / Buy Dips';
+        tradeStyle = 'Ikuti Tren / Beli Saat Melemah';
       } else if (delta >= 2.0) {
         action = 'BUY';
         tier = 'MODERATE';
-        tradeStyle = 'Bullish Continuation';
+        tradeStyle = 'Kelanjutan Bullish';
       } else if (delta <= -4.0) {
         action = 'STRONG_SELL';
         tier = 'PRIME';
-        tradeStyle = 'Trend Follow / Sell Rallies';
+        tradeStyle = 'Ikuti Tren / Jual Saat Menguat';
       } else if (delta <= -2.0) {
         action = 'SELL';
         tier = 'MODERATE';
-        tradeStyle = 'Bearish Continuation';
+        tradeStyle = 'Kelanjutan Bearish';
       } else {
         action = 'NEUTRAL_CHOP';
         tier = 'CHOP_AVOID';
-        tradeStyle = 'High Whipsaw / Avoid Breakouts';
+        tradeStyle = 'Whipsaw Tinggi / Hindari Breakout';
       }
 
       return {
@@ -159,7 +160,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
           <div className="flex items-center gap-2">
             <Flame className="w-4 h-4 text-amber-400" />
             <h3 className="text-xs sm:text-sm font-mono font-bold text-slate-100 uppercase tracking-wider">
-              WORTH-IT PAIRS TO TRADE RIGHT NOW (LIVE DIVERGENCE)
+              PAIR LAYAK DIPERDAGANGKAN SEKARANG (DIVERGENSI LANGSUNG)
             </h3>
             <MetricInfoIcon term="PRIME_PAIR" position="bottom" />
           </div>
@@ -189,7 +190,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
             }`}
           >
             <ArrowUpRight className="w-3 h-3 text-emerald-400" />
-            <span>Top Longs</span>
+            <span>Long Teratas</span>
           </button>
           <button
             onClick={() => setFilter('PRIME_SHORTS')}
@@ -200,7 +201,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
             }`}
           >
             <ArrowDownRight className="w-3 h-3 text-rose-400" />
-            <span>Top Shorts</span>
+            <span>Short Teratas</span>
           </button>
           <MetricTooltip term="CHOP_AVOID" underline={false}>
             <button
@@ -212,7 +213,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               }`}
             >
               <AlertTriangle className="w-3 h-3 text-amber-400" />
-              <span>Hindari (Chop)</span>
+              <span>Hindari (Choppy)</span>
             </button>
           </MetricTooltip>
         </div>
@@ -240,7 +241,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               {topLong.catalyst}
             </p>
             <div className="mt-2 text-[10px] text-emerald-400 font-mono">
-              Action: Buy the dips / Trend-following
+              Aksi: Beli saat melemah / Ikuti tren
             </div>
           </div>
         )}
@@ -267,7 +268,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               {pairOpportunities[1].catalyst}
             </p>
             <div className="mt-2 text-[10px] text-cyan-400 font-mono">
-              Action: {pairOpportunities[1].tradeStyle}
+              Aksi: {pairOpportunities[1].tradeStyle}
             </div>
           </div>
         )}
@@ -306,7 +307,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
               <tr>
                 <th className="py-2.5 px-3">
                   <MetricTooltip term="CCY" underline={false}>
-                    <span>Pair</span>
+                    <span>Pasangan</span>
                   </MetricTooltip>
                 </th>
                 <th className="py-2.5 px-3">
@@ -316,25 +317,25 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
                 </th>
                 <th className="py-2.5 px-3">
                   <MetricTooltip term="DIVERGENCE_DELTA" underline={false}>
-                    <span>Divergence Delta</span>
+                    <span>Delta Divergensi</span>
                   </MetricTooltip>
                 </th>
                 <th className="py-2.5 px-3 hidden md:table-cell">
                   <MetricTooltip term="CURRENCY_STRENGTH" underline={false}>
-                    <span>Base vs Quote</span>
+                    <span>Dasar vs Kutipan</span>
                   </MetricTooltip>
                 </th>
                 <th className="py-2.5 px-3 hidden lg:table-cell">
                   <MetricTooltip term="FUNDAMENTAL_IMPLICATION" underline={false}>
-                    <span>Fundamental / Macro Driver</span>
+                    <span>Pendorong Fundamental / Makro</span>
                   </MetricTooltip>
                 </th>
                 <th className="py-2.5 px-3 hidden sm:table-cell">
                   <MetricTooltip term="PRIME_PAIR" underline={false}>
-                    <span>Trading Style</span>
+                    <span>Gaya Trading</span>
                   </MetricTooltip>
                 </th>
-                <th className="py-2.5 px-3 text-right">Chart</th>
+                <th className="py-2.5 px-3 text-right">Grafik</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
@@ -372,7 +373,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
                         {p.action === 'STRONG_BUY' && <ArrowUpRight className="w-2.5 h-2.5" />}
                         {p.action === 'STRONG_SELL' && <ArrowDownRight className="w-2.5 h-2.5" />}
                         {p.action === 'NEUTRAL_CHOP' && <AlertTriangle className="w-2.5 h-2.5" />}
-                        {p.action.replace('_', ' ')}
+                        {translateAction(p.action)}
                       </span>
                     </td>
 
@@ -420,7 +421,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
                             onOpenChart(p.symbol);
                           }}
                           className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition cursor-pointer"
-                          title={`Open ${p.symbol} Chart`}
+                          title={`Buka Grafik ${p.symbol}`}
                         >
                           <BarChart2 className="w-3.5 h-3.5" />
                         </button>
@@ -442,7 +443,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
             <strong className="text-slate-200 font-mono">Golden Rule Currency Strength:</strong> Pasangkan mata uang terkuat (Skor &gt; 7.0) dengan mata uang terlemah (Skor &lt; 3.0) untuk memaksimalkan momentum tren dan meminimalkan resiko drawdown.
           </span>
         </div>
-        <span className="text-[10px] font-mono text-cyan-400 shrink-0">DISPERSION MATRIX ACTIVE</span>
+        <span className="text-[10px] font-mono text-cyan-400 shrink-0">MATRIKS DISPERSI AKTIF</span>
       </div>
     </div>
   );

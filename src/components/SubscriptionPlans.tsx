@@ -52,28 +52,28 @@ const TIERS: PricingTier[] = [
   {
     ...PLANS.FREE,
     metrics: {
-      streamSpeed: 'Standard Polling',
-      watchlists: '1 Local Watchlist',
-      aiReports: 'Public Bulletins Only',
-      customFeeds: 'None',
+      streamSpeed: 'Polling Standar',
+      watchlists: '1 Daftar Pantau Lokal',
+      aiReports: 'Hanya Buletin Publik',
+      customFeeds: 'Tidak Ada',
     },
   },
   {
     ...PLANS.PRO,
     metrics: {
-      streamSpeed: '< 100ms Ultra-Low Latency',
-      watchlists: 'Unlimited Cloud Sync',
-      aiReports: 'Full Deep Analysis',
-      customFeeds: 'Standard Telegram Channels',
+      streamSpeed: '< 100ms Latensi Ultra-Rendah',
+      watchlists: 'Sinkron Cloud Tanpa Batas',
+      aiReports: 'Analisis Mendalam Penuh',
+      customFeeds: 'Kanal Telegram Standar',
     },
   },
   {
     ...PLANS.INSTITUTIONAL,
     metrics: {
-      streamSpeed: 'Dedicated SLA Gateway',
-      watchlists: 'Enterprise Multi-User',
-      aiReports: 'Unlimited Gemini Live Insights',
-      customFeeds: 'Full Control & Scraper Access',
+      streamSpeed: 'Gerbang SLA Khusus',
+      watchlists: 'Multi-Pengguna Enterprise',
+      aiReports: 'Insight Gemini Live Tanpa Batas',
+      customFeeds: 'Kendali Penuh & Akses Scraper',
     },
   },
 ];
@@ -115,7 +115,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
       setUpdatingPlan(tierId);
       const res = await api.updateSubscription(tierId);
       if (res.success && res.user) {
-        const tierName = tierId === 'PRO' ? 'Trader Pro' : tierId === 'INSTITUTIONAL' ? 'Desk & Institutional' : 'Evaluation Tier';
+        const tierName = tierId === 'PRO' ? 'Trader Pro' : tierId === 'INSTITUTIONAL' ? 'Desk & Institusional' : 'Tier Evaluasi';
         setSuccessMessage(`Berhasil mengaktifkan paket ${tierName}! Semua fitur terbuka tanpa biaya.`);
         if (onPlanUpdated) {
           onPlanUpdated(res.user);
@@ -135,7 +135,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
         {isModal && onClose && (
           <button
             onClick={onClose}
-            aria-label="Close subscription plans modal"
+            aria-label="Tutup modal paket langganan"
             className="absolute -top-2 right-0 p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -163,7 +163,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
             </span>
             <span className="w-1 h-1 rounded-full bg-slate-700" />
             <span className="flex items-center gap-1.5">
-              Active Plan:
+              Paket Aktif:
               <span className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${
                 currentPlan === 'INSTITUTIONAL'
                   ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
@@ -281,11 +281,11 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                 {/* Spec Telemetry Badges */}
                 <div className="mt-5 grid grid-cols-2 gap-2 text-[11px] p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 font-mono">
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase">Stream Speed</div>
+                    <div className="text-slate-500 text-[10px] uppercase">Kecepatan Stream</div>
                     <div className="text-slate-200 font-bold truncate">{tier.metrics.streamSpeed}</div>
                   </div>
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase">Watchlists</div>
+                    <div className="text-slate-500 text-[10px] uppercase">Daftar Pantau</div>
                     <div className="text-slate-200 font-bold truncate">{tier.metrics.watchlists}</div>
                   </div>
                 </div>
@@ -293,7 +293,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                 {/* Feature Checklist */}
                 <div className="mt-6 space-y-2.5 text-xs text-slate-300 font-sans">
                   <div className="text-[11px] font-mono uppercase text-slate-400 font-semibold tracking-wider mb-1">
-                    Features Included:
+                    Fitur yang Disertakan:
                   </div>
                   {tier.features.map((feat, idx) => (
                     <div key={idx} className="flex items-start gap-2">
@@ -320,7 +320,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                     className="w-full py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-xs font-bold font-sans flex items-center justify-center gap-2 cursor-default"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    Active Plan
+                    Paket Aktif
                   </button>
                 ) : (
                   <button
@@ -338,11 +338,11 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                     {isUpgrading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Updating Plan...
+                        Memperbarui Paket...
                       </>
                     ) : !user ? (
                       <>
-                        {tier.id === 'FREE' ? 'Get Started Free' : `Get Started with ${tier.name}`}
+                        {tier.id === 'FREE' ? 'Mulai Gratis' : `Mulai dengan ${tier.name}`}
                         <ArrowRight className="w-3.5 h-3.5" />
                       </>
                     ) : (
@@ -373,7 +373,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-850 transition cursor-pointer"
         >
           <BarChart2 className="w-4 h-4 text-cyan-400" />
-          {showComparison ? 'Hide Feature Comparison' : 'View Full Feature Comparison Table'}
+          {showComparison ? 'Sembunyikan Perbandingan Fitur' : 'Lihat Tabel Perbandingan Fitur Lengkap'}
         </button>
       </div>
 
@@ -381,7 +381,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
       {showComparison && (
         <div className="mt-8 rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden font-sans text-xs">
           <div className="p-4 bg-slate-950 border-b border-slate-800 font-mono font-bold text-slate-200 flex items-center justify-between">
-            <span>Granular Capability Breakdown</span>
+            <span>Rincian Kapabilitas</span>
             <span className="text-xs text-emerald-400 font-normal">Semua Fitur Terbuka Bebas</span>
           </div>
           
@@ -389,63 +389,63 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-slate-800 bg-slate-900/80 font-mono text-[11px] text-slate-400">
-                  <th className="py-3 px-4">Feature / Protocol</th>
-                  <th className="py-3 px-4 text-center text-slate-200">Evaluation (Free)</th>
+                  <th className="py-3 px-4">Fitur / Protokol</th>
+                  <th className="py-3 px-4 text-center text-slate-200">Evaluasi (Gratis)</th>
                   <th className="py-3 px-4 text-center text-cyan-400 font-bold">Trader Pro (Free)</th>
                   <th className="py-3 px-4 text-center text-purple-400 font-bold">Institutional (Free)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 text-slate-300 font-sans">
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Data Stream Protocol</td>
-                  <td className="py-3 px-4 text-center text-slate-400">Polling (15s)</td>
-                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Low-latency SSE</td>
-                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Dedicated SSE Gateway</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Protokol Aliran Data</td>
+                  <td className="py-3 px-4 text-center text-slate-400">Polling (15 d)</td>
+                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">SSE Latensi Rendah</td>
+                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Gateway SSE Khusus</td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Intraday Bias Radar</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Radar Bias Intraday</td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-emerald-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-cyan-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">G8 Currency Strength Matrix</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Matriks Kekuatan Mata Uang G8</td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-emerald-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-cyan-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Economic Calendar Surprises</td>
-                  <td className="py-3 px-4 text-center text-slate-400">Standard Data</td>
-                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Instant Beat/Miss Engine</td>
-                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Deep Deviation & Reaction</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Kejutan Kalender Ekonomi</td>
+                  <td className="py-3 px-4 text-center text-slate-400">Data Standar</td>
+                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Engine Beat/Miss Instan</td>
+                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Deviasi Dalam & Reaksi</td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">AI Macro Driver Synthesis</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Sintesis Pendorong Makro AI</td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-cyan-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Persistent Cloud Watchlists</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Watchlist Cloud Permanen</td>
                   <td className="py-3 px-4 text-center text-slate-400">1 Local Session</td>
-                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Unlimited Cloud Sync</td>
-                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Team Shared Watchlists</td>
+                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Sinkron Cloud Tanpa Batas</td>
+                  <td className="py-3 px-4 text-center text-purple-300 font-bold">Watchlist Bersama Tim</td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Central Bank Speech Parser</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Pengurai Pidato Bank Sentral</td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-cyan-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Telegram Channel Scraping Control</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Kontrol Scraping Channel Telegram</td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">Database & Pipeline Administration</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Administrasi Basis Data & Pipeline</td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center text-slate-500"><X className="w-4 h-4 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
@@ -460,19 +460,19 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
       <div className="mt-12 p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80">
         <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-4">
           <HelpCircle className="w-4 h-4 text-cyan-400" />
-          Subscription & Ingestion Questions
+          Pertanyaan Langganan & Penyerapan Data
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-400">
           <div>
-            <h4 className="font-semibold text-slate-200 mb-1 font-sans">Can I upgrade or downgrade at any time?</h4>
+            <h4 className="font-semibold text-slate-200 mb-1 font-sans">Bisakah saya naik atau turun paket kapan saja?</h4>
             <p className="leading-relaxed">
-              Yes, plan adjustments are applied immediately to your active terminal profile without interrupting live telemetry feeds.
+              Ya, penyesuaian paket langsung diterapkan ke profil terminal aktif Anda tanpa mengganggu feed telemetri live.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-slate-200 mb-1 font-sans">How does the Telegram scraper work?</h4>
+            <h4 className="font-semibold text-slate-200 mb-1 font-sans">Bagaimana cara kerja pengurai Telegram?</h4>
             <p className="leading-relaxed">
-              Institutional subscribers can add custom public Telegram channels to scrape breaking macroeconomic headlines and central bank commentary directly into our deduplication pipeline.
+              Pelanggan institusional dapat menambahkan kanal Telegram publik kustom untuk mengurai berita makroekonomi terkini dan komentar bank sentral langsung ke pipeline deduplikasi kami.
             </p>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { translateCategory, translateFilter } from '../lib/statusLabels';
 import React, { useState, useEffect } from 'react';
 import {
   X,
@@ -44,7 +45,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
       const res = await api.getEventDetail(eventId);
       setData(res);
     } catch (err: any) {
-      setError(err.message || 'Failed to load event details');
+      setError(err.message || 'Gagal memuat detail agenda');
     } finally {
       setLoading(false);
     }
@@ -64,7 +65,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
           ...data,
           ai_analysis: res.analysis,
         });
-        setNotice({ type: 'success', message: 'Event causal chain and market impact re-analyzed.' });
+        setNotice({ type: 'success', message: 'Rantai kausal agenda dan dampak pasar dianalisis ulang.' });
       }
     } catch (err: any) {
       setNotice({ type: 'error', message: err.message || 'AI re-analysis failed' });
@@ -78,7 +79,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
       <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 max-w-md w-full flex items-center gap-3">
           <RefreshCw className="w-5 h-5 text-cyan-400 animate-spin" />
-          <span className="text-sm font-mono text-slate-300">Resolving multi-source event intelligence...</span>
+          <span className="text-sm font-mono text-slate-300">Menyelesaikan intelijen agenda multi-sumber...</span>
         </div>
       </div>
     );
@@ -89,13 +90,13 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
       <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 max-w-md w-full text-center">
           <AlertCircle className="w-8 h-8 text-rose-400 mx-auto mb-2" />
-          <h3 className="text-sm font-bold text-slate-200 mb-1">Event Load Error</h3>
-          <p className="text-xs text-slate-400 mb-4">{error || 'Event could not be retrieved.'}</p>
+          <h3 className="text-sm font-bold text-slate-200 mb-1">Gagal Memuat Agenda</h3>
+          <p className="text-xs text-slate-400 mb-4">{error || 'Agenda tidak dapat diambil.'}</p>
           <button
             onClick={onClose}
             className="px-4 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200"
           >
-            Close
+            Tutup
           </button>
         </div>
       </div>
@@ -122,7 +123,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
             <button
               onClick={handleReanalyze}
               disabled={reanalyzing}
-              title="Generate fresh AI market intelligence"
+              title="Buat intelijen pasar AI terbaru"
               className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800/80 text-cyan-300 text-xs font-mono transition cursor-pointer disabled:opacity-50"
             >
               <Sparkles className={`w-3.5 h-3.5 text-cyan-400 ${reanalyzing ? 'animate-spin' : ''}`} />
@@ -169,13 +170,13 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                 event.impact_level === 'HIGH' ? 'bg-amber-950/80 text-amber-400 border-amber-800' :
                 'bg-cyan-950/80 text-cyan-400 border-cyan-800'
               }`}>
-                {event.impact_level} IMPACT
+                DAMPAK {translateFilter(event.impact_level)}
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">
-                CATEGORY: {event.primary_category}
+                KATEGORI: {translateCategory(event.primary_category)}
               </span>
               <span className="text-xs font-mono text-slate-500 ml-auto">
-                First detected: {new Date(event.first_detected_at).toLocaleString()}
+                Pertama terdeteksi: {new Date(event.first_detected_at).toLocaleString()}
               </span>
             </div>
 
@@ -195,7 +196,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
                     <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-300">
-                      KORELASI PAIR & ANALISIS DAMPAK (BULLISH / BEARISH)
+                      KORELASI PASANGAN & ANALISIS DAMPAK (BIAS NAIK / TURUN)
                     </h3>
                   </div>
                   <p className="text-[11px] text-slate-400 mt-0.5">
@@ -205,10 +206,10 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
 
                 <div className="flex items-center gap-2 text-[10px] font-mono shrink-0">
                   <span className="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800 font-bold">
-                    ▲ BULLISH (Naik)
+                    ▲ NAIK
                   </span>
                   <span className="px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-800 font-bold">
-                    ▼ BEARISH (Turun)
+                    ▼ TURUN
                   </span>
                 </div>
               </div>
@@ -269,15 +270,15 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                             {isBull ? (
                               <>
                                 <TrendingUp className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
-                                <span>BULLISH</span>
+                                <span>NAIK</span>
                               </>
                             ) : isBear ? (
                               <>
                                 <TrendingDown className="w-3.5 h-3.5 text-rose-400 stroke-[2.5]" />
-                                <span>BEARISH</span>
+                                <span>TURUN</span>
                               </>
                             ) : (
-                              <span>NEUTRAL</span>
+                              <span>NETRAL</span>
                             )}
                           </span>
                         </div>
@@ -367,7 +368,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
               {ai_analysis.affected_assets_outlook && ai_analysis.affected_assets_outlook.length > 0 && (
                 <div>
                   <h4 className="text-[11px] font-mono text-slate-400 uppercase font-semibold mb-2">
-                    Asset Directional Outlook:
+                    Prospek Arah Aset:
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {ai_analysis.affected_assets_outlook.map((out, idx) => {
@@ -408,17 +409,17 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                   event.impact_level === 'HIGH' ? 'bg-amber-950 text-amber-300 border-amber-800' :
                   'bg-cyan-950 text-cyan-300 border-cyan-800'
                 }`}>
-                  {event.impact_level} IMPACT
+                  DAMPAK {translateFilter(event.impact_level)}
                 </span>
                 <span className="text-[10px] text-slate-400">
-                  CONFIDENCE: <strong className="text-emerald-400 font-bold">{((ai_analysis?.confidence || 0.92) * 100).toFixed(0)}%</strong>
+                  KEYAKINAN: <strong className="text-emerald-400 font-bold">{((ai_analysis?.confidence || 0.92) * 100).toFixed(0)}%</strong>
                 </span>
                 <span className="text-[10px] text-slate-400">
-                  FRESHNESS: <strong className="text-slate-200">Live Synchronized</strong>
+                  FRESHNESS: <strong className="text-slate-200">Tersinkron Live</strong>
                 </span>
               </div>
               <div className="text-[10px] font-mono text-slate-500">
-                Data Standard: <span className="text-cyan-400">Strict Quantitative Grounding</span>
+                Data Standard: <span className="text-cyan-400">Basis Kuantitatif Ketat</span>
               </div>
             </div>
 
@@ -428,7 +429,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                 <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">
                   Observed Market Reaction Across Horizons (DXY / EURUSD Proxy)
                 </span>
-                <span className="text-[9px] text-slate-500">Empirical Order Flow</span>
+                <span className="text-[9px] text-slate-500">Aliran Order Empiris</span>
               </div>
               <div className="grid grid-cols-5 gap-2 text-center text-xs">
                 <div className="p-2 rounded bg-slate-900 border border-slate-800">
@@ -459,7 +460,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
               <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/90">
                 <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 mb-1 flex items-center justify-between">
                   <span>1. FUNDAMENTAL IMPLICATION</span>
-                  <span className="text-[9px] text-slate-500 font-normal">Macro Policy Trajectory</span>
+                  <span className="text-[9px] text-slate-500 font-normal">Trajektori Kebijakan Makro</span>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Pergeseran ekspektasi suku bunga terminal bank sentral dan premi risiko sovereign yield. Fundamental bias mencerminkan transmisi ekonomi riil jangka menengah.
@@ -468,8 +469,8 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
 
               <div className="p-3 rounded-lg bg-slate-950 border border-slate-800/90">
                 <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-400 mb-1 flex items-center justify-between">
-                  <span>2. ACTUAL MARKET REACTION</span>
-                  <span className="text-[9px] text-slate-500 font-normal">Liquidity & Order Flow</span>
+                  <span>2. REAKSI PASAR AKTUAL</span>
+                  <span className="text-[9px] text-slate-500 font-normal">Likuiditas & Aliran Order</span>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Penyerapan likuiditas oleh algorithmic market makers, pergerakan bid-ask spread seketika, dan rotasi posisi portofolio yang dapat mendahului atau menyimpang sementara dari analisis fundamental murni.
@@ -480,13 +481,13 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
             {/* Grounded Provenance (SOURCE + TIMESTAMP + EVIDENCE + CONFIDENCE) */}
             <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 font-mono text-[11px] text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-cyan-400 font-bold">SOURCE:</span>
-                <span className="text-slate-200">{sources[0]?.source_name || 'Institutional Wire'}</span>
+                <span className="text-cyan-400 font-bold">SUMBER:</span>
+                <span className="text-slate-200">{sources[0]?.source_name || 'Arus Institusional'}</span>
                 <span>•</span>
                 <span className="text-cyan-400 font-bold">TIMESTAMP:</span>
                 <span className="text-slate-200">{new Date(event.first_detected_at).toLocaleString()}</span>
                 <span>•</span>
-                <span className="text-cyan-400 font-bold">CONFIDENCE:</span>
+                <span className="text-cyan-400 font-bold">KEYAKINAN:</span>
                 <span className="text-emerald-400 font-bold">{((ai_analysis?.confidence || 0.92) * 100).toFixed(0)}%</span>
               </div>
               <div className="text-slate-400">
@@ -502,11 +503,11 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5">
               <h3 className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                 <span>Affected Market Instruments ({affected_markets.length})</span>
-                <span className="text-[10px] text-slate-500">LIVE FEED</span>
+                <span className="text-[10px] text-slate-500">FEED LANGSUNG</span>
               </h3>
 
               {affected_markets.length === 0 ? (
-                <p className="text-xs text-slate-500 font-mono">No direct asset impact mapped.</p>
+                <p className="text-xs text-slate-500 font-mono">Tidak ada dampak aset langsung yang terpetakan.</p>
               ) : (
                 <div className="space-y-1.5">
                   {affected_markets.map(m => {
@@ -539,11 +540,11 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-3.5">
               <h3 className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                 <span>Affected Currencies ({affected_currencies.length})</span>
-                <span className="text-[10px] text-slate-500">STRENGTH INDEX</span>
+                <span className="text-[10px] text-slate-500">INDEKS KEKUATAN</span>
               </h3>
 
               {affected_currencies.length === 0 ? (
-                <p className="text-xs text-slate-500 font-mono">No specific currency sensitivity identified.</p>
+                <p className="text-xs text-slate-500 font-mono">Tidak ada sensitivitas mata uang spesifik yang teridentifikasi.</p>
               ) : (
                 <div className="space-y-2">
                   {affected_currencies.map(c => {
@@ -592,7 +593,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
               </div>
               <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Deduplicated into Single Event ID
+                Terdeduplikasi into Single Event ID
               </span>
             </div>
 
@@ -614,7 +615,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                       )}
                     </div>
                     <span className="text-[11px] text-slate-500">
-                      {new Date(s.published_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(s.published_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
 
@@ -626,7 +627,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                   </p>
 
                   <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-900">
-                    <span>Reason: {s.matched_reason || 'Canonical initial report'}</span>
+                    <span>Reason: {s.matched_reason || 'Laporan awal kanonik'}</span>
                     {s.source_url && (
                       <a
                         href={s.source_url}
@@ -634,7 +635,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
                         rel="noreferrer"
                         className="flex items-center gap-1 text-cyan-400 hover:underline"
                       >
-                        <span>Original Wire</span>
+                        <span>Berita Asli</span>
                         <ExternalLink className="w-2.5 h-2.5" />
                       </a>
                     )}
@@ -647,12 +648,12 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ eventId, onC
 
         {/* Modal Footer */}
         <div className="px-5 py-3 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between text-xs font-mono text-slate-400">
-          <span>ONE EVENT → ONE EVENT ID → MULTIPLE SOURCES → MULTIPLE ASSETS → ONE ANALYSIS</span>
+          <span>SATU EVENT → SATU EVENT ID → BANYAK SUMBER → BANYAK ASET → SATU ANALISIS</span>
           <button
             onClick={onClose}
             className="px-4 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-sans cursor-pointer"
           >
-            Close Detail
+            Tutup Detail
           </button>
         </div>
       </div>

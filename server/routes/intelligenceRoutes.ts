@@ -112,31 +112,31 @@ intelligenceRouter.get('/relationships', (req, res) => {
       driver: 'US CPI / Inflation',
       sensitive_currencies: ['USD'],
       primary_assets: ['XAUUSD', 'US100', 'US500', 'US30', 'BTC'],
-      transmission_mechanism: 'Shifts real rate discount curve and Treasury yields, directly dictating US Dollar liquidity.',
+      transmission_mechanism: 'Menggeser kurva diskonto suku bunga riil dan yield Treasury, yang secara langsung menentukan likuiditas Dolar AS.',
     },
     {
       driver: 'Federal Reserve FOMC / Powell Rate Decision',
       sensitive_currencies: ['USD', 'EUR', 'JPY'],
       primary_assets: ['XAUUSD', 'US100', 'BTC', 'US500'],
-      transmission_mechanism: 'Alters cost of capital; directly impacts gold opportunity cost and high-beta crypto liquidity.',
+      transmission_mechanism: 'Mengubah biaya modal; berdampak langsung pada biaya peluang emas dan likuiditas kripto beta tinggi.',
     },
     {
       driver: 'Bank of Japan Rate Policy & Carry Trade',
       sensitive_currencies: ['JPY', 'USD'],
       primary_assets: ['US100', 'XAUUSD'],
-      transmission_mechanism: 'Yen strengthening forces global margin deleveraging across equity index futures.',
+      transmission_mechanism: 'Penguatan Yen memaksa deleveraging margin global pada futures indeks ekuitas.',
     },
     {
       driver: 'Geopolitical Conflict / War Escalation',
       sensitive_currencies: ['CHF', 'USD', 'JPY'],
       primary_assets: ['XAUUSD', 'US30'],
-      transmission_mechanism: 'Flight to safety stimulates physical bullion and sovereign bond allocations.',
+      transmission_mechanism: 'Pelarian ke aset aman mendorong alokasi bullion fisik dan obligasi negara.',
     },
     {
       driver: 'Crude Oil & OPEC+ Supply Restrictions',
       sensitive_currencies: ['CAD', 'USD'],
       primary_assets: ['US30', 'US500'],
-      transmission_mechanism: 'Energy price inflation cascades into consumer cost pressures and transport logistics.',
+      transmission_mechanism: 'Inflasi harga energi menjalar ke tekanan biaya konsumen dan logistik transportasi.',
     },
   ];
 
@@ -170,7 +170,7 @@ intelligenceRouter.post('/ai/refresh', requireAuth as any, async (req: Authentic
   // Check permission
   if (!EntitlementService.canAccessFeature(user, 'AI_OVERVIEW_REFRESH')) {
     res.status(403).json({
-      error: 'Upgrade Required: AI Market Overview refresh is available on PRO and INSTITUTIONAL tiers.',
+      error: 'Perlu Peningkatan Paket: refresh Ringkasan Pasar AI tersedia pada paket PRO dan INSTITUTIONAL.',
       code: 'PLAN_UPGRADE_REQUIRED',
       required_permission: 'AI_OVERVIEW_REFRESH',
       current_plan: user.plan || 'FREE',
@@ -182,7 +182,7 @@ intelligenceRouter.post('/ai/refresh', requireAuth as any, async (req: Authentic
   const usageCheck = EntitlementService.checkAndIncrementAIUsage(user.id, user);
   if (!usageCheck.allowed) {
     res.status(429).json({
-      error: `Daily limit reached: Your ${user.plan || 'FREE'} plan allows ${usageCheck.limit} AI generations per day.`,
+      error: `Batas harian tercapai: paket ${user.plan || 'FREE'} Anda mengizinkan ${usageCheck.limit} generasi AI per hari.`,
       code: 'USAGE_LIMIT_REACHED',
       limit: usageCheck.limit,
       used: usageCheck.used,

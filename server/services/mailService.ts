@@ -384,7 +384,7 @@ Tim ArahMarket
           html: htmlContent,
         });
 
-        console.log(`[MailService] Email sent successfully to ${toEmail}. MessageId: ${info.messageId}`);
+        console.log(`[MailService] Email berhasil dikirim ke ${toEmail}. MessageId: ${info.messageId}`);
         return {
           success: true,
           messageId: info.messageId,

@@ -138,7 +138,7 @@ export class RelationalDatabase {
         }
       }
     } catch (err) {
-      console.error('[DB] Error loading database file, initializing clean state:', err);
+      console.error('[DB] Gagal memuat berkas basis data, menginisialisasi keadaan bersih:', err);
       this.data = this.initializeEmptySchema();
     }
   }
@@ -153,7 +153,7 @@ export class RelationalDatabase {
       fs.writeFileSync(tempPath, JSON.stringify(this.data, null, 2), 'utf-8');
       fs.renameSync(tempPath, this.filePath);
     } catch (err) {
-      console.error('[DB] Error saving database:', err);
+      console.error('[DB] Gagal menyimpan basis data:', err);
     }
   }
 
@@ -981,21 +981,21 @@ export class RelationalDatabase {
           id: 'snapshot_2026-09-20',
           date: '2026-09-20',
           timestamp: '2026-09-20T05:00:00.000Z',
-          title: 'Daily Market Snapshot: 20 September 2026',
+          title: 'Snapshot Pasar Harian: 20 September 2026',
           market_biases: {
-            XAUUSD: { symbol: 'XAUUSD', bias: 'BULLISH', score: 72, price: 2742.50, change_24h_pct: 0.45, strength_label: 'Strong', major_catalyst: 'Fed easing cycle expectations & geopolitical reserve diversification', last_updated: '2026-09-20T05:00:00.000Z' },
-            BTC: { symbol: 'BTC', bias: 'NEUTRAL', score: 10, price: 64180.00, change_24h_pct: -0.15, strength_label: 'Neutral', major_catalyst: 'Consolidation above $63,500 support prior to macro weekly close', last_updated: '2026-09-20T05:00:00.000Z' },
-            US100: { symbol: 'US100', bias: 'BEARISH', score: -35, price: 19820.00, change_24h_pct: -0.52, strength_label: 'Weak', major_catalyst: 'Elevated tech valuation compression amid sticky yields', last_updated: '2026-09-20T05:00:00.000Z' },
-            US500: { symbol: 'US500', bias: 'NEUTRAL', score: -5, price: 5712.00, change_24h_pct: -0.08, strength_label: 'Neutral', major_catalyst: 'Rotation into defensive dividend sectors balancing tech pullbacks', last_updated: '2026-09-20T05:00:00.000Z' },
-            US30: { symbol: 'US30', bias: 'BULLISH', score: 40, price: 42150.00, change_24h_pct: 0.28, strength_label: 'Moderate', major_catalyst: 'Industrial and cyclical earnings resilience buoying value stocks', last_updated: '2026-09-20T05:00:00.000Z' },
-            USD: { symbol: 'USD', bias: 'BEARISH', score: -45, price: 100.85, change_24h_pct: -0.32, strength_label: 'Weak', major_catalyst: 'Yield curve steepening and softened labor market trajectory', last_updated: '2026-09-20T05:00:00.000Z' },
-            EUR: { symbol: 'EUR', bias: 'NEUTRAL', score: 5, price: 1.1165, change_24h_pct: 0.12, strength_label: 'Neutral', major_catalyst: 'ECB rate pause confirmation balancing sluggish German industrial PMI', last_updated: '2026-09-20T05:00:00.000Z' },
-            GBP: { symbol: 'GBP', bias: 'BULLISH', score: 55, price: 1.3310, change_24h_pct: 0.38, strength_label: 'Strong', major_catalyst: 'BoE hawkish dissent citing stubborn services inflation print', last_updated: '2026-09-20T05:00:00.000Z' },
-            JPY: { symbol: 'JPY', bias: 'BEARISH', score: -60, price: 143.80, change_24h_pct: -0.45, strength_label: 'Weak', major_catalyst: 'BoJ gradualism stance keeping short-end real carry attractive', last_updated: '2026-09-20T05:00:00.000Z' },
-            AUD: { symbol: 'AUD', bias: 'BULLISH', score: 50, price: 0.6815, change_24h_pct: 0.42, strength_label: 'Strong', major_catalyst: 'RBA persistent hawkish hold on sticky domestic core inflation', last_updated: '2026-09-20T05:00:00.000Z' },
-            NZD: { symbol: 'NZD', bias: 'NEUTRAL', score: -10, price: 0.6225, change_24h_pct: -0.05, strength_label: 'Neutral', major_catalyst: 'RBNZ aggressive dovish tilt weighing on cross-rate yield spread', last_updated: '2026-09-20T05:00:00.000Z' },
-            CAD: { symbol: 'CAD', bias: 'NEUTRAL', score: 15, price: 1.3565, change_24h_pct: 0.10, strength_label: 'Neutral', major_catalyst: 'Crude oil recovery neutralizing Bank of Canada easing path', last_updated: '2026-09-20T05:00:00.000Z' },
-            CHF: { symbol: 'CHF', bias: 'BULLISH', score: 35, price: 0.8490, change_24h_pct: 0.22, strength_label: 'Moderate', major_catalyst: 'European geopolitical hedge demand maintaining sovereign bid', last_updated: '2026-09-20T05:00:00.000Z' },
+            XAUUSD: { symbol: 'XAUUSD', bias: 'BULLISH', score: 72, price: 2742.50, change_24h_pct: 0.45, strength_label: 'Kuat', major_catalyst: 'Ekspektasi siklus pelonggaran Fed & diversifikasi cadangan geopolitik', last_updated: '2026-09-20T05:00:00.000Z' },
+            BTC: { symbol: 'BTC', bias: 'NEUTRAL', score: 10, price: 64180.00, change_24h_pct: -0.15, strength_label: 'Netral', major_catalyst: 'Konsolidasi di atas support $63.500 menjelang penutupan mingguan makro', last_updated: '2026-09-20T05:00:00.000Z' },
+            US100: { symbol: 'US100', bias: 'BEARISH', score: -35, price: 19820.00, change_24h_pct: -0.52, strength_label: 'Lemah', major_catalyst: 'Kompresi valuasi teknologi yang tinggi di tengah yield kaku', last_updated: '2026-09-20T05:00:00.000Z' },
+            US500: { symbol: 'US500', bias: 'NEUTRAL', score: -5, price: 5712.00, change_24h_pct: -0.08, strength_label: 'Netral', major_catalyst: 'Rotasi ke sektor dividen defensif mengimbangi koreksi teknologi', last_updated: '2026-09-20T05:00:00.000Z' },
+            US30: { symbol: 'US30', bias: 'BULLISH', score: 40, price: 42150.00, change_24h_pct: 0.28, strength_label: 'Sedang', major_catalyst: 'Ketahanan laba sektor industri dan siklikal menopang saham value', last_updated: '2026-09-20T05:00:00.000Z' },
+            USD: { symbol: 'USD', bias: 'BEARISH', score: -45, price: 100.85, change_24h_pct: -0.32, strength_label: 'Lemah', major_catalyst: 'Kurva yield menajam dan lintasan pasar tenaga kerja melunak', last_updated: '2026-09-20T05:00:00.000Z' },
+            EUR: { symbol: 'EUR', bias: 'NEUTRAL', score: 5, price: 1.1165, change_24h_pct: 0.12, strength_label: 'Netral', major_catalyst: 'Konfirmasi jeda suku bunga ECB mengimbangi PMI industri Jerman yang lesu', last_updated: '2026-09-20T05:00:00.000Z' },
+            GBP: { symbol: 'GBP', bias: 'BULLISH', score: 55, price: 1.3310, change_24h_pct: 0.38, strength_label: 'Kuat', major_catalyst: 'Perbedaan hawkish BoE menyoroti rilis inflasi jasa yang kaku', last_updated: '2026-09-20T05:00:00.000Z' },
+            JPY: { symbol: 'JPY', bias: 'BEARISH', score: -60, price: 143.80, change_24h_pct: -0.45, strength_label: 'Lemah', major_catalyst: 'Sikap gradualis BoJ menjaga carry riil ujung pendek tetap menarik', last_updated: '2026-09-20T05:00:00.000Z' },
+            AUD: { symbol: 'AUD', bias: 'BULLISH', score: 50, price: 0.6815, change_24h_pct: 0.42, strength_label: 'Kuat', major_catalyst: 'RBA bertahan hawkish atas inflasi inti domestik yang kaku', last_updated: '2026-09-20T05:00:00.000Z' },
+            NZD: { symbol: 'NZD', bias: 'NEUTRAL', score: -10, price: 0.6225, change_24h_pct: -0.05, strength_label: 'Netral', major_catalyst: 'Bias dovish agresif RBNZ menekan spread yield kurs silang', last_updated: '2026-09-20T05:00:00.000Z' },
+            CAD: { symbol: 'CAD', bias: 'NEUTRAL', score: 15, price: 1.3565, change_24h_pct: 0.10, strength_label: 'Netral', major_catalyst: 'Pemulihan minyak mentah menetralkan jalur pelonggaran Bank of Canada', last_updated: '2026-09-20T05:00:00.000Z' },
+            CHF: { symbol: 'CHF', bias: 'BULLISH', score: 35, price: 0.8490, change_24h_pct: 0.22, strength_label: 'Sedang', major_catalyst: 'Permintaan lindung nilai geopolitik Eropa menjaga permintaan sovereign', last_updated: '2026-09-20T05:00:00.000Z' },
           },
           currency_strength: [
             { currency: 'GBP', score: 7.4, rank: 1, direction: 'STRONG_BUY', change_vs_yesterday: 0.35, change_vs_7d: 0.85 },
@@ -1008,27 +1008,27 @@ export class RelationalDatabase {
             { currency: 'JPY', score: 3.2, rank: 8, direction: 'STRONG_SELL', change_vs_yesterday: -0.45, change_vs_7d: -1.25 },
           ],
           major_catalysts: [
-            { event_name: 'Federal Reserve Policy Shift Assessment', currency: 'USD', impact: 'CRITICAL', actual: 'Dovish Hold Consensus', market_reaction: 'DXY -0.32%, US 2Y Yield -6 bps, XAUUSD +$12.50' },
-            { event_name: 'BoE Monetary Policy Statement', currency: 'GBP', impact: 'HIGH', actual: 'Vote 8-1 Hold', market_reaction: 'GBPUSD +45 pips to 1.3310' },
-            { event_name: 'RBA Official Cash Rate Guidance', currency: 'AUD', impact: 'HIGH', actual: 'Hawkish Hold', market_reaction: 'AUDUSD +38 pips to 0.6815' },
+            { event_name: 'Asesmen Pergeseran Kebijakan Federal Reserve', currency: 'USD', impact: 'CRITICAL', actual: 'Konsensus Tahan Dovish', market_reaction: 'DXY -0.32%, US 2Y Yield -6 bps, XAUUSD +$12.50' },
+            { event_name: 'Pernyataan Kebijakan Moneter BoE', currency: 'GBP', impact: 'HIGH', actual: 'Vote 8-1 Tahan', market_reaction: 'GBPUSD +45 pips to 1.3310' },
+            { event_name: 'Panduan Official Cash Rate RBA', currency: 'AUD', impact: 'HIGH', actual: 'Tahan Hawkish', market_reaction: 'AUDUSD +38 pips to 0.6815' },
           ],
-          market_reaction_summary: 'Broad dollar weakness dominated foreign exchange sessions, propelling precious metals into renewed upside discovery while global equity benchmarks displayed distinct sector rotation from mega-cap tech into industrial yield plays.',
-          ai_summary: 'Institutional posture reflects synchronized capital reallocation away from the US Dollar as terminal rate repricing firms. Gold capitalizes directly on real yield moderation.',
+          market_reaction_summary: 'Pelemahan Dolar AS yang luas mendominasi sesi valas, mendorong logam mulia ke penemuan harga baru sementara indeks ekuitas global menunjukkan rotasi sektor yang jelas dari teknologi mega-cap ke saham industri bernilai yield.',
+          ai_summary: 'Sikap institusional mencerminkan realokasi modal serentak menjauh dari Dolar AS seiring penyesuaian suku bunga terminal. Emas langsung diuntungkan moderasi yield riil.',
           ai_why: [
-            'US Dollar softening across majors as Treasury yield curve shifts downward.',
-            'Central bank policy divergence: BoE and RBA hawkish rhetoric contrasting with Fed easing trajectory.',
-            'Currency strength confirming GBP and AUD institutional leadership (Rank #1 and #2).',
-            'Sovereign reserve hedging providing strong bid floor for bullion on every minor dip.',
+            'Dolar AS melemah terhadap mata uang utama seiring kurva yield Treasury bergeser turun.',
+            'Divergensi kebijakan bank sentral: retorika hawkish BoE dan RBA kontras dengan lintasan pelonggaran Fed.',
+            'Kekuatan mata uang mengonfirmasi kepemimpinan institusional GBP dan AUD (Peringkat #1 dan #2).',
+            'Lindung nilai cadangan sovereign memberi batas permintaan kuat bagi emas pada setiap pelemahan kecil.',
           ],
           ai_risk: [
-            'Upcoming US Core PCE inflation release could recalibrate easing probability if sticky.',
-            'Middle East energy transit flare-ups threatening unexpected spike in crude oil.',
-            'Extreme short JPY positioning susceptible to abrupt violent short-covering squeezes.',
+            'Rilis inflasi Core PCE AS mendatang dapat mengubah probabilitas pelonggaran jika tetap kaku.',
+            'Eskalasi transit energi Timur Tengah mengancam lonjakan minyak mentah tak terduga.',
+            'Posisi short JPY yang ekstrem rentan terhadap squeeze short-covering yang tiba-tiba.',
           ],
           ai_context: [
-            'USD strength declined for the 3rd consecutive session from 5.2 to 4.4.',
-            'XAUUSD maintains robust negative correlation (-0.84) against DXY movements.',
-            'Yesterday market showed hesitation ahead of rate guidance before clearing higher today.',
+            'Kekuatan USD menurun selama 3 sesi berturut-turut dari 5,2 ke 4,4.',
+            'XAUUSD mempertahankan korelasi negatif kuat (-0,84) terhadap pergerakan DXY.',
+            'Pasar kemarin menunjukkan keraguan menjelang panduan suku bunga sebelum menguat hari ini.',
           ],
           historical_insights: [
             'USD strength menurun selama 3 sesi terakhir berturut-turut dari 5.2 ke 4.4.',
@@ -1041,21 +1041,21 @@ export class RelationalDatabase {
           id: 'snapshot_2026-09-19',
           date: '2026-09-19',
           timestamp: '2026-09-19T21:00:00.000Z',
-          title: 'Daily Market Snapshot: 19 September 2026',
+          title: 'Snapshot Pasar Harian: 19 September 2026',
           market_biases: {
-            XAUUSD: { symbol: 'XAUUSD', bias: 'BULLISH', score: 65, price: 2730.00, change_24h_pct: 0.38, strength_label: 'Moderate', major_catalyst: 'Bullion dip buying confirmed as bond yields stall', last_updated: '2026-09-19T21:00:00.000Z' },
-            BTC: { symbol: 'BTC', bias: 'NEUTRAL', score: 5, price: 64250.00, change_24h_pct: 0.10, strength_label: 'Neutral', major_catalyst: 'Weekend volume contraction holding tight trading corridor', last_updated: '2026-09-19T21:00:00.000Z' },
-            US100: { symbol: 'US100', bias: 'NEUTRAL', score: -10, price: 19910.00, change_24h_pct: -0.15, strength_label: 'Neutral', major_catalyst: 'Semiconductor consolidation after previous rally', last_updated: '2026-09-19T21:00:00.000Z' },
-            US500: { symbol: 'US500', bias: 'NEUTRAL', score: 0, price: 5716.00, change_24h_pct: 0.02, strength_label: 'Neutral', major_catalyst: 'Balanced market breadth heading into weekend close', last_updated: '2026-09-19T21:00:00.000Z' },
-            US30: { symbol: 'US30', bias: 'BULLISH', score: 30, price: 42030.00, change_24h_pct: 0.18, strength_label: 'Moderate', major_catalyst: 'Financials sector leading performance', last_updated: '2026-09-19T21:00:00.000Z' },
-            USD: { symbol: 'USD', bias: 'NEUTRAL', score: -15, price: 101.18, change_24h_pct: -0.10, strength_label: 'Neutral', major_catalyst: 'Post-CPI digestion and yield range trading', last_updated: '2026-09-19T21:00:00.000Z' },
-            EUR: { symbol: 'EUR', bias: 'NEUTRAL', score: -5, price: 1.1152, change_24h_pct: 0.05, strength_label: 'Neutral', major_catalyst: 'Eurozone consumer sentiment stable', last_updated: '2026-09-19T21:00:00.000Z' },
-            GBP: { symbol: 'GBP', bias: 'BULLISH', score: 45, price: 1.3260, change_24h_pct: 0.25, strength_label: 'Moderate', major_catalyst: 'UK retail sales outperforming forecasts', last_updated: '2026-09-19T21:00:00.000Z' },
-            JPY: { symbol: 'JPY', bias: 'BEARISH', score: -50, price: 143.15, change_24h_pct: -0.30, strength_label: 'Weak', major_catalyst: 'BoJ governor neutral remarks cooling near-term hike bets', last_updated: '2026-09-19T21:00:00.000Z' },
-            AUD: { symbol: 'AUD', bias: 'BULLISH', score: 40, price: 0.6785, change_24h_pct: 0.22, strength_label: 'Moderate', major_catalyst: 'Commodity price stabilizing in Asia-Pacific hours', last_updated: '2026-09-19T21:00:00.000Z' },
-            NZD: { symbol: 'NZD', bias: 'NEUTRAL', score: -5, price: 0.6230, change_24h_pct: 0.00, strength_label: 'Neutral', major_catalyst: 'NZ GDP revision priced in', last_updated: '2026-09-19T21:00:00.000Z' },
-            CAD: { symbol: 'CAD', bias: 'NEUTRAL', score: 10, price: 1.3578, change_24h_pct: 0.05, strength_label: 'Neutral', major_catalyst: 'Canadian retail trade tracking forecast', last_updated: '2026-09-19T21:00:00.000Z' },
-            CHF: { symbol: 'CHF', bias: 'BULLISH', score: 30, price: 0.8510, change_24h_pct: 0.15, strength_label: 'Moderate', major_catalyst: 'Consistent safe-haven cross buying', last_updated: '2026-09-19T21:00:00.000Z' },
+            XAUUSD: { symbol: 'XAUUSD', bias: 'BULLISH', score: 65, price: 2730.00, change_24h_pct: 0.38, strength_label: 'Sedang', major_catalyst: 'Pembelian emas saat pelemahan terkonfirmasi seiring yield obligasi mandek', last_updated: '2026-09-19T21:00:00.000Z' },
+            BTC: { symbol: 'BTC', bias: 'NEUTRAL', score: 5, price: 64250.00, change_24h_pct: 0.10, strength_label: 'Netral', major_catalyst: 'Kontraksi volume akhir pekan menahan koridor perdagangan sempit', last_updated: '2026-09-19T21:00:00.000Z' },
+            US100: { symbol: 'US100', bias: 'NEUTRAL', score: -10, price: 19910.00, change_24h_pct: -0.15, strength_label: 'Netral', major_catalyst: 'Konsolidasi semikonduktor setelah reli sebelumnya', last_updated: '2026-09-19T21:00:00.000Z' },
+            US500: { symbol: 'US500', bias: 'NEUTRAL', score: 0, price: 5716.00, change_24h_pct: 0.02, strength_label: 'Netral', major_catalyst: 'Breadth pasar berimbang menjelang penutupan akhir pekan', last_updated: '2026-09-19T21:00:00.000Z' },
+            US30: { symbol: 'US30', bias: 'BULLISH', score: 30, price: 42030.00, change_24h_pct: 0.18, strength_label: 'Sedang', major_catalyst: 'Kinerja sektor keuangan memimpin', last_updated: '2026-09-19T21:00:00.000Z' },
+            USD: { symbol: 'USD', bias: 'NEUTRAL', score: -15, price: 101.18, change_24h_pct: -0.10, strength_label: 'Netral', major_catalyst: 'Pencernaan pasca-CPI dan perdagangan rentang yield', last_updated: '2026-09-19T21:00:00.000Z' },
+            EUR: { symbol: 'EUR', bias: 'NEUTRAL', score: -5, price: 1.1152, change_24h_pct: 0.05, strength_label: 'Netral', major_catalyst: 'Sentimen konsumen Zona Euro stabil', last_updated: '2026-09-19T21:00:00.000Z' },
+            GBP: { symbol: 'GBP', bias: 'BULLISH', score: 45, price: 1.3260, change_24h_pct: 0.25, strength_label: 'Sedang', major_catalyst: 'Penjualan ritel Inggris melampaui proyeksi', last_updated: '2026-09-19T21:00:00.000Z' },
+            JPY: { symbol: 'JPY', bias: 'BEARISH', score: -50, price: 143.15, change_24h_pct: -0.30, strength_label: 'Lemah', major_catalyst: 'Pernyataan netral gubernur BoJ meredam taruhan kenaikan jangka pendek', last_updated: '2026-09-19T21:00:00.000Z' },
+            AUD: { symbol: 'AUD', bias: 'BULLISH', score: 40, price: 0.6785, change_24h_pct: 0.22, strength_label: 'Sedang', major_catalyst: 'Harga komoditas stabil pada jam Asia-Pasifik', last_updated: '2026-09-19T21:00:00.000Z' },
+            NZD: { symbol: 'NZD', bias: 'NEUTRAL', score: -5, price: 0.6230, change_24h_pct: 0.00, strength_label: 'Netral', major_catalyst: 'Revisi PDB Selandia Baru sudah diperhitungkan', last_updated: '2026-09-19T21:00:00.000Z' },
+            CAD: { symbol: 'CAD', bias: 'NEUTRAL', score: 10, price: 1.3578, change_24h_pct: 0.05, strength_label: 'Netral', major_catalyst: 'Perdagangan ritel Kanada sesuai ekspektasi', last_updated: '2026-09-19T21:00:00.000Z' },
+            CHF: { symbol: 'CHF', bias: 'BULLISH', score: 30, price: 0.8510, change_24h_pct: 0.15, strength_label: 'Sedang', major_catalyst: 'Pembelian kurs silang safe-haven yang konsisten', last_updated: '2026-09-19T21:00:00.000Z' },
           },
           currency_strength: [
             { currency: 'GBP', score: 7.05, rank: 1, direction: 'STRONG_BUY', change_vs_yesterday: 0.20, change_vs_7d: 0.50 },
@@ -1068,20 +1068,20 @@ export class RelationalDatabase {
             { currency: 'JPY', score: 3.65, rank: 8, direction: 'SELL', change_vs_yesterday: -0.30, change_vs_7d: -0.80 },
           ],
           major_catalysts: [
-            { event_name: 'UK Retail Sales m/m', currency: 'GBP', impact: 'HIGH', actual: '+0.6% (Beat)', market_reaction: 'GBPUSD +28 pips' },
-            { event_name: 'US Existing Home Sales', currency: 'USD', impact: 'MEDIUM', actual: '3.86M', market_reaction: 'DXY unchanged' },
+            { event_name: 'Penjualan Ritel Inggris m/m', currency: 'GBP', impact: 'HIGH', actual: '+0,6% (Beat)', market_reaction: 'GBPUSD +28 pips' },
+            { event_name: 'Penjualan Rumah Existing AS', currency: 'USD', impact: 'MEDIUM', actual: '3,86Jt', market_reaction: 'DXY tidak berubah' },
           ],
-          market_reaction_summary: 'Markets drifted into consolidation ahead of central bank communication week, with currency pairs trading tight ranges and gold maintaining floor above $2,720/oz.',
-          ai_summary: 'Equilibrium regime observed with low cross-asset volatility. Pre-positioning evident in Sterling and Australian Dollar.',
+          market_reaction_summary: 'Pasar bergerak ke konsolidasi menjelang pekan komunikasi bank sentral, dengan pasangan mata uang diperdagangkan pada rentang sempit dan emas menjaga batas bawah di atas $2.720/oz.',
+          ai_summary: 'Rezim keseimbangan terlihat dengan volatilitas lintas aset rendah. Pra-posisi tampak pada Sterling dan Dolar Australia.',
           ai_why: [
-            'UK economic activity upside surprises underpinning sterling demand.',
-            'Rangebound US yield environment keeping FX pairs disciplined within technical channels.',
+            'Surprise positif aktivitas ekonomi Inggris menopang permintaan sterling.',
+            'Lingkungan yield AS yang bergerak terbatas menjaga pasangan valas disiplin dalam kanal teknikal.',
           ],
           ai_risk: [
-            'Upcoming central bank rate decisions could break consolidation abruptly.',
+            'Keputusan suku bunga bank sentral mendatang dapat memecah konsolidasi secara tiba-tiba.',
           ],
           ai_context: [
-            'Platform tracking first 48 hours of live canonical event ingest with high deduplication accuracy.',
+            'Platform memantau 48 jam pertama serapan agenda kanonik live dengan akurasi deduplikasi tinggi.',
           ],
           historical_insights: [
             'EUR dan USD mencatatkan volatilitas terendah mingguan di bawah 25 pips per sesi.',

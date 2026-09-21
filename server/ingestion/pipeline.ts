@@ -95,7 +95,7 @@ export async function processNewsThroughPipeline(rawNews: NewsItem): Promise<{
     db.insertEvent(targetEvent);
     db.insertNewsItem(rawNews);
 
-    DeduplicationEngine.linkNewsToEvent(rawNews, targetEvent, 'Canonical initial source for event', 1.0);
+    DeduplicationEngine.linkNewsToEvent(rawNews, targetEvent, 'Sumber awal kanonik untuk agenda', 1.0);
     console.log(`[Pipeline] NEW EVENT CREATED: [${eventId}] "${targetEvent.title}"`);
   }
 

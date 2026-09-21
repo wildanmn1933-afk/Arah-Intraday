@@ -14,6 +14,7 @@
  */
 
 import { db } from '../db/database.js';
+import { findAsset } from '../../shared/canonicalAssets.js';
 import {
   ArahMarketTodayData,
   IntradayPairConfluence,
@@ -89,7 +90,7 @@ export class ArahMarketEngine {
     const intermarketSpreads: IntermarketSpreadItem[] = [
       {
         id: 'spread-us10y-us02y',
-        name: 'US Yield Curve Slope',
+        name: 'Kemiringan Kurva Yield AS',
         formulaLabel: 'US10Y - US02Y',
         currentValue: us10yMinusUs02y,
         unit: '%',
@@ -103,7 +104,7 @@ export class ArahMarketEngine {
       },
       {
         id: 'spread-us-de',
-        name: 'Transatlantic Rate Differential',
+        name: 'Diferensial Suku Bunga Transatlantik',
         formulaLabel: 'US10Y - Bund 10Y',
         currentValue: usDeSpread,
         unit: '%',
@@ -112,12 +113,12 @@ export class ArahMarketEngine {
         targetPair: 'EURUSD',
         interpretation:
           usDeSpread > 1.7
-            ? 'Spread melebar untuk keunggulan US Dollar (Gravitasi EUR/USD cenderung tertahan/tertekan).'
+            ? 'Spread melebar untuk keunggulan Dolar AS (Gravitasi EUR/USD cenderung tertahan/tertekan).'
             : 'Spread menyempit (membuka ruang penguatan bagi mata uang Euro).',
       },
       {
         id: 'spread-us-jp',
-        name: 'Carry Trade Yield Engine',
+        name: 'Mesin Yield Carry Trade',
         formulaLabel: 'US10Y - JGB 10Y',
         currentValue: usJpSpread,
         unit: '%',
@@ -126,12 +127,12 @@ export class ArahMarketEngine {
         targetPair: 'USDJPY',
         interpretation:
           usJpSpread > 3.0
-            ? 'Selisih suku bunga AS-Jepang sangat lebar (Bahan bakar utama kenaikan USD/JPY / Carry Trade long USD).'
+            ? 'Selisih suku bunga AS-Jepang sangat lebar (Bahan bakar utama kenaikan USD/JPY / Carry Trade beli USD).'
             : 'Selisih bunga melandai (waspada pembalikan penguatan Yen / aksi unwinding).',
       },
       {
         id: 'spread-real-yield',
-        name: 'US 10Y Real Yield (TIPS)',
+        name: 'Yield Riil AS 10Y (TIPS)',
         formulaLabel: 'Nominal 10Y - Inflation Exp',
         currentValue: realYield10y,
         unit: '%',
@@ -140,38 +141,38 @@ export class ArahMarketEngine {
         targetPair: 'XAUUSD',
         interpretation:
           realYield10y > 1.9
-            ? 'Real yield tinggi menaikkan opportunity cost emas (XAU/USD rentan menghadapi resistensi saat reli).'
+            ? 'Yield riil tinggi menaikkan biaya peluang memegang emas (XAU/USD rentan menghadapi resistensi saat reli).'
             : 'Real yield melandai di bawah 1.8% (Katalis positif bagi reli safe-haven Emas).',
       },
     ];
 
     // 3. Klasifikasi Rezim Pasar Global
-    let regimeTitle = 'BALANCED ROTATIONAL REGIME';
+    let regimeTitle = 'REZIM ROTASI SEIMBANG';
     let regimeBadgeColor = 'bg-cyan-950 text-cyan-300 border-cyan-800';
     let riskScore = 15;
     let summaryNarrative =
       'Aliran modal intraday berputar seimbang antar kelas aset. Tidak ada dominasi kepanikan atau euforia berlebih menjelang rilis data utama sesi berikutnya.';
 
     if (us10yChange > 0.4 && dxyChange > 0.2) {
-      regimeTitle = 'HAWKISH YIELD PRESSURE';
+      regimeTitle = 'TEKANAN YIELD HAWKISH';
       regimeBadgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
       riskScore = -45;
       summaryNarrative =
         'Kenaikan imbal hasil obligasi AS dan penguatan DXY di atas harga buka sesi mendominasi arah pasar. Pasangan valuta non-USD dan aset berimbal hasil rendah tertekan.';
     } else if (sp500Change > 0.4 && dxyChange < -0.15) {
-      regimeTitle = 'RISK-ON EXPANSION';
+      regimeTitle = 'EKSPANSI SELERA RISIKO';
       regimeBadgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
       riskScore = +65;
       summaryNarrative =
         'Sentimen selera risiko tinggi. Dolar melemah seiring masuknya modal global ke pasar saham dan mata uang komoditas (AUD, CAD, NZD).';
     } else if (sp500Change < -0.5 && goldChange > 0.3) {
-      regimeTitle = 'GLOBAL FLIGHT TO SAFETY';
+      regimeTitle = 'ARUS ASET AMAN GLOBAL';
       regimeBadgeColor = 'bg-rose-950 text-rose-300 border-rose-800';
       riskScore = -75;
       summaryNarrative =
-        'Kekhawatiran geopolitik atau perlambatan makro memicu aksi jual saham dan perburuan aset safe-haven (Emas & Swiss Franc).';
+        'Kekhawatiran geopolitik atau perlambatan makro memicu aksi jual saham dan perburuan aset aman (Emas & Franc Swiss).';
     } else if (dxyChange < -0.3 && us10yChange < -0.5) {
-      regimeTitle = 'DOVISH LIQUIDITY EASING';
+      regimeTitle = 'PELONGGARAN LIKUIDITAS DOVISH';
       regimeBadgeColor = 'bg-indigo-950 text-indigo-300 border-indigo-800';
       riskScore = +35;
       summaryNarrative =
@@ -224,19 +225,25 @@ export class ArahMarketEngine {
     }
 
     // 5. Matriks Pasangan Intraday (Triple-Confluence Synthesis)
-    const targetPairs = [
-      { pair: 'XAUUSD', name: 'Gold / US Dollar', tv: 'TVC:GOLD' },
-      { pair: 'EURUSD', name: 'Euro / US Dollar', tv: 'FX:EURUSD' },
-      { pair: 'GBPUSD', name: 'British Pound / USD', tv: 'FX:GBPUSD' },
-      { pair: 'USDJPY', name: 'US Dollar / Japanese Yen', tv: 'FX:USDJPY' },
-      { pair: 'AUDUSD', name: 'Australian Dollar / USD', tv: 'FX:AUDUSD' },
-      { pair: 'USDCAD', name: 'US Dollar / Canadian Dollar', tv: 'FX:USDCAD' },
-      { pair: 'US500', name: 'S&P 500 E-mini Index', tv: 'CAPITALCOM:SPX500' },
-      { pair: 'BTC', name: 'Bitcoin / US Dollar', tv: 'BITSTAMP:BTCUSD' },
-    ];
+    // Hanya aset yang relevan untuk arah intraday; detail nama/TV symbol tetap
+    // diambil dari registry kanonik agar tidak ada duplikasi data.
+    const ARAH_MARKET_SYMBOLS = ['XAUUSD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'US500', 'US100', 'US30', 'BTC'];
+
+    const targetPairs = ARAH_MARKET_SYMBOLS.map(symbol => {
+      const asset = findAsset(symbol);
+      if (!asset) throw new Error(`Aset '${symbol}' tidak terdaftar di CANONICAL_ASSETS`);
+      return {
+        pair: asset.pair || asset.symbol,
+        name: asset.displayName,
+        tv: asset.tvSymbol,
+        priceSymbol: asset.symbol,
+      };
+    });
 
     const pairs: IntradayPairConfluence[] = targetPairs.map(tp => {
-      const pObj = priceMap.get(tp.pair);
+      // FX dikuotasi di feed sebagai kode mata uang tunggal (EUR, GBP, JPY, dst),
+      // sedangkan kartu menampilkan nama pasangan (EURUSD, GBPUSD, dst).
+      const pObj = priceMap.get(tp.priceSymbol || tp.pair);
       const curPrice = pObj?.price || 0;
       const chg = pObj?.change_24h_pct || 0;
       const usdScore = strengthMap.get('USD')?.strength_score || 5.0;
@@ -294,11 +301,11 @@ export class ArahMarketEngine {
 
         paBias = chg > 0.1 ? 'BULLISH' : chg < -0.1 ? 'BEARISH' : 'NEUTRAL';
         paStructure = chg < -0.2 ? 'SESSION_BREAKOUT' : 'CHOP_RANGE';
-        actionableZone = chg < 0 ? 'Sell on rally di resisten terdekat' : 'Buy on dip di support sesi';
+        actionableZone = chg < 0 ? 'Jual saat reli di resisten terdekat' : 'Buy on dip di support sesi';
         paScore = chg > 0.1 ? 30 : -35;
 
         recommendedAction = interBias === 'BEARISH' ? 'LOOK_FOR_SELL' : 'LOOK_FOR_BUY';
-        invalidation = 'Breakout berlawanan pada DXY melintasi Session Open';
+        invalidation = 'Breakout berlawanan pada DXY melintasi harga buka sesi';
       } else if (tp.pair === 'USDJPY') {
         fundBias = 'BULLISH';
         fundDriver = 'Kesenjangan suku bunga ekstrim The Fed vs suku bunga rendah Bank of Japan';
@@ -315,6 +322,53 @@ export class ArahMarketEngine {
 
         recommendedAction = 'LOOK_FOR_BUY';
         invalidation = 'Sinyal intervensi verbal pejabat MoF/BoJ';
+      } else if (tp.pair === 'US100' || tp.pair === 'US30') {
+        // Indeks saham AS: sensitif terhadap ekspektasi suku bunga (yield) & selera risiko,
+        // dengan Nasdaq (US100) jauh lebih sensitif terhadap yield dibanding Dow (US30).
+        const isTechIndex = tp.pair === 'US100';
+        const peerSymbol = isTechIndex ? 'US30' : 'US100';
+        const peerChange = priceMap.get(peerSymbol)?.change_24h_pct || 0;
+        const rotationGap = Number((chg - peerChange).toFixed(2));
+
+        fundBias = chg > 0.3 ? 'BULLISH' : chg < -0.3 ? 'BEARISH' : 'NEUTRAL';
+        fundDriver = isTechIndex
+          ? 'Ekspektasi suku bunga The Fed & sensitivitas tinggi yield terhadap saham pertumbuhan'
+          : 'Ekspektasi suku bunga The Fed & rotasi modal ke sektor industri siklikal';
+        fundScore = fundBias === 'BULLISH' ? 40 : fundBias === 'BEARISH' ? -40 : 0;
+
+        // Yield naik menekan indeks (Nasdaq lebih tertekan), yield turun menjadi bahan bakar reli
+        const yieldThreshold = isTechIndex ? 0.05 : 0.15;
+        interBias = us10yChange > yieldThreshold ? 'BEARISH' : dxyBiasVsOpen === 'BELOW_OPEN' ? 'BULLISH' : 'NEUTRAL';
+        interSymptom = us10yChange > yieldThreshold
+          ? `Yield US10Y naik ${us10yChange.toFixed(2)}% menekan valuasi ${isTechIndex ? 'saham teknologi' : 'indeks saham'}`
+          : `DXY ${dxyBiasVsOpen === 'ABOVE_OPEN' ? 'di atas' : 'di bawah'} harga buka sesi`;
+        interScore = interBias === 'BULLISH' ? 35 : interBias === 'BEARISH' ? -35 : 0;
+
+        paBias = chg > 0.15 ? 'BULLISH' : chg < -0.15 ? 'BEARISH' : 'NEUTRAL';
+        paStructure = chg > 0.4 ? 'SESSION_BREAKOUT' : chg < -0.4 ? 'RETEST_SUPPORT' : 'CHOP_RANGE';
+        actionableZone = chg > 0 ? 'Beli saat pullback ke area demand sesi' : 'Tunggu retest area supply sebelum jual';
+        paScore = chg > 0.15 ? 35 : chg < -0.15 ? -35 : 0;
+
+        // Cross-reference rotasi antar indeks sebagai konfirmasi tambahan
+        const rotationNote = isTechIndex
+          ? rotationGap > 0.2
+            ? ' | Rotasi gap vs Dow +' + rotationGap + '%: growth memimpin.'
+            : rotationGap < -0.2
+              ? ' | Rotasi gap vs Dow ' + rotationGap + '%: value siklikal lebih kuat dari teknologi.'
+              : ''
+          : rotationGap > 0.2
+            ? ' | Rotasi gap vs Nasdaq +' + rotationGap + '%: industrials melampaui teknologi (rotasi ke value).'
+            : rotationGap < -0.2
+              ? ' | Rotasi gap vs Nasdaq ' + rotationGap + '%: teknologi memimpin, Dow tertinggal.'
+              : '';
+        if (rotationNote) interSymptom += rotationNote;
+
+        recommendedAction = fundBias === 'BULLISH' && interBias === 'BULLISH' ? 'LOOK_FOR_BUY'
+          : fundBias === 'BEARISH' && interBias === 'BEARISH' ? 'LOOK_FOR_SELL'
+          : chg > 0.15 && interBias !== 'BEARISH' ? 'LOOK_FOR_BUY'
+          : chg < -0.15 && interBias !== 'BULLISH' ? 'LOOK_FOR_SELL'
+          : 'WAIT_ON_SUPPORT';
+        invalidation = 'Pembalikan arah menembus level pembukaan sesi atau lonjakan yield AS';
       } else {
         // Generic asset mapping
         const isUp = chg > 0.1;

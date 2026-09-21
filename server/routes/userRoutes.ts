@@ -30,7 +30,7 @@ userRouter.post('/watchlist', requireAuth as any, (req: AuthenticatedRequest, re
   const userId = user.id;
   const { symbol, asset_type, notes } = req.body;
   if (!symbol) {
-    res.status(400).json({ error: 'Symbol is required.' });
+    res.status(400).json({ error: 'Simbol wajib diisi.' });
     return;
   }
 
@@ -39,7 +39,7 @@ userRouter.post('/watchlist', requireAuth as any, (req: AuthenticatedRequest, re
   const currentList = db.getUserWatchlist(userId);
   if (currentList.length >= limits.watchlistLimit) {
     res.status(403).json({
-      error: `Watchlist limit reached: Your ${user.plan || 'FREE'} plan allows a maximum of ${limits.watchlistLimit} symbols. Upgrade to expand your watchlist capacity.`,
+      error: `Batas daftar pantau tercapai: paket ${user.plan || 'FREE'} Anda mengizinkan maksimal ${limits.watchlistLimit} simbol. Tingkatkan paket untuk menambah kapasitas daftar pantau.`,
       code: 'WATCHLIST_LIMIT_REACHED',
       limit: limits.watchlistLimit,
       current_count: currentList.length,
@@ -80,7 +80,7 @@ userRouter.post('/subscription', requireAuth, (req: AuthenticatedRequest, res: R
   const userId = req.user!.id;
   const { plan } = req.body;
   if (!['FREE', 'PRO', 'INSTITUTIONAL'].includes(plan)) {
-    res.status(400).json({ error: 'Invalid plan selected. Must be FREE, PRO, or INSTITUTIONAL.' });
+    res.status(400).json({ error: 'Paket tidak valid. Harus FREE, PRO, atau INSTITUTIONAL.' });
     return;
   }
 
@@ -90,7 +90,7 @@ userRouter.post('/subscription', requireAuth, (req: AuthenticatedRequest, res: R
   });
 
   if (!updated) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
