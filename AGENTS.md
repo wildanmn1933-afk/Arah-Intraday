@@ -25,4 +25,5 @@ Repo knowledge for ArahMarket 2.0 (market intelligence platform).
 - Tailwind v4 has no `slate-750` / `slate-850`. They are defined manually in `@theme`; without that, those classes silently emit no CSS (broken borders and hovers). Check the built CSS if a border or hover "does nothing".
 - `ArahMarketEngine` (`server/intelligence/arahMarketEngine.ts`) filters `CANONICAL_ASSETS` down to the 10 intraday instruments; the 14-asset `intradayMarketMap.ts` covers everything. Both read the same registry, so they cannot diverge.
 - The shared `shared/` directory is imported by both client and server code; server-side importers use a `.js` extension (NodeNext), client-side importers do not.
+- `data/market_intelligence.db.json` is rewritten by the dev server on every ingest (timestamps, new news rows). Stop `tsx server.ts` before committing DB string edits, or the diff fills with unrelated runtime churn. Files with emoji contain lone surrogates — read/write with `errors='surrogatepass'`, not plain `json.load`/`json.dump`.
 - Auth: dashboard requires a JWT. Tokens come from `POST /api/auth/login`; seeded admin is `admin@marketintel.pro`.
