@@ -108,7 +108,7 @@ export class IntradayMarketMapEngine {
             `Kondisi teknis overbought jangka pendek pada RSI 4 jam di sekitar batas atas Bollinger.`,
           ];
           todayCatalyst = usKeyRelease
-            ? `${usKeyRelease.event_name} (${usKeyRelease.date_time_utc ? new Date(usKeyRelease.date_time_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Today'}) — Focus on real yield transmission.`
+            ? `${usKeyRelease.event_name} (${usKeyRelease.date_time_utc ? new Date(usKeyRelease.date_time_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Hari Ini'}) — Fokus pada transmisi yield riil.`
             : `Pasokan lelang Treasury AS & panduan pembicara FOMC tentang ekspektasi suku bunga terminal.`;
           marketReaction = change24h >= 0
             ? `Diperdagangkan naik +${change24h.toFixed(2)}% hari ini di $${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}; penyerapan beli saat dip tercatat kuat pada pembukaan sesi aktif.`

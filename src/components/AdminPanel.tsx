@@ -77,7 +77,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       if (dupRes.status === 'fulfilled') setDuplicates(dupRes.value.events);
       if (userRes.status === 'fulfilled') setUsersList(userRes.value.users);
     } catch (err: any) {
-      console.warn('Admin load error:', err.message);
+      console.warn('Gagal memuat data admin:', err.message);
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
       await api.addTelegramChannel(newHandle, newTitle || newHandle, newLang);
       setNewHandle('');
       setNewTitle('');
-      setActionNotice(`Channel ${newHandle} added successfully.`);
+      setActionNotice(`Kanal ${newHandle} berhasil ditambahkan.`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -111,7 +111,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
   };
 
   const handleDeleteChannel = async (handle: string) => {
-    if (!confirm(`Delete channel ${handle}?`)) return;
+    if (!confirm(`Hapus kanal ${handle}?`)) return;
     try {
       await api.deleteTelegramChannel(handle);
       loadData();
@@ -122,9 +122,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
 
   const handleScrapeChannel = async (handle: string) => {
     try {
-      setActionNotice(`Scraping ${handle}...`);
+      setActionNotice(`Menyerap ${handle}...`);
       const res = await api.triggerTelegramScrape(handle);
-      setActionNotice(`Scraped ${res.result?.count || 0} posts from ${handle}.`);
+      setActionNotice(`Berhasil menyerap ${res.result?.count || 0} kiriman dari ${handle}.`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -142,7 +142,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
         source_name: testSource,
       });
       setTestResult(res.outcome);
-      setActionNotice(`Article processed. Duplicate detected: ${res.outcome?.isDuplicate ? 'YES' : 'NO'}`);
+      setActionNotice(`Artikel diproses. Duplikat terdeteksi: ${res.outcome?.isDuplicate ? 'YA' : 'TIDAK'}`);
       loadData();
     } catch (err: any) {
       alert(err.message);
@@ -303,7 +303,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                   <th className="py-2 px-2.5">Bahasa</th>
                   <th className="py-2 px-2.5">Status</th>
                   <th className="py-2 px-2.5">Terakhir Diserap</th>
-                  <th className="py-2 px-2.5">Errors</th>
+                  <th className="py-2 px-2.5">Error</th>
                   <th className="py-2 px-2.5 text-right">Aksi</th>
                 </tr>
               </thead>
@@ -343,7 +343,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                         title="Picu scraping manual"
                         className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-300 hover:text-white"
                       >
-                        Scrape Now
+                        Serap Sekarang
                       </button>
 
                       <button
@@ -354,7 +354,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                             : 'bg-slate-900 text-slate-500 border-slate-800'
                         }`}
                       >
-                        {ch.is_enabled ? 'Enabled' : 'Disabled'}
+                        {ch.is_enabled ? 'Aktif' : 'Nonaktif'}
                       </button>
 
                       <button
@@ -381,7 +381,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                 <th className="py-2 px-2.5">Nama Sumber</th>
                 <th className="py-2 px-2.5">Tipe</th>
                 <th className="py-2 px-2.5">Status</th>
-                <th className="py-2 px-2.5">Interval</th>
+                <th className="py-2 px-2.5">Jeda Interval</th>
                 <th className="py-2 px-2.5">Terakhir Berhasil</th>
                 <th className="py-2 px-2.5">Jumlah Error</th>
               </tr>
@@ -548,7 +548,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ currentUser }) => {
                 <strong>Event Title:</strong> {testResult.event.title}
               </p>
               <p className="text-slate-400">
-                <strong>Affected Assets:</strong> {(testResult.event.affected_assets || []).join(', ') || 'None'}
+                <strong>Affected Assets:</strong> {(testResult.event.affected_assets || []).join(', ') || '—'}
               </p>
             </div>
           )}

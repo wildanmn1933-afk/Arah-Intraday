@@ -358,7 +358,7 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
         <div className="flex flex-wrap items-center gap-1.5 text-xs">
           <span className="text-slate-400 text-[11px] font-mono mr-1">BIAS:</span>
           {[
-            { id: 'ALL', label: 'All' },
+            { id: 'ALL', label: 'Semua' },
             { id: 'BULLISH', label: 'Naik' },
             { id: 'BEARISH', label: 'Turun' },
             { id: 'NEUTRAL', label: 'Netral' },
@@ -761,13 +761,13 @@ export const IntradayMarketMapView: React.FC<IntradayMarketMapViewProps> = ({
               <tr>
                 <th className="py-3 px-4">Aset</th>
                 <th className="py-3 px-3">Harga</th>
-                <th className="py-3 px-3">24h Chg</th>
+                <th className="py-3 px-3">Perub. 24J</th>
                 <th className="py-3 px-3">Bias Intraday</th>
                 <th className="py-3 px-3 text-center">Skor</th>
                 <th className="py-3 px-3 text-center">Keyakinan</th>
                 <th className="py-3 px-3">Fundamental</th>
                 <th className="py-3 px-3">Aksi Harga</th>
-                <th className="py-3 px-4 min-w-[280px]">Today's Catalyst</th>
+                <th className="py-3 px-4 min-w-[280px]">Katalis Hari Ini</th>
                 <th className="py-3 px-3 text-center">Status</th>
                 <th className="py-3 px-3 text-right">Aksi</th>
               </tr>

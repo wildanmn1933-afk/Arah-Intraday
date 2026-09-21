@@ -204,7 +204,7 @@ async function startServer() {
               score: item.direction_score,
               price: item.price,
               change_24h_pct: item.change_24h_pct,
-              strength_label: item.direction_score > 30 ? 'Strong' : item.direction_score < -30 ? 'Weak' : 'Moderate',
+              strength_label: item.direction_score > 30 ? 'Kuat' : item.direction_score < -30 ? 'Lemah' : 'Sedang',
               major_catalyst: item.today_key_catalyst,
               last_updated: item.last_updated,
             };
@@ -214,7 +214,7 @@ async function startServer() {
             id: `snapshot_${todayStr}`,
             date: todayStr,
             timestamp: new Date().toISOString(),
-            title: `Daily Market Snapshot: ${todayStr}`,
+            title: `Snapshot Pasar Harian: ${todayStr}`,
             market_biases: biases,
             currency_strength: strengths.map((s, idx) => ({
               currency: s.currency,
@@ -228,12 +228,12 @@ async function startServer() {
               impact: 'HIGH',
               actual: m.current_market_reaction,
             })),
-            market_reaction_summary: 'Automated end-of-session daily snapshot recorded permanently.',
-            ai_summary: `Multi-asset regime recorded for ${todayStr}.`,
-            ai_why: ['Automated capture of live telemetry into permanent memory database.'],
-            ai_risk: ['Standard session volatility boundaries apply.'],
-            ai_context: [`Archived session ${todayStr}.`],
-            historical_insights: [`Daily snapshot committed to memory.`],
+            market_reaction_summary: 'Snapshot pasar harian otomatis akhir sesi yang tersimpan permanen.',
+            ai_summary: `Rezim lintas aset tercatat untuk ${todayStr}.`,
+            ai_why: ['Perekaman otomatis telemetri live ke basis data memori permanen.'],
+            ai_risk: ['Batas volatilitas sesi standar berlaku.'],
+            ai_context: [`Sesi terarsip ${todayStr}.`],
+            historical_insights: [`Snapshot harian tersimpan ke memori.`],
             created_at: new Date().toISOString(),
           } as any);
         }

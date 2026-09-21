@@ -36,6 +36,7 @@ import {
   MarketEvent,
   EconomicEvent,
 } from '../types';
+import { translateStatus } from '../lib/statusLabels';
 
 interface MarketHistoryViewProps {
   onOpenChart?: (symbol: string) => void;
@@ -90,7 +91,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
         setMemoryInsights(insRes.value.insights);
       }
     } catch (err) {
-      console.error('[History] Failed loading history data:', err);
+      console.error('[Riwayat] Gagal memuat data riwayat:', err);
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +115,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
           setHistoricalMacro(res.economic_events || []);
         }
       })
-      .catch(err => console.error('[History] Error fetching date detail:', err));
+      .catch(err => console.error('[Riwayat] Gagal mengambil detail tanggal:', err));
 
     return () => {
       isMounted = false;
@@ -130,7 +131,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
           setCompareSnapshot(res.snapshot);
         }
       })
-      .catch(err => console.error('[History] Error fetching compare detail:', err));
+      .catch(err => console.error('[Riwayat] Gagal mengambil detail perbandingan:', err));
   }, [compareDate, isCompareMode]);
 
   const handleGenerateSnapshot = async () => {
@@ -143,11 +144,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
         // Refresh snapshots list
         const updated = await api.getDailySnapshots('ALL', undefined, 30);
         setSnapshots(updated.snapshots);
-        setStatusMessage(`Daily snapshot for ${selectedDate} saved permanently to database.`);
+        setStatusMessage(`Snapshot pasar harian untuk ${selectedDate} berhasil disimpan permanen di basis data.`);
         setTimeout(() => setStatusMessage(null), 4000);
       }
     } catch (err: any) {
-      setStatusMessage(`Error saving snapshot: ${err?.message || 'Failed'}`);
+      setStatusMessage(`Gagal menyimpan snapshot: ${err?.message || 'Gagal'}`);
       setTimeout(() => setStatusMessage(null), 4000);
     } finally {
       setIsGenerating(false);
@@ -712,11 +713,11 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
                     {/* Strength & Major Catalyst */}
                     <div className="space-y-1.5 text-[11px] font-mono">
                       <div className="flex items-center justify-between text-slate-400">
-                        <span className="text-slate-500">Strength Rating:</span>
-                        <span className="text-slate-200 font-semibold">{item.strength_label || 'Neutral'}</span>
+                        <span className="text-slate-500">Rating Kekuatan:</span>
+                        <span className="text-slate-200 font-semibold">{translateStatus(item.strength_label) || 'NETRAL'}</span>
                       </div>
                       <div className="text-slate-300 leading-snug">
-                        <span className="text-slate-500 text-[10px] uppercase block">Major Catalyst:</span>
+                        <span className="text-slate-500 text-[10px] uppercase block">Katalis Utama:</span>
                         <p className="text-slate-300 text-xs mt-0.5 line-clamp-2">
                           {item.major_catalyst || 'Konsolidasi digestif dan aliran silang makro.'}
                         </p>
@@ -726,7 +727,7 @@ export const MarketHistoryView: React.FC<MarketHistoryViewProps> = ({ onOpenChar
 
                   {/* Footer with Chart Link & Timestamp */}
                   <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                    <span>Updated: {new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span>Diperbarui: {new Date(item.last_updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     {onOpenChart && (
                       <button
                         onClick={() => onOpenChart(sym)}

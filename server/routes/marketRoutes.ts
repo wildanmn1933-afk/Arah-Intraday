@@ -62,7 +62,7 @@ marketRouter.get('/:symbol', (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
   const price = db.getMarketPrice(symbol);
   if (!price) {
-    res.status(404).json({ error: `Symbol ${symbol} not found in market registry.` });
+    res.status(404).json({ error: `Simbol ${symbol} tidak ditemukan di registri pasar.` });
     return;
   }
 

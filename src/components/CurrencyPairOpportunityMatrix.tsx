@@ -421,7 +421,7 @@ export const CurrencyPairOpportunityMatrix: React.FC<CurrencyPairOpportunityMatr
                             onOpenChart(p.symbol);
                           }}
                           className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition cursor-pointer"
-                          title={`Open ${p.symbol} Chart`}
+                          title={`Buka Grafik ${p.symbol}`}
                         >
                           <BarChart2 className="w-3.5 h-3.5" />
                         </button>

@@ -170,7 +170,7 @@ intelligenceRouter.post('/ai/refresh', requireAuth as any, async (req: Authentic
   // Check permission
   if (!EntitlementService.canAccessFeature(user, 'AI_OVERVIEW_REFRESH')) {
     res.status(403).json({
-      error: 'Upgrade Required: AI Market Overview refresh is available on PRO and INSTITUTIONAL tiers.',
+      error: 'Perlu Peningkatan Paket: refresh Ringkasan Pasar AI tersedia pada paket PRO dan INSTITUTIONAL.',
       code: 'PLAN_UPGRADE_REQUIRED',
       required_permission: 'AI_OVERVIEW_REFRESH',
       current_plan: user.plan || 'FREE',
@@ -182,7 +182,7 @@ intelligenceRouter.post('/ai/refresh', requireAuth as any, async (req: Authentic
   const usageCheck = EntitlementService.checkAndIncrementAIUsage(user.id, user);
   if (!usageCheck.allowed) {
     res.status(429).json({
-      error: `Daily limit reached: Your ${user.plan || 'FREE'} plan allows ${usageCheck.limit} AI generations per day.`,
+      error: `Batas harian tercapai: paket ${user.plan || 'FREE'} Anda mengizinkan ${usageCheck.limit} generasi AI per hari.`,
       code: 'USAGE_LIMIT_REACHED',
       limit: usageCheck.limit,
       used: usageCheck.used,

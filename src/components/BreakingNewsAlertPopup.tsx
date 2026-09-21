@@ -243,7 +243,7 @@ export const BreakingNewsAlertPopup: React.FC<BreakingNewsAlertPopupProps> = ({
                   onDismiss(activeAlert.id);
                 }}
                 className="py-1.5 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition cursor-pointer flex items-center gap-1"
-                title={`Buka Chart ${primaryAsset}`}
+                title={`Buka Grafik ${primaryAsset}`}
                 id="alert-view-chart-btn"
               >
                 <BarChart2 className="w-3.5 h-3.5 text-cyan-400" />

@@ -535,7 +535,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="e.g. AUDCAD, XAUUSD"
+                  placeholder="mis. AUDCAD, XAUUSD"
                   className="bg-slate-900 border border-cyan-500 text-slate-100 text-xs px-2 py-0.5 rounded w-32 focus:outline-none"
                   autoFocus
                 />

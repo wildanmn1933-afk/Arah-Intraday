@@ -925,7 +925,7 @@ export default function App() {
                       title="Tampilkan hanya berita dampak kritis tertinggi (Fed rate, perang, krisis likuiditas)"
                     >
                       <Zap className="w-3.5 h-3.5 text-red-400" />
-                      <span>⚡ Critical Only</span>
+                      <span>⚡ Hanya Kritis</span>
                       <span className="text-[9px] px-1 py-0.2 rounded bg-red-900/60 text-red-200">
                         {events.filter(e => e.impact_level === 'CRITICAL').length}
                       </span>

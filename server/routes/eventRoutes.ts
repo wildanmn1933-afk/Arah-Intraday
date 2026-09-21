@@ -26,7 +26,7 @@ eventRouter.get('/:id', async (req, res) => {
   const eventId = req.params.id;
   const event = db.getEventById(eventId);
   if (!event) {
-    res.status(404).json({ error: `Event [${eventId}] not found.` });
+    res.status(404).json({ error: `Agenda [${eventId}] tidak ditemukan.` });
     return;
   }
 
@@ -74,7 +74,7 @@ eventRouter.post('/:id/analyze', requireAuth as any, async (req: AuthenticatedRe
   
   if (!EntitlementService.canAccessFeature(user, 'AI_DEEP_ANALYSIS')) {
     res.status(403).json({
-      error: 'Upgrade Required: Deep event re-analysis with causal reasoning is available on PRO and INSTITUTIONAL tiers.',
+      error: 'Perlu Peningkatan Paket: analisis ulang agenda mendalam dengan penalaran kausal tersedia pada paket PRO dan INSTITUTIONAL.',
       code: 'PLAN_UPGRADE_REQUIRED',
       required_permission: 'AI_DEEP_ANALYSIS',
       current_plan: user.plan || 'FREE',
@@ -85,7 +85,7 @@ eventRouter.post('/:id/analyze', requireAuth as any, async (req: AuthenticatedRe
   const usageCheck = EntitlementService.checkAndIncrementAIUsage(user.id, user);
   if (!usageCheck.allowed) {
     res.status(429).json({
-      error: `Daily limit reached: Your ${user.plan || 'FREE'} plan allows ${usageCheck.limit} AI operations per day.`,
+      error: `Batas harian tercapai: paket ${user.plan || 'FREE'} Anda mengizinkan ${usageCheck.limit} operasi AI per hari.`,
       code: 'USAGE_LIMIT_REACHED',
       limit: usageCheck.limit,
       used: usageCheck.used,
@@ -96,7 +96,7 @@ eventRouter.post('/:id/analyze', requireAuth as any, async (req: AuthenticatedRe
   const eventId = req.params.id;
   const event = db.getEventById(eventId);
   if (!event) {
-    res.status(404).json({ error: 'Event not found.' });
+    res.status(404).json({ error: 'Agenda tidak ditemukan.' });
     return;
   }
 

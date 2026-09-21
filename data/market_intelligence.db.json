@@ -97287,8 +97287,8 @@
   "market_themes": [
     {
       "id": "thm_fed_rate_path",
-      "title": "Fed Rate Cut Trajectory & Soft Landing",
-      "description": "Markets are pricing multiple 25bps Fed rate cuts following moderating inflation and stabilizing labor prints.",
+      "title": "Lintasan Pemotongan Suku Bunga Fed & Soft Landing",
+      "description": "Pasar memperhitungkan beberapa pemotongan suku bunga Fed 25bps setelah inflasi mereda dan data tenaga kerja stabil.",
       "active_since": "2026-09-05T16:08:21.357Z",
       "primary_assets": [
         "USD",
@@ -97299,13 +97299,13 @@
       ],
       "sentiment": "RISK_ON",
       "evidence_events": [
-        "US CPI rises 3.1% YoY in line with consensus"
+        "CPI AS naik 3,1% YoY sesuai konsensus"
       ]
     },
     {
       "id": "thm_gold_all_time_high",
-      "title": "Central Bank Gold Accumulation & Geopolitical Hedge",
-      "description": "Persistent physical bullion bids from global reserve managers alongside lower real yield expectations keep gold elevated.",
+      "title": "Akumulasi Emas Bank Sentral & Lindung Nilai Geopolitik",
+      "description": "Permintaan emas fisik yang berkelanjutan dari pengelola cadangan global disertai ekspektasi yield riil lebih rendah menjaga harga emas tetap tinggi.",
       "active_since": "2026-08-20T16:08:21.357Z",
       "primary_assets": [
         "XAUUSD",
@@ -97314,13 +97314,13 @@
       ],
       "sentiment": "BULLISH",
       "evidence_events": [
-        "Global gold reserves hit record allocations"
+        "Cadangan emas global mencapai alokasi rekor"
       ]
     },
     {
       "id": "thm_tech_capex_momentum",
-      "title": "Enterprise AI Infrastructure Spending",
-      "description": "Megacap hyperscalers sustaining semiconductor and cloud computing capital expenditure, bolstering US100 resilience.",
+      "title": "Belanja Infrastruktur AI Perusahaan",
+      "description": "Hyperscaler mega-cap menjaga belanja modal semikonduktor dan komputasi awan, menopang ketahanan US100.",
       "active_since": "2026-08-05T16:08:21.357Z",
       "primary_assets": [
         "US100",
@@ -97329,7 +97329,7 @@
       ],
       "sentiment": "BULLISH",
       "evidence_events": [
-        "Semiconductor foundry bookings outperform estimates"
+        "Pesanan foundry semikonduktor melampaui estimasi"
       ]
     }
   ],
@@ -97398,7 +97398,7 @@
       "event_id": "evt_1790015806869_px4a",
       "analysis_type": "EVENT_ANALYSIS",
       "title": "Macro Impact Synthesis: AWS: xAI's Grok 4.6 now available in Amazon Bedrock - Blog. $AMZN $SPCX",
-      "summary": "Amazon Web Services has integrated xAI's Grok 4.6 into Amazon Bedrock, directly aligning with the active macro theme of Enterprise AI Infrastructure Spending. This deployment leverages AWS's cloud distribution footprint while USD strength remains exceptionally high at a score of 9.",
+      "summary": "Amazon Web Services has integrated xAI's Grok 4.6 into Amazon Bedrock, directly aligning with the active macro theme of Belanja Infrastruktur AI Perusahaan. This deployment leverages AWS's cloud distribution footprint while USD strength remains exceptionally high at a score of 9.",
       "context_data_used": {
         "news_titles": [
           "AWS: xAI's Grok 4.6 now available in Amazon Bedrock - Blog. $AMZN $SPCX"
@@ -97729,7 +97729,7 @@
       "event_id": "evt_1790014955666_liuo",
       "analysis_type": "EVENT_ANALYSIS",
       "title": "Macro Impact Synthesis: US CPI rises 3.1% YoY in latest print, matching consensus",
-      "summary": "The US Consumer Price Index rose 3.1% YoY in August, matching consensus expectations while Core CPI held steady at 0.3% MoM. This in-line inflation print preserves existing expectations for a 25 basis point Federal Reserve rate cut at the upcoming FOMC meeting under the active macro theme of Fed Rate Cut Trajectory & Soft Landing. Meanwhile, the USD maintains strong positioning with a currency strength score of 8.5.",
+      "summary": "The US Consumer Price Index rose 3.1% YoY in August, matching consensus expectations while Core CPI held steady at 0.3% MoM. This in-line inflation print preserves existing expectations for a 25 basis point Federal Reserve rate cut at the upcoming FOMC meeting under the active macro theme of Lintasan Pemotongan Suku Bunga Fed & Soft Landing. Meanwhile, the USD maintains strong positioning with a currency strength score of 8.5.",
       "context_data_used": {
         "news_titles": [
           "US CPI rises 3.1% YoY in latest print, matching consensus"
@@ -111869,7 +111869,7 @@
       "key_implications": [
         "QatarEnergy is positioning for a post-crisis market environment where supply volume dictates buyer reliance.",
         "The statement acknowledges current logistical constraints in the Strait of Hormuz as a temporary friction point.",
-        "Energy security remains a primary driver for global trade flows, aligning with the broader Central Bank Gold Accumulation & Geopolitical Hedge theme."
+        "Energy security remains a primary driver for global trade flows, aligning with the broader Akumulasi Emas Bank Sentral & Lindung Nilai Geopolitik theme."
       ],
       "affected_assets_outlook": [
         {
@@ -113077,7 +113077,7 @@
         {
           "asset": "XAUUSD",
           "bias": "BULLISH",
-          "rationale": "Directly supported by the flight-to-safety impulse and the active theme of Central Bank Gold Accumulation & Geopolitical Hedge following the critical geopolitical escalation, with spot trading at 4378.315."
+          "rationale": "Directly supported by the flight-to-safety impulse and the active theme of Akumulasi Emas Bank Sentral & Lindung Nilai Geopolitik following the critical geopolitical escalation, with spot trading at 4378.315."
         },
         {
           "asset": "CHF",
@@ -113318,7 +113318,7 @@
       "event_id": "evt_1789840299194_n2i3",
       "analysis_type": "EVENT_ANALYSIS",
       "title": "Macro Impact Synthesis: $NVDA - NVIDIA’S HUANG REJECTS CALLS TO SLOW AINvidia CEO Jensen Huang says AI development should move “as fast as we can,” rejecting calls for the industry to",
-      "summary": "NVIDIA CEO Jensen Huang's commitment to aggressive AI development reinforces the 'Enterprise AI Infrastructure Spending' macro theme, signaling sustained capital expenditure despite calls for industry deceleration. This stance maintains upward pressure on tech-heavy indices while contrasting with the 'Flight to Safety' narrative currently supporting gold prices.",
+      "summary": "NVIDIA CEO Jensen Huang's commitment to aggressive AI development reinforces the 'Belanja Infrastruktur AI Perusahaan' macro theme, signaling sustained capital expenditure despite calls for industry deceleration. This stance maintains upward pressure on tech-heavy indices while contrasting with the 'Flight to Safety' narrative currently supporting gold prices.",
       "context_data_used": {
         "news_titles": [
           "$NVDA - NVIDIA’S HUANG REJECTS CALLS TO SLOW AINvidia CEO Jensen Huang says AI development should move “as fast as we can,” rejecting calls for the industry to"
@@ -114185,7 +114185,7 @@
       "id": "snapshot_2026-09-21",
       "date": "2026-09-21",
       "timestamp": "2026-09-21T11:56:43.706Z",
-      "title": "Daily Market Snapshot: 2026-09-21",
+      "title": "Snapshot Pasar Harian: 2026-09-21",
       "market_biases": {
         "XAUUSD": {
           "symbol": "XAUUSD",
@@ -114193,8 +114193,8 @@
           "score": 35,
           "price": 4370.84,
           "change_24h_pct": -0.15,
-          "strength_label": "Strong",
-          "major_catalyst": "President Trump and President Xi Summit (12:00 AM) — Focus on real yield transmission.",
+          "strength_label": "Kuat",
+          "major_catalyst": "Pertemuan Presiden Trump dan Presiden Xi (12:00) — Fokus pada transmisi yield riil.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
         "BTC": {
@@ -114203,8 +114203,8 @@
           "score": 71,
           "price": 84815.62,
           "change_24h_pct": 4.51,
-          "strength_label": "Strong",
-          "major_catalyst": "Global liquidity index trajectory + US crypto ETF net inflow report at session close.",
+          "strength_label": "Kuat",
+          "major_catalyst": "Lintasan indeks likuiditas global + laporan arus masuk bersih ETF kripto AS pada penutupan sesi.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
         "US30": {
@@ -114213,8 +114213,8 @@
           "score": 55,
           "price": 52530,
           "change_24h_pct": 0.87,
-          "strength_label": "Strong",
-          "major_catalyst": "US Industrial Production data & corporate earnings guidance across industrial and financial heavyweights.",
+          "strength_label": "Kuat",
+          "major_catalyst": "Data Produksi Industri AS & panduan laba korporasi pada emiten industri dan keuangan berbobot besar.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
         "US500": {
@@ -114223,8 +114223,8 @@
           "score": 59,
           "price": 7768,
           "change_24h_pct": 0.72,
-          "strength_label": "Strong",
-          "major_catalyst": "President Trump and President Xi Summit release",
+          "strength_label": "Kuat",
+          "major_catalyst": "Rilis Pertemuan Presiden Trump dan Presiden Xi",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
         "US100": {
@@ -114233,8 +114233,8 @@
           "score": 67,
           "price": 30241.75,
           "change_24h_pct": 1.08,
-          "strength_label": "Strong",
-          "major_catalyst": "Semiconductor earnings commentary & US 10-year Treasury yield response to economic releases.",
+          "strength_label": "Kuat",
+          "major_catalyst": "Komentar laba semikonduktor & respons yield Treasury AS 10 tahun terhadap rilis ekonomi.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
         "US10Y": {
@@ -114243,7 +114243,7 @@
           "score": 58,
           "price": 4.949,
           "change_24h_pct": -1.02,
-          "strength_label": "Strong",
+          "strength_label": "Kuat",
           "major_catalyst": "President Trump and President Xi Summit",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114253,7 +114253,7 @@
           "score": 6,
           "price": 100.218,
           "change_24h_pct": 0,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "President Trump and President Xi Summit",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114263,7 +114263,7 @@
           "score": -5,
           "price": 1.14904,
           "change_24h_pct": 0.04,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "S&P Global Manufacturing PMI Flash",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114273,7 +114273,7 @@
           "score": 13,
           "price": 1.33972,
           "change_24h_pct": 0.04,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "S&P Global Services PMI Flash",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114283,7 +114283,7 @@
           "score": -30,
           "price": 157.19,
           "change_24h_pct": 0.21,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "Bank of Japan policy communications & US-Japan 10-year sovereign bond yield spread.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114293,7 +114293,7 @@
           "score": 41,
           "price": 0.71382,
           "change_24h_pct": 0.23,
-          "strength_label": "Strong",
+          "strength_label": "Kuat",
           "major_catalyst": "RBA policy commentary & iron ore / base metal commodity price momentum.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114303,7 +114303,7 @@
           "score": -14,
           "price": 0.5735399999999999,
           "change_24h_pct": 0.23,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "Global Dairy Trade (GDT) auction results & RBNZ forward easing trajectory pricing.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114313,7 +114313,7 @@
           "score": -19,
           "price": 1.39997,
           "change_24h_pct": 0.13,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "WTI Crude Oil price fluctuations & Bank of Canada policy outlook statements.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         },
@@ -114323,7 +114323,7 @@
           "score": -26,
           "price": 0.82103,
           "change_24h_pct": -0.11,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "SNB Chairman policy remarks & European risk sentiment shifts.",
           "last_updated": "2026-09-21T11:56:43.706Z"
         }
@@ -114380,49 +114380,49 @@
       ],
       "major_catalysts": [
         {
-          "event_name": "President Trump and President Xi Summit (12:00 AM) — Focus on real yield transmission.",
+          "event_name": "Pertemuan Presiden Trump dan Presiden Xi (12:00) — Fokus pada transmisi yield riil.",
           "currency": "USD",
           "impact": "HIGH",
-          "actual": "Consolidating down -0.15% at $4,370.84; bids established at previous daily value area support."
+          "actual": "Konsolidasi turun -0,15% ke $4.370,84; permintaan terbentuk di support area nilai harian sebelumnya."
         },
         {
-          "event_name": "Global liquidity index trajectory + US crypto ETF net inflow report at session close.",
+          "event_name": "Lintasan indeks likuiditas global + laporan arus masuk bersih ETF kripto AS pada penutupan sesi.",
           "currency": "BTC",
           "impact": "HIGH",
-          "actual": "Extending +4.51% to $84,815.62; aggressive spot buying stepping in on minor orderbook dips."
+          "actual": "Berlanjut +4,51% ke $84.815,62; pembelian spot agresif masuk pada pelemahan tipis orderbook."
         },
         {
-          "event_name": "US Industrial Production data & corporate earnings guidance across industrial and financial heavyweights.",
+          "event_name": "Data Produksi Industri AS & panduan laba korporasi pada emiten industri dan keuangan berbobot besar.",
           "currency": "US30",
           "impact": "HIGH",
-          "actual": "Trading at 52,530 (+0.87%); rotational breadth between defensive health care and cyclical machinery."
+          "actual": "Diperdagangkan di 52.530 (+0,87%); rotasi sektoral antara kesehatan defensif dan mesin siklikal."
         },
         {
-          "event_name": "President Trump and President Xi Summit release",
+          "event_name": "Rilis Pertemuan Presiden Trump dan Presiden Xi",
           "currency": "US500",
           "impact": "HIGH",
-          "actual": "Quoting at 7,768 (+0.72%); systematic bid support defending the 20-day moving average."
+          "actual": "Dikutip di 7.768 (+0,72%); dukungan beli sistematis mempertahankan moving average 20 hari."
         },
         {
-          "event_name": "Semiconductor earnings commentary & US 10-year Treasury yield response to economic releases.",
+          "event_name": "Komentar laba semikonduktor & respons yield Treasury AS 10 tahun terhadap rilis ekonomi.",
           "currency": "US100",
           "impact": "HIGH",
-          "actual": "Index printed at 30,241.75 (+1.08%); tech futures absorbing sell orders with active dip-buying liquidity."
+          "actual": "Indeks tercatat di 30.241,75 (+1,08%); futures teknologi menyerap order jual dengan likuiditas beli saat pelemahan yang aktif."
         }
       ],
-      "market_reaction_summary": "Automated end-of-session daily snapshot recorded permanently.",
-      "ai_summary": "Multi-asset regime recorded for 2026-09-21.",
+      "market_reaction_summary": "Snapshot pasar harian otomatis akhir sesi yang tersimpan permanen.",
+      "ai_summary": "Rezim lintas aset tercatat untuk 2026-09-21.",
       "ai_why": [
-        "Automated capture of live telemetry into permanent memory database."
+        "Perekaman otomatis telemetri live ke basis data memori permanen."
       ],
       "ai_risk": [
-        "Standard session volatility boundaries apply."
+        "Batas volatilitas sesi standar berlaku."
       ],
       "ai_context": [
-        "Archived session 2026-09-21."
+        "Sesi terarsip 2026-09-21."
       ],
       "historical_insights": [
-        "Daily snapshot committed to memory."
+        "Snapshot harian tersimpan ke memori."
       ],
       "created_at": "2026-09-21T11:56:43.706Z"
     },
@@ -114430,7 +114430,7 @@
       "id": "snapshot_2026-09-20",
       "date": "2026-09-20",
       "timestamp": "2026-09-20T05:00:00.000Z",
-      "title": "Daily Market Snapshot: 20 September 2026",
+      "title": "Snapshot Pasar Harian: 20 September 2026",
       "market_biases": {
         "XAUUSD": {
           "symbol": "XAUUSD",
@@ -114438,8 +114438,8 @@
           "score": 72,
           "price": 2742.5,
           "change_24h_pct": 0.45,
-          "strength_label": "Strong",
-          "major_catalyst": "Fed easing cycle expectations & geopolitical reserve diversification",
+          "strength_label": "Kuat",
+          "major_catalyst": "Ekspektasi siklus pelonggaran Fed & diversifikasi cadangan geopolitik",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "BTC": {
@@ -114448,7 +114448,7 @@
           "score": 10,
           "price": 64180,
           "change_24h_pct": -0.15,
-          "strength_label": "Neutral",
+          "strength_label": "Netral",
           "major_catalyst": "Consolidation above $63,500 support prior to macro weekly close",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
@@ -114458,8 +114458,8 @@
           "score": -35,
           "price": 19820,
           "change_24h_pct": -0.52,
-          "strength_label": "Weak",
-          "major_catalyst": "Elevated tech valuation compression amid sticky yields",
+          "strength_label": "Lemah",
+          "major_catalyst": "Kompresi valuasi teknologi yang tinggi di tengah yield kaku",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "US500": {
@@ -114468,8 +114468,8 @@
           "score": -5,
           "price": 5712,
           "change_24h_pct": -0.08,
-          "strength_label": "Neutral",
-          "major_catalyst": "Rotation into defensive dividend sectors balancing tech pullbacks",
+          "strength_label": "Netral",
+          "major_catalyst": "Rotasi ke sektor dividen defensif mengimbangi koreksi teknologi",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "US30": {
@@ -114478,8 +114478,8 @@
           "score": 40,
           "price": 42150,
           "change_24h_pct": 0.28,
-          "strength_label": "Moderate",
-          "major_catalyst": "Industrial and cyclical earnings resilience buoying value stocks",
+          "strength_label": "Sedang",
+          "major_catalyst": "Ketahanan laba sektor industri dan siklikal menopang saham value",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "USD": {
@@ -114488,8 +114488,8 @@
           "score": -45,
           "price": 100.85,
           "change_24h_pct": -0.32,
-          "strength_label": "Weak",
-          "major_catalyst": "Yield curve steepening and softened labor market trajectory",
+          "strength_label": "Lemah",
+          "major_catalyst": "Kurva yield menajam dan lintasan pasar tenaga kerja melunak",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "EUR": {
@@ -114498,8 +114498,8 @@
           "score": 5,
           "price": 1.1165,
           "change_24h_pct": 0.12,
-          "strength_label": "Neutral",
-          "major_catalyst": "ECB rate pause confirmation balancing sluggish German industrial PMI",
+          "strength_label": "Netral",
+          "major_catalyst": "Konfirmasi jeda suku bunga ECB mengimbangi PMI industri Jerman yang lesu",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "GBP": {
@@ -114508,8 +114508,8 @@
           "score": 55,
           "price": 1.331,
           "change_24h_pct": 0.38,
-          "strength_label": "Strong",
-          "major_catalyst": "BoE hawkish dissent citing stubborn services inflation print",
+          "strength_label": "Kuat",
+          "major_catalyst": "Perbedaan hawkish BoE menyoroti rilis inflasi jasa yang kaku",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "JPY": {
@@ -114518,7 +114518,7 @@
           "score": -60,
           "price": 143.8,
           "change_24h_pct": -0.45,
-          "strength_label": "Weak",
+          "strength_label": "Lemah",
           "major_catalyst": "BoJ gradualism stance keeping short-end real carry attractive",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
@@ -114528,8 +114528,8 @@
           "score": 50,
           "price": 0.6815,
           "change_24h_pct": 0.42,
-          "strength_label": "Strong",
-          "major_catalyst": "RBA persistent hawkish hold on sticky domestic core inflation",
+          "strength_label": "Kuat",
+          "major_catalyst": "RBA bertahan hawkish atas inflasi inti domestik yang kaku",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "NZD": {
@@ -114538,8 +114538,8 @@
           "score": -10,
           "price": 0.6225,
           "change_24h_pct": -0.05,
-          "strength_label": "Neutral",
-          "major_catalyst": "RBNZ aggressive dovish tilt weighing on cross-rate yield spread",
+          "strength_label": "Netral",
+          "major_catalyst": "Bias dovish agresif RBNZ menekan spread yield kurs silang",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "CAD": {
@@ -114548,8 +114548,8 @@
           "score": 15,
           "price": 1.3565,
           "change_24h_pct": 0.1,
-          "strength_label": "Neutral",
-          "major_catalyst": "Crude oil recovery neutralizing Bank of Canada easing path",
+          "strength_label": "Netral",
+          "major_catalyst": "Pemulihan minyak mentah menetralkan jalur pelonggaran Bank of Canada",
           "last_updated": "2026-09-20T05:00:00.000Z"
         },
         "CHF": {
@@ -114558,8 +114558,8 @@
           "score": 35,
           "price": 0.849,
           "change_24h_pct": 0.22,
-          "strength_label": "Moderate",
-          "major_catalyst": "European geopolitical hedge demand maintaining sovereign bid",
+          "strength_label": "Sedang",
+          "major_catalyst": "Permintaan lindung nilai geopolitik Eropa menjaga permintaan sovereign",
           "last_updated": "2026-09-20T05:00:00.000Z"
         }
       },
@@ -114631,47 +114631,47 @@
       ],
       "major_catalysts": [
         {
-          "event_name": "Federal Reserve Policy Shift Assessment",
+          "event_name": "Asesmen Pergeseran Kebijakan Federal Reserve",
           "currency": "USD",
           "impact": "CRITICAL",
-          "actual": "Dovish Hold Consensus",
+          "actual": "Konsensus Tahan Dovish",
           "market_reaction": "DXY -0.32%, US 2Y Yield -6 bps, XAUUSD +$12.50"
         },
         {
-          "event_name": "BoE Monetary Policy Statement",
+          "event_name": "Pernyataan Kebijakan Moneter BoE",
           "currency": "GBP",
           "impact": "HIGH",
-          "actual": "Vote 8-1 Hold",
+          "actual": "Vote 8-1 Tahan",
           "market_reaction": "GBPUSD +45 pips to 1.3310"
         },
         {
-          "event_name": "RBA Official Cash Rate Guidance",
+          "event_name": "Panduan Official Cash Rate RBA",
           "currency": "AUD",
           "impact": "HIGH",
-          "actual": "Hawkish Hold",
+          "actual": "Tahan Hawkish",
           "market_reaction": "AUDUSD +38 pips to 0.6815"
         }
       ],
-      "market_reaction_summary": "Broad dollar weakness dominated foreign exchange sessions, propelling precious metals into renewed upside discovery while global equity benchmarks displayed distinct sector rotation from mega-cap tech into industrial yield plays.",
-      "ai_summary": "Institutional posture reflects synchronized capital reallocation away from the US Dollar as terminal rate repricing firms. Gold capitalizes directly on real yield moderation.",
+      "market_reaction_summary": "Pelemahan Dolar AS yang luas mendominasi sesi valas, mendorong logam mulia ke penemuan harga baru sementara indeks ekuitas global menunjukkan rotasi sektor yang jelas dari teknologi mega-cap ke saham industri bernilai yield.",
+      "ai_summary": "Sikap institusional mencerminkan realokasi modal serentak menjauh dari Dolar AS seiring penyesuaian suku bunga terminal. Emas langsung diuntungkan moderasi yield riil.",
       "ai_why": [
-        "US Dollar softening across majors as Treasury yield curve shifts downward.",
-        "Central bank policy divergence: BoE and RBA hawkish rhetoric contrasting with Fed easing trajectory.",
-        "Currency strength confirming GBP and AUD institutional leadership (Rank #1 and #2).",
-        "Sovereign reserve hedging providing strong bid floor for bullion on every minor dip."
+        "Dolar AS melemah terhadap mata uang utama seiring kurva yield Treasury bergeser turun.",
+        "Divergensi kebijakan bank sentral: retorika hawkish BoE dan RBA kontras dengan lintasan pelonggaran Fed.",
+        "Kekuatan mata uang mengonfirmasi kepemimpinan institusional GBP dan AUD (Peringkat #1 dan #2).",
+        "Lindung nilai cadangan sovereign memberi batas permintaan kuat bagi emas pada setiap pelemahan kecil."
       ],
       "ai_risk": [
-        "Upcoming US Core PCE inflation release could recalibrate easing probability if sticky.",
-        "Middle East energy transit flare-ups threatening unexpected spike in crude oil.",
-        "Extreme short JPY positioning susceptible to abrupt violent short-covering squeezes."
+        "Rilis inflasi Core PCE AS mendatang dapat mengubah probabilitas pelonggaran jika tetap kaku.",
+        "Eskalasi transit energi Timur Tengah mengancam lonjakan minyak mentah tak terduga.",
+        "Posisi short JPY yang ekstrem rentan terhadap squeeze short-covering yang tiba-tiba."
       ],
       "ai_context": [
-        "USD strength declined for the 3rd consecutive session from 5.2 to 4.4.",
+        "Kekuatan USD menurun selama 3 sesi berturut-turut dari 5,2 ke 4,4.",
         "XAUUSD maintains robust negative correlation (-0.84) against DXY movements.",
-        "Yesterday market showed hesitation ahead of rate guidance before clearing higher today."
+        "Pasar kemarin menunjukkan keraguan menjelang panduan suku bunga sebelum menguat hari ini."
       ],
       "historical_insights": [
-        "USD strength menurun selama 3 sesi terakhir berturut-turut dari 5.2 ke 4.4.",
+        "Kekuatan USD menurun selama 3 sesi terakhir berturut-turut dari 5,2 ke 4,4.",
         "XAUUSD konsisten bergerak berlawanan dengan USD (+0.45% saat DXY -0.32%).",
         "GBP memimpin kekuatan G8 di atas 7.0 selama 48 jam berturut-turut."
       ],
@@ -114681,7 +114681,7 @@
       "id": "snapshot_2026-09-19",
       "date": "2026-09-19",
       "timestamp": "2026-09-19T21:00:00.000Z",
-      "title": "Daily Market Snapshot: 19 September 2026",
+      "title": "Snapshot Pasar Harian: 19 September 2026",
       "market_biases": {
         "XAUUSD": {
           "symbol": "XAUUSD",
@@ -114689,8 +114689,8 @@
           "score": 65,
           "price": 2730,
           "change_24h_pct": 0.38,
-          "strength_label": "Moderate",
-          "major_catalyst": "Bullion dip buying confirmed as bond yields stall",
+          "strength_label": "Sedang",
+          "major_catalyst": "Pembelian emas saat pelemahan terkonfirmasi seiring yield obligasi mandek",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "BTC": {
@@ -114699,8 +114699,8 @@
           "score": 5,
           "price": 64250,
           "change_24h_pct": 0.1,
-          "strength_label": "Neutral",
-          "major_catalyst": "Weekend volume contraction holding tight trading corridor",
+          "strength_label": "Netral",
+          "major_catalyst": "Kontraksi volume akhir pekan menahan koridor perdagangan sempit",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "US100": {
@@ -114709,8 +114709,8 @@
           "score": -10,
           "price": 19910,
           "change_24h_pct": -0.15,
-          "strength_label": "Neutral",
-          "major_catalyst": "Semiconductor consolidation after previous rally",
+          "strength_label": "Netral",
+          "major_catalyst": "Konsolidasi semikonduktor setelah reli sebelumnya",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "US500": {
@@ -114719,7 +114719,7 @@
           "score": 0,
           "price": 5716,
           "change_24h_pct": 0.02,
-          "strength_label": "Neutral",
+          "strength_label": "Netral",
           "major_catalyst": "Balanced market breadth heading into weekend close",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
@@ -114729,8 +114729,8 @@
           "score": 30,
           "price": 42030,
           "change_24h_pct": 0.18,
-          "strength_label": "Moderate",
-          "major_catalyst": "Financials sector leading performance",
+          "strength_label": "Sedang",
+          "major_catalyst": "Kinerja sektor keuangan memimpin",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "USD": {
@@ -114739,8 +114739,8 @@
           "score": -15,
           "price": 101.18,
           "change_24h_pct": -0.1,
-          "strength_label": "Neutral",
-          "major_catalyst": "Post-CPI digestion and yield range trading",
+          "strength_label": "Netral",
+          "major_catalyst": "Pencernaan pasca-CPI dan perdagangan rentang yield",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "EUR": {
@@ -114749,8 +114749,8 @@
           "score": -5,
           "price": 1.1152,
           "change_24h_pct": 0.05,
-          "strength_label": "Neutral",
-          "major_catalyst": "Eurozone consumer sentiment stable",
+          "strength_label": "Netral",
+          "major_catalyst": "Sentimen konsumen Zona Euro stabil",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "GBP": {
@@ -114759,8 +114759,8 @@
           "score": 45,
           "price": 1.326,
           "change_24h_pct": 0.25,
-          "strength_label": "Moderate",
-          "major_catalyst": "UK retail sales outperforming forecasts",
+          "strength_label": "Sedang",
+          "major_catalyst": "Penjualan ritel Inggris melampaui proyeksi",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "JPY": {
@@ -114769,8 +114769,8 @@
           "score": -50,
           "price": 143.15,
           "change_24h_pct": -0.3,
-          "strength_label": "Weak",
-          "major_catalyst": "BoJ governor neutral remarks cooling near-term hike bets",
+          "strength_label": "Lemah",
+          "major_catalyst": "Pernyataan netral gubernur BoJ meredam taruhan kenaikan jangka pendek",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "AUD": {
@@ -114779,7 +114779,7 @@
           "score": 40,
           "price": 0.6785,
           "change_24h_pct": 0.22,
-          "strength_label": "Moderate",
+          "strength_label": "Sedang",
           "major_catalyst": "Commodity price stabilizing in Asia-Pacific hours",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
@@ -114789,8 +114789,8 @@
           "score": -5,
           "price": 0.623,
           "change_24h_pct": 0,
-          "strength_label": "Neutral",
-          "major_catalyst": "NZ GDP revision priced in",
+          "strength_label": "Netral",
+          "major_catalyst": "Revisi PDB Selandia Baru sudah diperhitungkan",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
         "CAD": {
@@ -114799,7 +114799,7 @@
           "score": 10,
           "price": 1.3578,
           "change_24h_pct": 0.05,
-          "strength_label": "Neutral",
+          "strength_label": "Netral",
           "major_catalyst": "Canadian retail trade tracking forecast",
           "last_updated": "2026-09-19T21:00:00.000Z"
         },
@@ -114809,8 +114809,8 @@
           "score": 30,
           "price": 0.851,
           "change_24h_pct": 0.15,
-          "strength_label": "Moderate",
-          "major_catalyst": "Consistent safe-haven cross buying",
+          "strength_label": "Sedang",
+          "major_catalyst": "Pembelian kurs silang safe-haven yang konsisten",
           "last_updated": "2026-09-19T21:00:00.000Z"
         }
       },
@@ -114882,31 +114882,31 @@
       ],
       "major_catalysts": [
         {
-          "event_name": "UK Retail Sales m/m",
+          "event_name": "Penjualan Ritel Inggris m/m",
           "currency": "GBP",
           "impact": "HIGH",
           "actual": "+0.6% (Beat)",
           "market_reaction": "GBPUSD +28 pips"
         },
         {
-          "event_name": "US Existing Home Sales",
+          "event_name": "Penjualan Rumah Existing AS",
           "currency": "USD",
           "impact": "MEDIUM",
-          "actual": "3.86M",
-          "market_reaction": "DXY unchanged"
+          "actual": "3,86Jt",
+          "market_reaction": "DXY tidak berubah"
         }
       ],
-      "market_reaction_summary": "Markets drifted into consolidation ahead of central bank communication week, with currency pairs trading tight ranges and gold maintaining floor above $2,720/oz.",
-      "ai_summary": "Equilibrium regime observed with low cross-asset volatility. Pre-positioning evident in Sterling and Australian Dollar.",
+      "market_reaction_summary": "Pasar bergerak ke konsolidasi menjelang pekan komunikasi bank sentral, dengan pasangan mata uang diperdagangkan pada rentang sempit dan emas menjaga batas bawah di atas $2.720/oz.",
+      "ai_summary": "Rezim keseimbangan terlihat dengan volatilitas lintas aset rendah. Pra-posisi tampak pada Sterling dan Dolar Australia.",
       "ai_why": [
-        "UK economic activity upside surprises underpinning sterling demand.",
-        "Rangebound US yield environment keeping FX pairs disciplined within technical channels."
+        "Surprise positif aktivitas ekonomi Inggris menopang permintaan sterling.",
+        "Lingkungan yield AS yang bergerak terbatas menjaga pasangan valas disiplin dalam kanal teknikal."
       ],
       "ai_risk": [
-        "Upcoming central bank rate decisions could break consolidation abruptly."
+        "Keputusan suku bunga bank sentral mendatang dapat memecah konsolidasi secara tiba-tiba."
       ],
       "ai_context": [
-        "Platform tracking first 48 hours of live canonical event ingest with high deduplication accuracy."
+        "Platform memantau 48 jam pertama serapan agenda kanonik live dengan akurasi deduplikasi tinggi."
       ],
       "historical_insights": [
         "EUR dan USD mencatatkan volatilitas terendah mingguan di bawah 25 pips per sesi.",

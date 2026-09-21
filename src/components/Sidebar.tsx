@@ -60,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'terminal' as NavTabId,
           label: NAV_LABELS.terminal,
-          shortLabel: 'Overview',
+          shortLabel: 'Ikhtisar',
           icon: LayoutDashboard,
           badge: null,
         },
@@ -75,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'intraday_map' as NavTabId,
           label: NAV_LABELS.intraday_map,
-          shortLabel: 'Market Map',
+          shortLabel: 'Peta Pasar',
           icon: Compass,
           badge: `${marketMapCount}`,
           badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
@@ -83,7 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'today_catalysts' as NavTabId,
           label: NAV_LABELS.today_catalysts,
-          shortLabel: 'Catalysts',
+          shortLabel: 'Katalis',
           icon: Zap,
           badge: catalystsCount !== undefined ? `${catalystsCount}` : null,
           badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'markets' as NavTabId,
           label: NAV_LABELS.markets,
-          shortLabel: 'Markets',
+          shortLabel: 'Pasar',
           icon: Activity,
           badge: null,
         },
@@ -111,7 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'currency' as NavTabId,
           label: NAV_LABELS.currency,
-          shortLabel: 'Currency',
+          shortLabel: 'Mata Uang',
           icon: TrendingUp,
           badge: 'G8',
           badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
@@ -124,14 +124,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'macro' as NavTabId,
           label: NAV_LABELS.macro,
-          shortLabel: 'Macro',
+          shortLabel: 'Makro',
           icon: Calendar,
           badge: null,
         },
         {
           id: 'events' as NavTabId,
           label: NAV_LABELS.events,
-          shortLabel: 'News Wire',
+          shortLabel: 'Berita',
           icon: Radio,
           badge: 'LANGSUNG',
           badgeColor: 'bg-emerald-950/80 text-emerald-400 border-emerald-800/60',
@@ -139,14 +139,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'intelligence' as NavTabId,
           label: NAV_LABELS.intelligence,
-          shortLabel: 'AI Intel',
+          shortLabel: 'Intel AI',
           icon: Brain,
           badge: null,
         },
         {
           id: 'history' as NavTabId,
           label: NAV_LABELS.history,
-          shortLabel: 'History',
+          shortLabel: 'Riwayat',
           icon: History,
           badge: 'ARSIP',
           badgeColor: 'bg-indigo-950/80 text-indigo-300 border-indigo-800/80',
@@ -159,7 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           id: 'watchlist' as NavTabId,
           label: NAV_LABELS.watchlist,
-          shortLabel: 'Watchlist',
+          shortLabel: 'Pantauan',
           icon: Star,
           badge: null,
         },

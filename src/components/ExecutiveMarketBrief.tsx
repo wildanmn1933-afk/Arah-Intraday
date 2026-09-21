@@ -239,7 +239,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         base: 'USD',
         quote: 'CAD',
         catalyst: 'Dinamika pergerakan harga minyak mentah WTI terhadap kebijakan pemangkasan bunga BoC.',
-        entryLogic: 'Reversal / Range trade di batas atas Bollinger Band H1',
+        entryLogic: 'Reversal / Perdagangan rentang di batas atas Bollinger Band H1',
         invalidation: 'Penerobosan momentum di luar batas band atas',
         target: 'Median range harian (Mean Reversion)',
       },
@@ -250,7 +250,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         base: 'EUR',
         quote: 'GBP',
         catalyst: 'Spread yield obligasi Bund vs Gilt dengan momentum ekonomi yang relatif berimbang.',
-        entryLogic: 'Sideways / Konsolidasi ketat — Tidak disarankan trend follow',
+        entryLogic: 'Menyamping / Konsolidasi ketat — Tidak disarankan ikut tren',
         invalidation: 'N/A',
         target: 'Rangebound scalping saja',
       },
@@ -266,7 +266,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
       let action: TradeSuggestion['action'] = 'AVOID_CHOP';
       let actionLabel = 'HINDARI (CHOP / SIDEWAYS)';
       let tier: TradeSuggestion['tier'] = 'AVOID';
-      let tradeStyle = 'Choppy / Tanpa Aliran';
+      let tradeStyle = 'Sempit / Tanpa Aliran';
 
       if (delta >= 3.0) {
         action = 'STRONG_BUY';
@@ -277,7 +277,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         action = 'BUY';
         actionLabel = 'BELI SAAT PULLBACK';
         tier = 'HIGH';
-        tradeStyle = 'Dip Buying';
+        tradeStyle = 'Beli Saat Pullback';
       } else if (delta <= -3.0) {
         action = 'STRONG_SELL';
         actionLabel = 'JUAL KUAT (SHORT)';
@@ -287,12 +287,12 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         action = 'SELL';
         actionLabel = 'JUAL SAAT RELI';
         tier = 'HIGH';
-        tradeStyle = 'Rally Shorting';
+        tradeStyle = 'Short Saat Reli';
       } else {
         action = 'AVOID_CHOP';
         actionLabel = 'HINDARI (BASIS FLAT)';
         tier = 'AVOID';
-        tradeStyle = 'Sideways / Momentum Rendah';
+        tradeStyle = 'Menyamping / Momentum Rendah';
       }
 
       const confidence = Math.min(94, Math.max(50, Math.round(55 + absDelta * 11)));
@@ -332,7 +332,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         deltaOrScore: `Bias: ${goldBias?.overall_bias ?? 'BULLISH'} (${goldPrice.change_24h_pct >= 0 ? '+' : ''}${goldPrice.change_24h_pct.toFixed(2)}%)`,
         tradeStyle: 'Momentum Safe-Haven / Beli Saat Dip',
         entryZone: `Area demand intraday $${(goldPrice.price - 8.5).toFixed(1)} - $${(goldPrice.price - 3.0).toFixed(1)}`,
-        invalidationLevel: goldBias?.conditions_to_change_bias || `Break di bawah $${(goldPrice.price - 22.0).toFixed(1)}`,
+        invalidationLevel: goldBias?.conditions_to_change_bias || `Penembusan di bawah $${(goldPrice.price - 22.0).toFixed(1)}`,
         targetProjection: `$${(goldPrice.price + 25.0).toFixed(1)} / Resistensi ATH`,
         fundamentalDriver: goldBias?.top_drivers?.[0] || goldBias?.today_key_catalyst || 'Permintaan defensif geopolitik & penurunan yield obligasi riil AS.',
         riskNote: 'Volatilitas tinggi saat jam pembukaan sesi New York (19:30 WIB)',
@@ -356,7 +356,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         deltaOrScore: `Tech Bias: ${us100Bias?.overall_bias ?? 'BULLISH'} (${us100Price.change_24h_pct >= 0 ? '+' : ''}${us100Price.change_24h_pct.toFixed(2)}%)`,
         tradeStyle: 'Super-Tren Teknologi & Beli Saat Pullback',
         entryZone: `Area demand/discount H1 ${Math.round(us100Price.price - 85)} - ${Math.round(us100Price.price - 25)}`,
-        invalidationLevel: us100Bias?.conditions_to_change_bias || `Breakdown valid di bawah support ${Math.round(us100Price.price - 190)}`,
+        invalidationLevel: us100Bias?.conditions_to_change_bias || `Penembusan valid di bawah support ${Math.round(us100Price.price - 190)}`,
         targetProjection: `Ekspansi resistensi All-Time High ${Math.round(us100Price.price + 260)}+ (RR 1:2.8)`,
         fundamentalDriver: us100Bias?.top_drivers?.[0] || us100Bias?.today_key_catalyst || 'Aset paling bullish di pasar global: Belanja modal AI hyperscalers & pendapatan emiten semikonduktor solid, imbal hasil obligasi stabil menopang valuasi ekuitas growth.',
         riskNote: 'Volatilitas tinggi saat lonjakan volume pembukaan bursa Wall Street (20:30 WIB)',
@@ -404,7 +404,7 @@ export const ExecutiveMarketBrief: React.FC<ExecutiveMarketBriefProps> = ({
         deltaOrScore: `Yield: ${us10yPrice.price.toFixed(3)}% (${us10yPrice.change_24h_pct >= 0 ? '+' : ''}${us10yPrice.change_24h_pct.toFixed(2)}%)`,
         tradeStyle: 'Kurva Diskon Makro & Engine Valuasi',
         entryZone: `Pivot level 4.050% - 4.120%`,
-        invalidationLevel: `Penetrasi yield > 4.220% memicu koreksi risk assets`,
+        invalidationLevel: `Penetrasi yield > 4.220% memicu koreksi aset berisiko`,
         targetProjection: `Zona stabilisasi 3.980% - 4.060%`,
         fundamentalDriver: 'Ekspektasi pelonggaran Fed menjaga imbal hasil obligasi AS bertenor 10 tahun terkendali, menopang valuasi ekuitas teknologi (US100) dan akumulasi Emas (XAU/USD).',
         riskNote: 'Sensitif terhadap rilis data lelang Treasury, lelang obligasi, dan komentar pejabat The Fed',

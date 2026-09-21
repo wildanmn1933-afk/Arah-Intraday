@@ -14,7 +14,7 @@ authRouter.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
     if (!email || !password) {
-      res.status(400).json({ error: 'Email and password are required.' });
+      res.status(400).json({ error: 'Alamat email dan kata sandi wajib diisi.' });
       return;
     }
 

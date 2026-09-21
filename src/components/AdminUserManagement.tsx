@@ -200,7 +200,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
       const res = await api.createAdminUser(createForm);
       if (res.success) {
         showToast(
-          `User ${res.user.email} berhasil didaftarkan.` +
+          `Pengguna ${res.user.email} berhasil didaftarkan.` +
           (res.initial_password ? ` Password sementara: ${res.initial_password}` : '')
         );
         setShowCreateModal(false);
@@ -230,7 +230,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
       setLoading(true);
       const res = await api.deleteAdminUser(deletingUser.id);
       if (res.success) {
-        showToast(res.message || `User ${deletingUser.email} berhasil dihapus.`);
+        showToast(res.message || `Pengguna ${deletingUser.email} berhasil dihapus.`);
         setDeletingUser(null);
         loadUsers();
         onUserModified?.();
@@ -476,8 +476,8 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
           <table className="w-full text-left font-mono text-xs">
             <thead className="bg-slate-900/90 text-slate-400 border-b border-slate-800">
               <tr>
-                <th className="p-3 font-semibold">User & Identitas</th>
-                <th className="p-3 font-semibold">Otoritas Role</th>
+                <th className="p-3 font-semibold">Pengguna & Identitas</th>
+                <th className="p-3 font-semibold">Otoritas Peran</th>
                 <th className="p-3 font-semibold">Tier Langganan</th>
                 <th className="p-3 font-semibold">Status Akun</th>
                 <th className="p-3 font-semibold">Email Verifikasi</th>
@@ -511,7 +511,7 @@ export const AdminUserManagement: React.FC<AdminUserManagementProps> = ({
                           </div>
                           <div>
                             <div className="flex items-center gap-1.5">
-                              <span className="font-semibold text-slate-100">{u.name || 'Unnamed Trader'}</span>
+                              <span className="font-semibold text-slate-100">{u.name || 'Trader Tanpa Nama'}</span>
                               {isCurrentAccount && (
                                 <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/80 font-bold">
                                   AKUN ANDA

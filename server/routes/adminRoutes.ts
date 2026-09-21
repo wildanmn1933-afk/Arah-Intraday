@@ -48,7 +48,7 @@ adminRouter.patch('/sources/:id', (req, res) => {
   const { is_enabled, status } = req.body;
   const src = db.getSourceById(id);
   if (!src) {
-    res.status(404).json({ error: 'Source not found.' });
+    res.status(404).json({ error: 'Sumber data tidak ditemukan.' });
     return;
   }
   const updated = db.upsertSource({
@@ -68,14 +68,14 @@ adminRouter.get('/telegram', (req, res) => {
 adminRouter.post('/telegram', (req, res) => {
   const { handle, title, language } = req.body;
   if (!handle) {
-    res.status(400).json({ error: 'Telegram channel handle (e.g. @channel_name) is required.' });
+    res.status(400).json({ error: 'Handle kanal Telegram (mis. @channel_name) wajib diisi.' });
     return;
   }
 
   const cleanHandle = handle.startsWith('@') ? handle : `@${handle}`;
   const existing = db.getTelegramChannel(cleanHandle);
   if (existing) {
-    res.status(400).json({ error: `Channel ${cleanHandle} already registered.` });
+    res.status(400).json({ error: `Kanal ${cleanHandle} sudah terdaftar.` });
     return;
   }
 
@@ -119,7 +119,7 @@ adminRouter.patch('/telegram/:handle', (req, res) => {
   const cleanHandle = req.params.handle.startsWith('@') ? req.params.handle : `@${req.params.handle}`;
   const channel = db.getTelegramChannel(cleanHandle);
   if (!channel) {
-    res.status(404).json({ error: 'Telegram channel not found.' });
+    res.status(404).json({ error: 'Kanal Telegram tidak ditemukan.' });
     return;
   }
 
@@ -192,7 +192,7 @@ adminRouter.get('/duplicates', (req, res) => {
 adminRouter.post('/ingest/test-article', async (req, res) => {
   const { title, content, source_name, language } = req.body;
   if (!title) {
-    res.status(400).json({ error: 'Title is required' });
+    res.status(400).json({ error: 'Judul wajib diisi' });
     return;
   }
 
@@ -319,14 +319,14 @@ adminRouter.post('/users', (req: AuthenticatedRequest, res: Response) => {
   try {
     const { name, email, password, role, plan, subscription_status, is_verified } = req.body;
     if (!email || !email.includes('@')) {
-      res.status(400).json({ error: 'Valid email address is required.' });
+      res.status(400).json({ error: 'Alamat email yang valid wajib diisi.' });
       return;
     }
 
     const cleanEmail = email.toLowerCase().trim();
     const existing = db.getUserByEmail(cleanEmail);
     if (existing) {
-      res.status(400).json({ error: `User with email ${cleanEmail} already exists.` });
+      res.status(400).json({ error: `Pengguna dengan email ${cleanEmail} sudah terdaftar.` });
       return;
     }
 
@@ -379,7 +379,7 @@ adminRouter.post('/users', (req: AuthenticatedRequest, res: Response) => {
       initial_password: password ? undefined : effectivePassword,
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message || 'Failed to create user.' });
+    res.status(500).json({ error: err.message || 'Gagal membuat pengguna.' });
   }
 });
 
@@ -390,7 +390,7 @@ adminRouter.patch('/users/:id', (req: AuthenticatedRequest, res: Response) => {
 
   const target = db.getUserById(id);
   if (!target) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
@@ -456,7 +456,7 @@ adminRouter.delete('/users/:id', (req: AuthenticatedRequest, res: Response) => {
   const target = db.getUserById(id);
 
   if (!target) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
@@ -482,13 +482,13 @@ adminRouter.delete('/users/:id', (req: AuthenticatedRequest, res: Response) => {
   const email = target.email;
   const success = db.deleteUser(id);
   if (!success) {
-    res.status(500).json({ error: 'Failed to delete user from database.' });
+    res.status(500).json({ error: 'Gagal menghapus pengguna dari basis data.' });
     return;
   }
 
   res.json({
     success: true,
-    message: `Akun user ${email} berhasil dihapus permanen beserta seluruh preferensi & watchlist-nya.`,
+    message: `Akun pengguna ${email} berhasil dihapus permanen beserta seluruh preferensi & daftar pantau-nya.`,
     deleted_id: id,
   });
 });
@@ -500,7 +500,7 @@ adminRouter.post('/users/:id/reset-password', (req: AuthenticatedRequest, res: R
 
   const target = db.getUserById(id);
   if (!target) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
@@ -526,7 +526,7 @@ adminRouter.post('/users/:id/magic-link', (req: AuthenticatedRequest, res: Respo
   const { id } = req.params;
   const target = db.getUserById(id);
   if (!target) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
@@ -549,7 +549,7 @@ adminRouter.post('/users/:id/toggle-verification', (req: AuthenticatedRequest, r
   const { id } = req.params;
   const target = db.getUserById(id);
   if (!target) {
-    res.status(404).json({ error: 'User not found.' });
+    res.status(404).json({ error: 'Pengguna tidak ditemukan.' });
     return;
   }
 
@@ -563,7 +563,7 @@ adminRouter.post('/users/:id/toggle-verification', (req: AuthenticatedRequest, r
     success: true,
     is_verified: updated?.is_verified,
     user: updated,
-    message: nextStatus ? `User ${target.email} telah diverifikasi.` : `Status verifikasi user ${target.email} dicabut.`,
+    message: nextStatus ? `User ${target.email} telah diverifikasi.` : `Status verifikasi pengguna ${target.email} dicabut.`,
   });
 });
 

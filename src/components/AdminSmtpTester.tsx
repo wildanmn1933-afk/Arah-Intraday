@@ -419,7 +419,7 @@ export const AdminSmtpTester: React.FC<AdminSmtpTesterProps> = ({
                 Server: {testResult.config.host}:{testResult.config.port}
               </span>
               <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
-                Pengirim: {testResult.config.userMasked || 'None'}
+                Pengirim: {testResult.config.userMasked || '—'}
               </span>
               <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
                 Email Terkirim: {testResult.testEmailSent ? 'Ya (Sukses)' : 'Tidak'}

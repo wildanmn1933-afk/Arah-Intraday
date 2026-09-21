@@ -52,28 +52,28 @@ const TIERS: PricingTier[] = [
   {
     ...PLANS.FREE,
     metrics: {
-      streamSpeed: 'Standard Polling',
-      watchlists: '1 Local Watchlist',
+      streamSpeed: 'Polling Standar',
+      watchlists: '1 Daftar Pantau Lokal',
       aiReports: 'Hanya Buletin Publik',
-      customFeeds: 'None',
+      customFeeds: 'Tidak Ada',
     },
   },
   {
     ...PLANS.PRO,
     metrics: {
-      streamSpeed: '< 100ms Ultra-Low Latency',
+      streamSpeed: '< 100ms Latensi Ultra-Rendah',
       watchlists: 'Sinkron Cloud Tanpa Batas',
-      aiReports: 'Full Deep Analysis',
-      customFeeds: 'Standard Telegram Channels',
+      aiReports: 'Analisis Mendalam Penuh',
+      customFeeds: 'Kanal Telegram Standar',
     },
   },
   {
     ...PLANS.INSTITUTIONAL,
     metrics: {
-      streamSpeed: 'Dedicated SLA Gateway',
+      streamSpeed: 'Gerbang SLA Khusus',
       watchlists: 'Multi-Pengguna Enterprise',
       aiReports: 'Insight Gemini Live Tanpa Batas',
-      customFeeds: 'Full Control & Scraper Access',
+      customFeeds: 'Kendali Penuh & Akses Scraper',
     },
   },
 ];
@@ -285,7 +285,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                     <div className="text-slate-200 font-bold truncate">{tier.metrics.streamSpeed}</div>
                   </div>
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase">Watchlists</div>
+                    <div className="text-slate-500 text-[10px] uppercase">Daftar Pantau</div>
                     <div className="text-slate-200 font-bold truncate">{tier.metrics.watchlists}</div>
                   </div>
                 </div>
@@ -293,7 +293,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                 {/* Feature Checklist */}
                 <div className="mt-6 space-y-2.5 text-xs text-slate-300 font-sans">
                   <div className="text-[11px] font-mono uppercase text-slate-400 font-semibold tracking-wider mb-1">
-                    Features Included:
+                    Fitur yang Disertakan:
                   </div>
                   {tier.features.map((feat, idx) => (
                     <div key={idx} className="flex items-start gap-2">
@@ -398,8 +398,8 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
               <tbody className="divide-y divide-slate-800/60 text-slate-300 font-sans">
                 <tr>
                   <td className="py-3 px-4 font-semibold text-slate-200">Protokol Aliran Data</td>
-                  <td className="py-3 px-4 text-center text-slate-400">Polling (15s)</td>
-                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">Low-latency SSE</td>
+                  <td className="py-3 px-4 text-center text-slate-400">Polling (15 d)</td>
+                  <td className="py-3 px-4 text-center text-cyan-300 font-bold">SSE Latensi Rendah</td>
                   <td className="py-3 px-4 text-center text-purple-300 font-bold">Gateway SSE Khusus</td>
                 </tr>
                 <tr>
@@ -409,7 +409,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 font-semibold text-slate-200">G8 Currency Strength Matrix</td>
+                  <td className="py-3 px-4 font-semibold text-slate-200">Matriks Kekuatan Mata Uang G8</td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-emerald-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-cyan-400 mx-auto" /></td>
                   <td className="py-3 px-4 text-center"><Check className="w-4 h-4 text-purple-400 mx-auto" /></td>

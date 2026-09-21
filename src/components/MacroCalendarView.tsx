@@ -30,11 +30,11 @@ interface MacroCalendarViewProps {
 const TIMEZONES = [
   { value: 'Asia/Jakarta', label: 'WIB (Jakarta UTC+7) [Waktu Default]' },
   { value: 'UTC', label: 'UTC (Waktu Universal Terkoordinasi)' },
-  { value: 'LOCAL', label: 'Local (Waktu Perangkat Anda)' },
-  { value: 'America/New_York', label: 'New York (EDT/EST)' },
-  { value: 'Europe/London', label: 'London (BST/GMT)' },
-  { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
-  { value: 'Asia/Singapore', label: 'Singapore (SGT)' },
+  { value: 'LOCAL', label: 'Lokal (Waktu Perangkat Anda)' },
+  { value: 'America/New_York', label: 'New York (Waktu AS Timur)' },
+  { value: 'Europe/London', label: 'London (Waktu Inggris)' },
+  { value: 'Asia/Tokyo', label: 'Tokyo (Waktu Jepang)' },
+  { value: 'Asia/Singapore', label: 'Singapura (Waktu SGT)' },
 ];
 
 export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
@@ -311,7 +311,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
           <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 mt-1 flex-wrap">
             <span>Sumber: TradingView Real Institutional Feed</span>
             <span>•</span>
-            <span>Sinkronisasi Terakhir: {latestUpdated ? `${latestUpdated} WIB` : 'Live'}</span>
+            <span>Sinkronisasi Terakhir: {latestUpdated ? `${latestUpdated} WIB` : 'LANGSUNG'}</span>
           </div>
         </div>
 
@@ -819,7 +819,7 @@ export const MacroCalendarView: React.FC<MacroCalendarViewProps> = ({
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">
                                 <div className="text-[10px] text-slate-500 uppercase tracking-wider">Aktual vs Proyeksi</div>
                                 <div className="text-xs font-bold text-slate-100 mt-0.5">
-                                  {item.actual || 'Pending'} <span className="text-slate-500 font-normal">vs</span> {item.forecast || '—'}
+                                  {item.actual || 'Menunggu'} <span className="text-slate-500 font-normal">vs</span> {item.forecast || '—'}
                                 </div>
                               </div>
                               <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800">

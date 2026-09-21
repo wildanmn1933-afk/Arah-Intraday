@@ -55,7 +55,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
   if (!res.ok) {
     const errorJson = await res.json().catch(() => ({}));
-    const err: any = new Error(errorJson.error || errorJson.message || `Request failed with status ${res.status}`);
+    const err: any = new Error(errorJson.error || errorJson.message || `Permintaan gagal dengan status ${res.status}`);
     err.code = errorJson.code;
     err.email = errorJson.email;
     err.verificationUrl = errorJson.verificationUrl;
