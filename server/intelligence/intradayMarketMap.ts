@@ -217,6 +217,9 @@ export class IntradayMarketMapEngine {
 
         case 'US100': {
           // Nasdaq 100
+          // Ambang yield berasal dari harga US10Y feed, agar narasi tidak bertabrakan
+          // dengan angka yang ditampilkan di tempat lain pada halaman yang sama.
+          const yieldRef = (priceMap.get('US10Y')?.price ?? 4.3).toFixed(2);
           fundamentalScore = 70;
           priceActionScore = change24h >= 0 ? Math.min(85, Math.round(change24h * 30 + 30)) : Math.max(-80, Math.round(change24h * 30 - 30));
           topDrivers = [
@@ -230,7 +233,7 @@ export class IntradayMarketMapEngine {
           ];
           todayCatalyst = `Komentar laba semikonduktor & respons yield Treasury 10 tahun AS terhadap rilis ekonomi.`;
           marketReaction = `Indeks tercatat di ${currentPrice.toLocaleString()} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); futures teknologi menyerap order jual dengan likuiditas beli saat dip yang aktif.`;
-          conditionsToChange = `Yield 10 tahun AS menembus >4,20% atau panduan belanja modal cloud yang diturunkan akan langsung meredam selera kelipatan pertumbuhan.`;
+          conditionsToChange = `Yield 10 tahun AS melonjak tajam dari level ${yieldRef}% atau panduan belanja modal cloud yang diturunkan akan langsung meredam selera kelipatan pertumbuhan.`;
           confidence = 95;
           break;
         }
@@ -271,7 +274,7 @@ export class IntradayMarketMapEngine {
             `Bank sentral asing (mis. BoJ) yang menaikkan suku bunga menciptakan tekanan naik penyeimbang pada pair non-dolar.`,
           ];
           todayCatalyst = usKeyReleaseText || `Komunikasi kebijakan Ketua Fed Powell dan pergerakan yield Treasury.`;
-          marketReaction = `DXY bertahan di ${currentPrice.toFixed(2)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); osilasi terbatas dalam kanal makro sempit 100,80 - 101,80.`;
+          marketReaction = `DXY bertahan di ${currentPrice.toFixed(2)} (${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%); pergerakan terbatas pada rentang makro sempit di sekitar level tersebut.`;
           conditionsToChange = `Kejutan kenaikan inflasi inti yang kuat akan memicu short-covering USD tajam; inflasi di bawah ekspektasi akan mempercepat aksi jual dolar.`;
           confidence = 92;
           break;
